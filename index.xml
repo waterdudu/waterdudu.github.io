@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>My New Hugo Site</title>
+    <title>waterdudu blog</title>
     <link>http://waterdudu.github.io/</link>
-    <description>Recent content on My New Hugo Site</description>
+    <description>Recent content on waterdudu blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 07 Nov 2015 10:09:13 +0800</lastBuildDate>
@@ -15,7 +15,26 @@
       <pubDate>Sat, 07 Nov 2015 10:09:13 +0800</pubDate>
       
       <guid>http://waterdudu.github.io/post/swiftwordpolicy/</guid>
-      <description></description>
+      <description>&lt;p&gt;Privacy Policy (effective date October 4, 2015)
+Privacy Policy of SwiftWord&lt;/p&gt;
+
+&lt;p&gt;About This Policy&lt;/p&gt;
+
+&lt;p&gt;This privacy policy describes the privacy practices of the website and apps published by SwiftWord Developer, which includes a link to this policy.&lt;/p&gt;
+
+&lt;p&gt;Personal Information Collection: Apps published by SwiftWord Developer will not collect any personal information.&lt;/p&gt;
+
+&lt;p&gt;Personal Information Sharing: Apps published by SwiftWord Developer may not share personal information about consumers with third parties for their own marketing purposes unless the consumer agreed to that sharing.&lt;/p&gt;
+
+&lt;p&gt;Children’s Online Privacy Protection Act
+Our mobile applications comply with the Children’s Online Privacy Protection Act (“COPPA”). We don’t knowingly collect personal information from children under the age of 13 years old. If a user is identified as under 13 years old, we will not collect or use any information of this user and we will delete any information already received in a secure manner.&lt;/p&gt;
+
+&lt;p&gt;Other Privacy Related Issues: Apps published by SwiftWord Developer may contain links to other sites or applications which are owned or run by 3rd parties. SwiftWord Developer will not be responsible for those linked sites or application.&lt;/p&gt;
+
+&lt;p&gt;Changes on Privacy Policy&lt;/p&gt;
+
+&lt;p&gt;If we change or update the privacy policy to allow SwiftWord Developer to use or share your previously collected personal information in a different way, we will update the Policy on this web page. We encourage you to periodically visit this page for the latest privacy practices.&lt;/p&gt;
+</description>
     </item>
     
     <item>
