@@ -6,8 +6,18 @@
     <description>Recent content on waterdudu blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 07 Nov 2015 10:09:13 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 14 Nov 2015 23:49:14 +0800</lastBuildDate>
     <atom:link href="http://waterdudu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>photomosaic</title>
+      <link>http://waterdudu.github.io/post/photomosaic/</link>
+      <pubDate>Sat, 14 Nov 2015 23:49:14 +0800</pubDate>
+      
+      <guid>http://waterdudu.github.io/post/photomosaic/</guid>
+      <description>&lt;p&gt;&lt;img class=&#34;post-avatar&#34; alt=&#34;&#34; src=&#34;img/castle.jpg&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>swiftwordpolicy</title>
