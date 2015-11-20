@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on waterdudu blog</title>
+      <title>Posts on waterdudu blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
     <link>http://waterdudu.github.io/post/</link>
-    <description>Recent content in Posts on waterdudu blog</description>
-    <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 14 Nov 2015 23:49:14 +0800</lastBuildDate>
-    <atom:link href="http://waterdudu.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <updated>Sat, 14 Nov 2015 23:49:14 CST</updated>
     
     <item>
       <title>photomosaic</title>
       <link>http://waterdudu.github.io/post/photomosaic/</link>
-      <pubDate>Sat, 14 Nov 2015 23:49:14 +0800</pubDate>
+      <pubDate>Sat, 14 Nov 2015 23:49:14 CST</pubDate>
       
       <guid>http://waterdudu.github.io/post/photomosaic/</guid>
       <description>
@@ -35,7 +35,7 @@
     <item>
       <title>swiftwordpolicy</title>
       <link>http://waterdudu.github.io/post/swiftwordpolicy/</link>
-      <pubDate>Sat, 07 Nov 2015 10:09:13 +0800</pubDate>
+      <pubDate>Sat, 07 Nov 2015 10:09:13 CST</pubDate>
       
       <guid>http://waterdudu.github.io/post/swiftwordpolicy/</guid>
       <description>&lt;p&gt;Privacy Policy (effective date October 4, 2015)
@@ -63,7 +63,7 @@ Our mobile applications comply with the Children’s Online Privacy Protection A
     <item>
       <title>first</title>
       <link>http://waterdudu.github.io/post/first/</link>
-      <pubDate>Fri, 06 Nov 2015 22:45:04 +0800</pubDate>
+      <pubDate>Fri, 06 Nov 2015 22:45:04 CST</pubDate>
       
       <guid>http://waterdudu.github.io/post/first/</guid>
       <description>&lt;p&gt;hey first&lt;/p&gt;
