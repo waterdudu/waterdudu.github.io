@@ -5,7 +5,7 @@
       <generator uri="https://gohugo.io">Hugo</generator>
     <link>http://waterdudu.github.io/</link>
     <language>en-us</language>
-    
+    <author>dudu</author>
     
     <updated>Sat, 14 Nov 2015 23:49:14 CST</updated>
     
@@ -13,7 +13,7 @@
       <title>photomosaic</title>
       <link>http://waterdudu.github.io/post/photomosaic/</link>
       <pubDate>Sat, 14 Nov 2015 23:49:14 CST</pubDate>
-      
+      <author>dudu</author>
       <guid>http://waterdudu.github.io/post/photomosaic/</guid>
       <description>
 
@@ -36,7 +36,7 @@
       <title>swiftwordpolicy</title>
       <link>http://waterdudu.github.io/post/swiftwordpolicy/</link>
       <pubDate>Sat, 07 Nov 2015 10:09:13 CST</pubDate>
-      
+      <author>dudu</author>
       <guid>http://waterdudu.github.io/post/swiftwordpolicy/</guid>
       <description>&lt;p&gt;Privacy Policy (effective date October 4, 2015)
 Privacy Policy of SwiftWord&lt;/p&gt;
@@ -64,7 +64,7 @@ Our mobile applications comply with the Children’s Online Privacy Protection A
       <title>first</title>
       <link>http://waterdudu.github.io/post/first/</link>
       <pubDate>Fri, 06 Nov 2015 22:45:04 CST</pubDate>
-      
+      <author>dudu</author>
       <guid>http://waterdudu.github.io/post/first/</guid>
       <description>&lt;p&gt;hey first&lt;/p&gt;
 </description>
