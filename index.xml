@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>waterdudu blog</title>
+      <title> on waterdudu blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
     <link>http://waterdudu.github.io/</link>
-    <description>Recent content on waterdudu blog</description>
-    <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 18 Jan 2016 13:41:35 +0800</lastBuildDate>
-    <atom:link href="http://waterdudu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <author>dudu</author>
+    
+    <updated>Mon, 18 Jan 2016 13:41:35 CST</updated>
     
     <item>
       <title>go tips</title>
       <link>http://waterdudu.github.io/post/go-tips/</link>
-      <pubDate>Mon, 18 Jan 2016 13:41:35 +0800</pubDate>
-      
+      <pubDate>Mon, 18 Jan 2016 13:41:35 CST</pubDate>
+      <author>dudu</author>
       <guid>http://waterdudu.github.io/post/go-tips/</guid>
       <description>&lt;p&gt;访问 map 的 key, value&lt;/p&gt;
 
@@ -32,8 +32,8 @@ if _, ok := x[&amp;quot;love&amp;quot;]; !ok {
     <item>
       <title>photomosaic</title>
       <link>http://waterdudu.github.io/post/photomosaic/</link>
-      <pubDate>Sat, 14 Nov 2015 23:49:14 +0800</pubDate>
-      
+      <pubDate>Sat, 14 Nov 2015 23:49:14 CST</pubDate>
+      <author>dudu</author>
       <guid>http://waterdudu.github.io/post/photomosaic/</guid>
       <description>
 
@@ -55,8 +55,8 @@ if _, ok := x[&amp;quot;love&amp;quot;]; !ok {
     <item>
       <title>swiftwordpolicy</title>
       <link>http://waterdudu.github.io/post/swiftwordpolicy/</link>
-      <pubDate>Sat, 07 Nov 2015 10:09:13 +0800</pubDate>
-      
+      <pubDate>Sat, 07 Nov 2015 10:09:13 CST</pubDate>
+      <author>dudu</author>
       <guid>http://waterdudu.github.io/post/swiftwordpolicy/</guid>
       <description>&lt;p&gt;Privacy Policy (effective date October 4, 2015)
 Privacy Policy of SwiftWord&lt;/p&gt;
@@ -83,8 +83,8 @@ Our mobile applications comply with the Children’s Online Privacy Protection A
     <item>
       <title>first</title>
       <link>http://waterdudu.github.io/post/first/</link>
-      <pubDate>Fri, 06 Nov 2015 22:45:04 +0800</pubDate>
-      
+      <pubDate>Fri, 06 Nov 2015 22:45:04 CST</pubDate>
+      <author>dudu</author>
       <guid>http://waterdudu.github.io/post/first/</guid>
       <description>&lt;p&gt;hey first&lt;/p&gt;
 </description>
