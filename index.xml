@@ -15,7 +15,9 @@
       <pubDate>Mon, 18 Jan 2016 13:41:35 CST</pubDate>
       <author>dudu</author>
       <guid>http://waterdudu.github.io/post/go-tips/</guid>
-      <description>&lt;p&gt;访问 map 的 key, value&lt;/p&gt;
+      <description>
+
+&lt;h3 id=&#34;访问-map-的-key-value:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;访问 map 的 key, value&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;x := map[string]string{
     &amp;quot;name&amp;quot;: &amp;quot;dudu&amp;quot;,
