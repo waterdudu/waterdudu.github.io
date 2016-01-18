@@ -94,6 +94,38 @@ if _, ok := x[&quot;love&quot;]; !ok {
     fmt.Println(&quot;a person with no love&quot;)
 }
 </code></pre>
+
+<h3 id="修改-string-时-转换成-slice:a2653e2feb85ac0f67b04a4d51202bc4">修改 string 时，转换成 slice</h3>
+
+<pre><code>x := &quot;strings are read-only&quot;
+xbytes := []byte(x)
+xbytes[0] = 'S'
+
+fmt.Println(string(xbytes))
+</code></pre>
+
+<h3 id="以下调用合法:a2653e2feb85ac0f67b04a4d51202bc4">以下调用合法</h3>
+
+<ul>
+<li>调用 pointer receiver method，只要调用者是 pointer type，或者它能被取地址（&amp;）</li>
+<li>调用 value recieiver method，只要调用者是 value type，或者它的 value 可以被取值（*）</li>
+</ul>
+
+<pre><code>type List [] int
+
+func (l List) Len() int { return len(l) }
+func (l *List) Append(val int) { *l = append(*l, val) }
+
+// call
+var list List
+list.Append(l)
+fmt.Printf(&quot;%v (len: %d) \n&quot;, list, list.Len())
+
+pList := new(List)
+pList.Append(2)
+fmt.Printf(&quot;%v (len: %d) \n&quot;, pList, pList.Len())
+
+</code></pre>
 </div></article>
 					
 						<div class="share">

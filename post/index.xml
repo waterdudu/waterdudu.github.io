@@ -28,6 +28,38 @@ if _, ok := x[&amp;quot;love&amp;quot;]; !ok {
     fmt.Println(&amp;quot;a person with no love&amp;quot;)
 }
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;修改-string-时-转换成-slice:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;修改 string 时，转换成 slice&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;x := &amp;quot;strings are read-only&amp;quot;
+xbytes := []byte(x)
+xbytes[0] = &#39;S&#39;
+
+fmt.Println(string(xbytes))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;以下调用合法:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;以下调用合法&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;调用 pointer receiver method，只要调用者是 pointer type，或者它能被取地址（&amp;amp;）&lt;/li&gt;
+&lt;li&gt;调用 value recieiver method，只要调用者是 value type，或者它的 value 可以被取值（*）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;type List [] int
+
+func (l List) Len() int { return len(l) }
+func (l *List) Append(val int) { *l = append(*l, val) }
+
+// call
+var list List
+list.Append(l)
+fmt.Printf(&amp;quot;%v (len: %d) \n&amp;quot;, list, list.Len())
+
+pList := new(List)
+pList.Append(2)
+fmt.Printf(&amp;quot;%v (len: %d) \n&amp;quot;, pList, pList.Len())
+
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
