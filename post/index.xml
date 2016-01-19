@@ -63,9 +63,12 @@ fmt.Printf(&amp;quot;%v (len: %d) \n&amp;quot;, pList, pList.Len())
 
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
-&lt;p&gt;template 加载可以有多种方式:
-* Parse
-* ParseFiles&lt;/p&gt;
+&lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Parse&lt;/li&gt;
+&lt;li&gt;ParseFiles&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;简单&lt;/p&gt;
 
