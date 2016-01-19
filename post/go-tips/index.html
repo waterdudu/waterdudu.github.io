@@ -129,7 +129,57 @@ fmt.Printf(&quot;%v (len: %d) \n&quot;, pList, pList.Len())
 
 <h3 id="template:a2653e2feb85ac0f67b04a4d51202bc4">template</h3>
 
-<p>template 可以有多种方式</p>
+<p>template 加载可以有多种方式:
+* Parse
+* ParseFiles</p>
+
+<p>简单</p>
+
+<pre><code>
+type Tag struct {
+    TName string
+}
+type Person struct {
+    FirstName string
+    LastName  string
+    Age       int
+    Emails    []string
+    Tags      []*Tag
+}
+
+func main() {
+    t1 := Tag{TName: &quot;java&quot;}
+    t2 := Tag{TName: &quot;go&quot;}
+    t := template.New(&quot;persion tag example&quot;)
+    t, _ = t.Parse(`person with tags {{.FirstName}} !
+        {{range .Emails}}
+            email : {{.}}
+        {{end}}
+        {{with .Tags}}
+            {{range .}}
+                tag is : {{.TName}}
+            {{end}}
+        {{end}}
+    `)
+    p := Person{
+        FirstName: &quot;d&quot;,
+        LastName:  &quot;X&quot;,
+        Emails:    []string{&quot;a@gmail.com&quot;, &quot;b@gmail.com&quot;},
+        Tags:      []*Tag{&amp;t1, &amp;t2},
+    }
+
+    t.Execute(os.Stdout, p)
+}
+</code></pre>
+
+<p>output</p>
+
+<pre><code>person with tags d !
+            email : a@gmail.com
+            email : b@gmail.com
+                tag is : java
+                tag is : go
+</code></pre>
 
 <h3 id="组合-template:a2653e2feb85ac0f67b04a4d51202bc4">组合 template</h3>
 

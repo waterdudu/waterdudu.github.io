@@ -63,7 +63,57 @@ fmt.Printf(&amp;quot;%v (len: %d) \n&amp;quot;, pList, pList.Len())
 
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
-&lt;p&gt;template 可以有多种方式&lt;/p&gt;
+&lt;p&gt;template 加载可以有多种方式:
+* Parse
+* ParseFiles&lt;/p&gt;
+
+&lt;p&gt;简单&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+type Tag struct {
+    TName string
+}
+type Person struct {
+    FirstName string
+    LastName  string
+    Age       int
+    Emails    []string
+    Tags      []*Tag
+}
+
+func main() {
+    t1 := Tag{TName: &amp;quot;java&amp;quot;}
+    t2 := Tag{TName: &amp;quot;go&amp;quot;}
+    t := template.New(&amp;quot;persion tag example&amp;quot;)
+    t, _ = t.Parse(`person with tags {{.FirstName}} !
+        {{range .Emails}}
+            email : {{.}}
+        {{end}}
+        {{with .Tags}}
+            {{range .}}
+                tag is : {{.TName}}
+            {{end}}
+        {{end}}
+    `)
+    p := Person{
+        FirstName: &amp;quot;d&amp;quot;,
+        LastName:  &amp;quot;X&amp;quot;,
+        Emails:    []string{&amp;quot;a@gmail.com&amp;quot;, &amp;quot;b@gmail.com&amp;quot;},
+        Tags:      []*Tag{&amp;amp;t1, &amp;amp;t2},
+    }
+
+    t.Execute(os.Stdout, p)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;output&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;person with tags d !
+            email : a@gmail.com
+            email : b@gmail.com
+                tag is : java
+                tag is : go
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&#34;组合-template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;组合 template&lt;/h3&gt;
 
