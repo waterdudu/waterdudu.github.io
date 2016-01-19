@@ -126,6 +126,88 @@ pList.Append(2)
 fmt.Printf(&quot;%v (len: %d) \n&quot;, pList, pList.Len())
 
 </code></pre>
+
+<h3 id="template:a2653e2feb85ac0f67b04a4d51202bc4">template</h3>
+
+<p>template 可以有多种方式</p>
+
+<h3 id="组合-template:a2653e2feb85ac0f67b04a4d51202bc4">组合 template</h3>
+
+<p>把一个页面分成 layout 和 content，layout 负责布局， content 负责展示内容</p>
+
+<p>content.gtpl 定义了 template 名字：content</p>
+
+<pre><code class="language-content.gtpl">{{define &quot;content&quot;}}
+&lt;ul&gt;
+    {{range .}}
+        &lt;li&gt;{{.FirstName}} {{.LastName}} is {{.Age}} years old.
+        {{.FirstName}}'s full name is {{printf &quot;%s%s&quot; .FirstName .LastName | len}} letters long.
+        In 10 years, {{.FirstName}} will be {{add .Age 10}}.&lt;/li&gt;
+    {{end}}
+&lt;/ul&gt;
+{{end}}
+
+</code></pre>
+
+<p>layout.gtpl 使用 content.gtpl 定义的 content template</p>
+
+<pre><code class="language-layout.gtpl">&lt;div class=&quot;outer&quot;&gt;
+    &lt;h1&gt;{{.Title}}&lt;/h1&gt;
+    {{template &quot;content&quot; .Content}}
+&lt;/div&gt;
+</code></pre>
+
+<p>在 go 文件中使用</p>
+
+<pre><code>package main
+
+import (
+    &quot;os&quot;
+    &quot;text/template&quot;
+)
+
+type Person struct {
+    FirstName string
+    LastName  string
+    Age       int
+}
+
+func add(a int, b int) int {
+    return a + b
+}
+
+type Page struct {
+    Title   string
+    Content interface{}
+}
+
+var layout, contentPage *template.Template
+
+func init() {
+    layout = template.Must(template.ParseFiles(&quot;layout.gtpl&quot;)).Funcs(
+        template.FuncMap{
+            &quot;add&quot;: add,
+        })
+
+    contentPage = template.Must(layout.Clone())
+    contentPage = template.Must(peoplePage.ParseFiles(&quot;content.gtpl&quot;))
+}
+
+func main() {
+    // content
+    var people = []Person{
+        {&quot;John&quot;, &quot;Smith&quot;, 22},
+        {&quot;Alice&quot;, &quot;Smith&quot;, 25},
+        {&quot;Bob&quot;, &quot;Baker&quot;, 24},
+    }
+    var title string = &quot;Hey man&quot;
+    contentPage.Execute(os.Stdout, Page{
+        Title:   title,
+        Content: people,
+    })
+}
+
+</code></pre>
 </div></article>
 					
 						<div class="share">

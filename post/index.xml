@@ -60,6 +60,88 @@ pList.Append(2)
 fmt.Printf(&amp;quot;%v (len: %d) \n&amp;quot;, pList, pList.Len())
 
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
+
+&lt;p&gt;template 可以有多种方式&lt;/p&gt;
+
+&lt;h3 id=&#34;组合-template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;组合 template&lt;/h3&gt;
+
+&lt;p&gt;把一个页面分成 layout 和 content，layout 负责布局， content 负责展示内容&lt;/p&gt;
+
+&lt;p&gt;content.gtpl 定义了 template 名字：content&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-content.gtpl&#34;&gt;{{define &amp;quot;content&amp;quot;}}
+&amp;lt;ul&amp;gt;
+    {{range .}}
+        &amp;lt;li&amp;gt;{{.FirstName}} {{.LastName}} is {{.Age}} years old.
+        {{.FirstName}}&#39;s full name is {{printf &amp;quot;%s%s&amp;quot; .FirstName .LastName | len}} letters long.
+        In 10 years, {{.FirstName}} will be {{add .Age 10}}.&amp;lt;/li&amp;gt;
+    {{end}}
+&amp;lt;/ul&amp;gt;
+{{end}}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;layout.gtpl 使用 content.gtpl 定义的 content template&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-layout.gtpl&#34;&gt;&amp;lt;div class=&amp;quot;outer&amp;quot;&amp;gt;
+    &amp;lt;h1&amp;gt;{{.Title}}&amp;lt;/h1&amp;gt;
+    {{template &amp;quot;content&amp;quot; .Content}}
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在 go 文件中使用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+    &amp;quot;os&amp;quot;
+    &amp;quot;text/template&amp;quot;
+)
+
+type Person struct {
+    FirstName string
+    LastName  string
+    Age       int
+}
+
+func add(a int, b int) int {
+    return a + b
+}
+
+type Page struct {
+    Title   string
+    Content interface{}
+}
+
+var layout, contentPage *template.Template
+
+func init() {
+    layout = template.Must(template.ParseFiles(&amp;quot;layout.gtpl&amp;quot;)).Funcs(
+        template.FuncMap{
+            &amp;quot;add&amp;quot;: add,
+        })
+
+    contentPage = template.Must(layout.Clone())
+    contentPage = template.Must(peoplePage.ParseFiles(&amp;quot;content.gtpl&amp;quot;))
+}
+
+func main() {
+    // content
+    var people = []Person{
+        {&amp;quot;John&amp;quot;, &amp;quot;Smith&amp;quot;, 22},
+        {&amp;quot;Alice&amp;quot;, &amp;quot;Smith&amp;quot;, 25},
+        {&amp;quot;Bob&amp;quot;, &amp;quot;Baker&amp;quot;, 24},
+    }
+    var title string = &amp;quot;Hey man&amp;quot;
+    contentPage.Execute(os.Stdout, Page{
+        Title:   title,
+        Content: people,
+    })
+}
+
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
