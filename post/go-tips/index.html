@@ -445,6 +445,56 @@ if err := json.Unmarshal([]byte(result[&quot;status&quot;].(json.Number).String(
     fmt.Println(strings.EqualFold(&quot;ÑOÑO&quot;, &quot;ñoño&quot;))
 </code></pre>
 
+<h3 id="recover:a2653e2feb85ac0f67b04a4d51202bc4">recover</h3>
+
+<p>必须在 defer 里，不可把 recover 放在 func 里</p>
+
+<pre><code>func doRecover() {  
+    fmt.Println(&quot;recovered =&gt;&quot;,recover()) //prints: recovered =&gt; &lt;nil&gt;
+}
+
+func main() {  
+    defer func() {
+        doRecover() //panic is not recovered
+    }()
+
+    panic(&quot;not good&quot;)
+}
+</code></pre>
+
+<h3 id="for-range-更新数据:a2653e2feb85ac0f67b04a4d51202bc4">for range 更新数据</h3>
+
+<p>for range data value 变量是 collection data 的 copy，不可以用它更新 collection</p>
+
+<pre><code>    data := []int{1,2,3}
+    for _,v := range data {
+        v *= 10 //original item is not changed
+    }
+
+    fmt.Println(&quot;data:&quot;,data) //prints data: [1 2 3]
+</code></pre>
+
+<p>使用 index operator 来更新</p>
+
+<pre><code>    data := []int{1,2,3}
+    for i,_ := range data {
+        data[i] *= 10
+    }
+
+    fmt.Println(&quot;data:&quot;,data) //prints data: [10 20 30]
+</code></pre>
+
+<p>如果 slice 是 pointer value，除了采用 index 方式，可采用下面方式更新</p>
+
+<pre><code>    data := []*struct{num int} {{1},{2},{3}}
+
+    for _,v := range data {
+        v.num *= 10
+    }
+
+    fmt.Println(data[0],data[1],data[2]) //prints &amp;{10} &amp;{20} &amp;{30}
+</code></pre>
+
 <h3 id="template:a2653e2feb85ac0f67b04a4d51202bc4">template</h3>
 
 <p>template 加载可以有多种方式:</p>

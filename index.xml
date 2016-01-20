@@ -379,6 +379,56 @@ if err := json.Unmarshal([]byte(result[&amp;quot;status&amp;quot;].(json.Number)
     fmt.Println(strings.EqualFold(&amp;quot;ÑOÑO&amp;quot;, &amp;quot;ñoño&amp;quot;))
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;recover:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;recover&lt;/h3&gt;
+
+&lt;p&gt;必须在 defer 里，不可把 recover 放在 func 里&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func doRecover() {  
+    fmt.Println(&amp;quot;recovered =&amp;gt;&amp;quot;,recover()) //prints: recovered =&amp;gt; &amp;lt;nil&amp;gt;
+}
+
+func main() {  
+    defer func() {
+        doRecover() //panic is not recovered
+    }()
+
+    panic(&amp;quot;not good&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;for-range-更新数据:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;for range 更新数据&lt;/h3&gt;
+
+&lt;p&gt;for range data value 变量是 collection data 的 copy，不可以用它更新 collection&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    data := []int{1,2,3}
+    for _,v := range data {
+        v *= 10 //original item is not changed
+    }
+
+    fmt.Println(&amp;quot;data:&amp;quot;,data) //prints data: [1 2 3]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用 index operator 来更新&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    data := []int{1,2,3}
+    for i,_ := range data {
+        data[i] *= 10
+    }
+
+    fmt.Println(&amp;quot;data:&amp;quot;,data) //prints data: [10 20 30]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果 slice 是 pointer value，除了采用 index 方式，可采用下面方式更新&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    data := []*struct{num int} {{1},{2},{3}}
+
+    for _,v := range data {
+        v.num *= 10
+    }
+
+    fmt.Println(data[0],data[1],data[2]) //prints &amp;amp;{10} &amp;amp;{20} &amp;amp;{30}
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;
