@@ -192,6 +192,63 @@ func main() {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;处理-http-request-的-close:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;处理 http request 的 close&lt;/h3&gt;
+
+&lt;p&gt;同时判断 err 和 resp
+redirect 失败时 resp, err 都 != nil，此时需要对 resp 做出错处理，关闭 resp.Body&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    resp, err := http.Get(&amp;quot;https://api.ipify.org?format=json&amp;quot;)
+    if resp != nil {
+        defer resp.Body.Close()
+    }
+
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+
+    defer resp.Body.Close()//ok, most of the time :-)
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+
+    fmt.Println(string(body))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;close-http-connection:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;close http connection&lt;/h3&gt;
+
+&lt;p&gt;标准库会根据 server 的配置来关闭 connection，这会导致我们的 app 的性能。
+以下方式关闭 http 链接。&lt;/p&gt;
+
+&lt;p&gt;向同一个 server 发送很多请求时可以设置连接open。
+向很多 server 发送请求时需要关闭连接来保证性能（或者增加 open file limit）。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;设置 Close = true
+&lt;code&gt;req.Close = true&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;添加 request header
+```req.Header.Add(&amp;ldquo;Connection&amp;rdquo;, &amp;ldquo;close&amp;rdquo;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;    req, err := http.NewRequest(&amp;quot;GET&amp;quot;,&amp;quot;http://golang.org&amp;quot;,nil)
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+
+    req.Close = true
+    //or do this:
+    //req.Header.Add(&amp;quot;Connection&amp;quot;, &amp;quot;close&amp;quot;)
+
+    resp, err := http.DefaultClient.Do(req)
+    if resp != nil {
+        defer resp.Body.Close()
+    }
+
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;
