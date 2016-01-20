@@ -61,6 +61,24 @@ fmt.Printf(&amp;quot;%v (len: %d) \n&amp;quot;, pList, pList.Len())
 
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;for-range-string:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;for range string&lt;/h3&gt;
+
+&lt;p&gt;for range 默认会把 string 当作 utf-8 字符，如果不能解析，则返回 0xfffd。
+需要把它转换成 byte slice 让结果正确。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    data := &amp;quot;A\xfe\x02\xff\x04&amp;quot;
+    for _,v := range data {
+        fmt.Printf(&amp;quot;%#x &amp;quot;,v)
+    }
+    //prints: 0x41 0xfffd 0x2 0xfffd 0x4 (not ok)
+
+    fmt.Println()
+    for _,v := range []byte(data) {
+        fmt.Printf(&amp;quot;%#x &amp;quot;,v)
+    }
+    //prints: 0x41 0xfe 0x2 0xff 0x4 (good)
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;

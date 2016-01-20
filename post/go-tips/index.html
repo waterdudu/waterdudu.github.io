@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>go tips - waterdudu blog</title>
-	<meta name="author" content="map[email: name:dudu]">
+	<meta name="author" content="map[name:dudu email:]">
 
 	
 	
@@ -125,6 +125,24 @@ pList := new(List)
 pList.Append(2)
 fmt.Printf(&quot;%v (len: %d) \n&quot;, pList, pList.Len())
 
+</code></pre>
+
+<h3 id="for-range-string:a2653e2feb85ac0f67b04a4d51202bc4">for range string</h3>
+
+<p>for range 默认会把 string 当作 utf-8 字符，如果不能解析，则返回 0xfffd。
+需要把它转换成 byte slice 让结果正确。</p>
+
+<pre><code>    data := &quot;A\xfe\x02\xff\x04&quot;
+    for _,v := range data {
+        fmt.Printf(&quot;%#x &quot;,v)
+    }
+    //prints: 0x41 0xfffd 0x2 0xfffd 0x4 (not ok)
+
+    fmt.Println()
+    for _,v := range []byte(data) {
+        fmt.Printf(&quot;%#x &quot;,v)
+    }
+    //prints: 0x41 0xfe 0x2 0xff 0x4 (good)
 </code></pre>
 
 <h3 id="template:a2653e2feb85ac0f67b04a4d51202bc4">template</h3>
