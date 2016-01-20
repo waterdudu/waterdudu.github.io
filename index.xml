@@ -1156,6 +1156,73 @@ func main() {
     m[&amp;quot;x&amp;quot;].name = &amp;quot;two&amp;quot; //error
 }
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;workaround&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使用临时变量&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;type data struct {  
+    name string
+}
+
+func main() {  
+    m := map[string]data {&amp;quot;x&amp;quot;:{&amp;quot;one&amp;quot;}}
+    r := m[&amp;quot;x&amp;quot;]
+    r.name = &amp;quot;two&amp;quot;
+    m[&amp;quot;x&amp;quot;] = r
+    fmt.Printf(&amp;quot;%v&amp;quot;,m) //prints: map[x:{two}]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使用 map of pointers&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;type data struct {  
+    name string
+}
+
+func main() {  
+    m := map[string]*data {&amp;quot;x&amp;quot;:{&amp;quot;one&amp;quot;}}
+    m[&amp;quot;x&amp;quot;].name = &amp;quot;two&amp;quot; //ok
+    fmt.Println(m[&amp;quot;x&amp;quot;]) //prints: &amp;amp;{two}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;slice-update:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;slice update&lt;/h3&gt;
+
+&lt;p&gt;slice elements are addressable&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type data struct {  
+    name string
+}
+
+func main() {  
+    m := map[string]data {&amp;quot;x&amp;quot;:{&amp;quot;one&amp;quot;}}
+    r := m[&amp;quot;x&amp;quot;]
+    r.name = &amp;quot;two&amp;quot;
+    m[&amp;quot;x&amp;quot;] = r
+    fmt.Printf(&amp;quot;%v&amp;quot;,m) //prints: map[x:{two}]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;interface-nil:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;interface nil&lt;/h3&gt;
+
+&lt;p&gt;Interface variables will be &amp;ldquo;nil&amp;rdquo; only when their type and value fields are &amp;ldquo;nil&amp;rdquo;.
+in = data, type is not nil, thus &lt;code&gt;in == nil&lt;/code&gt; return false&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var data *byte
+    var in interface{}
+
+    fmt.Println(data,data == nil) //prints: &amp;lt;nil&amp;gt; true
+    fmt.Println(in,in == nil)     //prints: &amp;lt;nil&amp;gt; true
+
+    in = data
+    fmt.Println(in,in == nil)     //prints: &amp;lt;nil&amp;gt; false
+    //&#39;data&#39; is &#39;nil&#39;, but &#39;in&#39; is not &#39;nil&#39;
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

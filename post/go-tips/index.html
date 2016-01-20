@@ -939,6 +939,73 @@ func main() {
     m[&quot;x&quot;].name = &quot;two&quot; //error
 }
 </code></pre>
+
+<p>workaround</p>
+
+<ul>
+<li>使用临时变量</li>
+</ul>
+
+<pre><code>type data struct {  
+    name string
+}
+
+func main() {  
+    m := map[string]data {&quot;x&quot;:{&quot;one&quot;}}
+    r := m[&quot;x&quot;]
+    r.name = &quot;two&quot;
+    m[&quot;x&quot;] = r
+    fmt.Printf(&quot;%v&quot;,m) //prints: map[x:{two}]
+}
+</code></pre>
+
+<ul>
+<li>使用 map of pointers</li>
+</ul>
+
+<pre><code>type data struct {  
+    name string
+}
+
+func main() {  
+    m := map[string]*data {&quot;x&quot;:{&quot;one&quot;}}
+    m[&quot;x&quot;].name = &quot;two&quot; //ok
+    fmt.Println(m[&quot;x&quot;]) //prints: &amp;{two}
+}
+</code></pre>
+
+<h3 id="slice-update:a2653e2feb85ac0f67b04a4d51202bc4">slice update</h3>
+
+<p>slice elements are addressable</p>
+
+<pre><code>type data struct {  
+    name string
+}
+
+func main() {  
+    m := map[string]data {&quot;x&quot;:{&quot;one&quot;}}
+    r := m[&quot;x&quot;]
+    r.name = &quot;two&quot;
+    m[&quot;x&quot;] = r
+    fmt.Printf(&quot;%v&quot;,m) //prints: map[x:{two}]
+}
+</code></pre>
+
+<h3 id="interface-nil:a2653e2feb85ac0f67b04a4d51202bc4">interface nil</h3>
+
+<p>Interface variables will be &ldquo;nil&rdquo; only when their type and value fields are &ldquo;nil&rdquo;.
+in = data, type is not nil, thus <code>in == nil</code> return false</p>
+
+<pre><code>    var data *byte
+    var in interface{}
+
+    fmt.Println(data,data == nil) //prints: &lt;nil&gt; true
+    fmt.Println(in,in == nil)     //prints: &lt;nil&gt; true
+
+    in = data
+    fmt.Println(in,in == nil)     //prints: &lt;nil&gt; false
+    //'data' is 'nil', but 'in' is not 'nil'
+</code></pre>
 </div></article>
 					
 						<div class="share">
