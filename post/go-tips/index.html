@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>go tips - waterdudu blog</title>
-	<meta name="author" content="map[email: name:dudu]">
+	<meta name="author" content="map[name:dudu email:]">
 
 	
 	
@@ -510,6 +510,71 @@ func main() {
 func main() {  
     data := get()
     fmt.Println(len(data),cap(data),&amp;data[0]) //prints: 3 3 &lt;byte_addr_y&gt;
+}
+</code></pre>
+
+<h3 id="slice-data-corruption:a2653e2feb85ac0f67b04a4d51202bc4">slice data corruption</h3>
+
+<p>使用 full slice expression，比较优雅</p>
+
+<pre><code>    source := []string{&quot;Apple&quot;, &quot;Orange&quot;, &quot;Plum&quot;, &quot;Banana&quot;, &quot;Grape&quot;}
+
+    // slice 被 detach 了
+    slice1 := source[2:3:3]
+    slice2 := source[2:]
+
+    slice1 = append(slice1, &quot;Kiwi&quot;)
+
+    // source =&gt; [Apple Orange Plum Banana Grape]
+    fmt.Printf(&quot;source =&gt; %v\n&quot;, source)
+    // slice1 =&gt; [Plum Kiwi]
+    fmt.Printf(&quot;slice1 =&gt; %v\n&quot;, slice1)
+    // slice2 =&gt; [Plum Banana Grape]
+    fmt.Printf(&quot;slice2 =&gt; %v\n&quot;, slice2)
+</code></pre>
+
+<h3 id="集成-method-set:a2653e2feb85ac0f67b04a4d51202bc4">集成 method set</h3>
+
+<p>自定义 struct 不继承方法集</p>
+
+<pre><code>package main
+
+import &quot;sync&quot;
+
+type myMutex sync.Mutex
+
+func main() {  
+    var mtx myMutex
+    mtx.Lock() //error
+    mtx.Unlock() //error  
+}
+</code></pre>
+
+<p>但是你可以用 type embedding 来实现 method set 继承</p>
+
+<pre><code>import &quot;sync&quot;
+
+type myLocker struct {  
+    sync.Mutex
+}
+
+func main() {  
+    var lock myLocker
+    lock.Lock() //ok
+    lock.Unlock() //ok
+}
+</code></pre>
+
+<p>Interface type declarations also retain their method sets.</p>
+
+<pre><code>import &quot;sync&quot;
+
+type myLocker sync.Locker
+
+func main() {  
+    var lock myLocker = new(sync.Mutex)
+    lock.Lock() //ok
+    lock.Unlock() //ok
 }
 </code></pre>
 

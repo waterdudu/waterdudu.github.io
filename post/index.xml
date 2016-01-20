@@ -447,6 +447,71 @@ func main() {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;slice-data-corruption:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;slice data corruption&lt;/h3&gt;
+
+&lt;p&gt;使用 full slice expression，比较优雅&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    source := []string{&amp;quot;Apple&amp;quot;, &amp;quot;Orange&amp;quot;, &amp;quot;Plum&amp;quot;, &amp;quot;Banana&amp;quot;, &amp;quot;Grape&amp;quot;}
+
+    // slice 被 detach 了
+    slice1 := source[2:3:3]
+    slice2 := source[2:]
+
+    slice1 = append(slice1, &amp;quot;Kiwi&amp;quot;)
+
+    // source =&amp;gt; [Apple Orange Plum Banana Grape]
+    fmt.Printf(&amp;quot;source =&amp;gt; %v\n&amp;quot;, source)
+    // slice1 =&amp;gt; [Plum Kiwi]
+    fmt.Printf(&amp;quot;slice1 =&amp;gt; %v\n&amp;quot;, slice1)
+    // slice2 =&amp;gt; [Plum Banana Grape]
+    fmt.Printf(&amp;quot;slice2 =&amp;gt; %v\n&amp;quot;, slice2)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;集成-method-set:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;集成 method set&lt;/h3&gt;
+
+&lt;p&gt;自定义 struct 不继承方法集&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import &amp;quot;sync&amp;quot;
+
+type myMutex sync.Mutex
+
+func main() {  
+    var mtx myMutex
+    mtx.Lock() //error
+    mtx.Unlock() //error  
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但是你可以用 type embedding 来实现 method set 继承&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;import &amp;quot;sync&amp;quot;
+
+type myLocker struct {  
+    sync.Mutex
+}
+
+func main() {  
+    var lock myLocker
+    lock.Lock() //ok
+    lock.Unlock() //ok
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Interface type declarations also retain their method sets.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;import &amp;quot;sync&amp;quot;
+
+type myLocker sync.Locker
+
+func main() {  
+    var lock myLocker = new(sync.Mutex)
+    lock.Lock() //ok
+    lock.Unlock() //ok
+}
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;
