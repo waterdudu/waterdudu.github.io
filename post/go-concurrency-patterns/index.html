@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>swiftwordpolicy - waterdudu blog</title>
+	<title>go concurrency patterns - waterdudu blog</title>
 	<meta name="author" content="map[name:dudu email:]">
 
 	
@@ -19,7 +19,7 @@
     
 	<link href='/index.xml' rel="alternate" title="waterdudu blog" type="application/atom+xml">
 	
-	<link rel="canonical" href="http://waterdudu.github.io/post/swiftwordpolicy/">
+	<link rel="canonical" href="http://waterdudu.github.io/post/go-concurrency-patterns/">
 	<link href="http://waterdudu.github.io//favicon.png" rel="shortcut icon">
 	<link href="http://waterdudu.github.io//css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
 	<link href="http://waterdudu.github.io//css/font-awesome.min.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -80,26 +80,36 @@
 				<div id="content" class="inner">
 					<div itemscope itemtype="http://schema.org/Blog">
 					<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-    <h1 class="title" itemprop="name">swiftwordpolicy</h1>
-	<div class="entry-content" itemprop="articleBody"><p>Privacy Policy (effective date October 4, 2015)
-Privacy Policy of SwiftWord</p>
+    <h1 class="title" itemprop="name">go concurrency patterns</h1>
+	<div class="entry-content" itemprop="articleBody">
 
-<p>About This Policy</p>
+<h3 id="fanin:9357571808d2807c9bcef92c59571acd">fanIn</h3>
 
-<p>This privacy policy describes the privacy practices of the website and apps published by SwiftWord Developer, which includes a link to this policy.</p>
+<p>pattern</p>
 
-<p>Personal Information Collection: Apps published by SwiftWord Developer will not collect any personal information.</p>
+<pre><code>/*
+A -&gt;
+       C -&gt;
+B -&gt; 
+*/
 
-<p>Personal Information Sharing: Apps published by SwiftWord Developer may not share personal information about consumers with third parties for their own marketing purposes unless the consumer agreed to that sharing.</p>
+func fanIn(input1, input2 &lt;-chan string) &lt;-chan string {
+    c := make(chan string)
 
-<p>Children’s Online Privacy Protection Act
-Our mobile applications comply with the Children’s Online Privacy Protection Act (“COPPA”). We don’t knowingly collect personal information from children under the age of 13 years old. If a user is identified as under 13 years old, we will not collect or use any information of this user and we will delete any information already received in a secure manner.</p>
+    go func() { for { c &lt;- &lt;-input1 } }()
+    go func() { for { c &lt;- &lt;-input2 } }()
+    return c
+}
 
-<p>Other Privacy Related Issues: Apps published by SwiftWord Developer may contain links to other sites or applications which are owned or run by 3rd parties. SwiftWord Developer will not be responsible for those linked sites or application.</p>
+func main() {
+    c := fanIn(boring(&quot;Joe&quot;), boring(&quot;Ann&quot;))
+    for i := 0; i &lt; 10; i++ {
+        fmt.Println(&lt;-c)
+    }
+    fmt.Println(&quot;You're both boring. I'm leaving&quot;)
+}
 
-<p>Changes on Privacy Policy</p>
-
-<p>If we change or update the privacy policy to allow SwiftWord Developer to use or share your previously collected personal information in a different way, we will update the Policy on this web page. We encourage you to periodically visit this page for the latest privacy practices.</p>
+</code></pre>
 </div></article>
 					
 						<div class="share">
