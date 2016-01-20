@@ -104,6 +104,23 @@ fmt.Printf(&amp;quot;%v (len: %d) \n&amp;quot;, pList, pList.Len())
     //  two 2
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;switch:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;switch&lt;/h3&gt;
+
+&lt;p&gt;switch 默认是 fallthrough 的，可以在 case 语句里写成 list，或者使用 fallthrough 语句&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    isSpace := func(ch byte) bool {
+        switch(ch) {
+        case &#39; &#39;, &#39;\t&#39;:
+            return true
+        }
+        return false
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;i:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;++i&lt;/h3&gt;
+
+&lt;p&gt;go 不支持 prefix increment or decrement&lt;/p&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;

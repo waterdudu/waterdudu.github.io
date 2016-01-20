@@ -170,6 +170,23 @@ fmt.Printf(&quot;%v (len: %d) \n&quot;, pList, pList.Len())
     //  two 2
 </code></pre>
 
+<h3 id="switch:a2653e2feb85ac0f67b04a4d51202bc4">switch</h3>
+
+<p>switch 默认是 fallthrough 的，可以在 case 语句里写成 list，或者使用 fallthrough 语句</p>
+
+<pre><code>    isSpace := func(ch byte) bool {
+        switch(ch) {
+        case ' ', '\t':
+            return true
+        }
+        return false
+    }
+</code></pre>
+
+<h3 id="i:a2653e2feb85ac0f67b04a4d51202bc4">++i</h3>
+
+<p>go 不支持 prefix increment or decrement</p>
+
 <h3 id="template:a2653e2feb85ac0f67b04a4d51202bc4">template</h3>
 
 <p>template 加载可以有多种方式:</p>
