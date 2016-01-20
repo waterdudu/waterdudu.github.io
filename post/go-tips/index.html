@@ -295,8 +295,11 @@ redirect 失败时 resp, err 都 != nil，此时需要对 resp 做出错处理�
 <li>设置 Close = true</li>
 </ul>
 
-<p><code>req.Close = true</code>
-* 添加 request header</p>
+<p><code>req.Close = true</code></p>
+
+<ul>
+<li>添加 request header</li>
+</ul>
 
 <p><code>req.Header.Add(&quot;Connection&quot;, &quot;close&quot;)</code></p>
 

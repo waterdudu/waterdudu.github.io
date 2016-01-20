@@ -229,8 +229,11 @@ redirect 失败时 resp, err 都 != nil，此时需要对 resp 做出错处理�
 &lt;li&gt;设置 Close = true&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;code&gt;req.Close = true&lt;/code&gt;
-* 添加 request header&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;req.Close = true&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;添加 request header&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;&lt;code&gt;req.Header.Add(&amp;quot;Connection&amp;quot;, &amp;quot;close&amp;quot;)&lt;/code&gt;&lt;/p&gt;
 
