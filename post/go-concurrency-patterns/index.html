@@ -251,6 +251,38 @@ func fanIn(input1, input2 &lt;-chan string) &lt;-chan string {
     }
 }
 </code></pre>
+
+<p>timeout 在外部声明，可以timeout 整个 conversation</p>
+
+<p>单个 channel 超时不超过 1s</p>
+
+<pre><code>    c := boring(&quot;Joe&quot;)
+    for {
+        select {
+        case s := &lt;-c:
+            fmt.Println(s)
+        case &lt;-time.After(1 * time.Second): // HL
+            fmt.Println(&quot;You're too slow.&quot;)
+            return
+        }
+    }
+
+</code></pre>
+
+<p>多个 channel 超时不超过 5s</p>
+
+<pre><code>    c := boring(&quot;Joe&quot;)
+    timeout := time.After(5 * time.Second) // HL
+    for {
+        select {
+        case s := &lt;-c:
+            fmt.Println(s)
+        case &lt;-timeout: // HL
+            fmt.Println(&quot;You talk too much.&quot;)
+            return
+        }
+    }
+</code></pre>
 </div></article>
 					
 						<div class="share">
