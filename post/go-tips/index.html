@@ -187,7 +187,7 @@ fmt.Printf(&quot;%v (len: %d) \n&quot;, pList, pList.Len())
 
 <p>go 不支持 prefix increment or decrement</p>
 
-<h3 id="未导出:a2653e2feb85ac0f67b04a4d51202bc4">未导出</h3>
+<h3 id="未导出的-field-的-encode-decode:a2653e2feb85ac0f67b04a4d51202bc4">未导出的 field 的 encode/decode</h3>
 
 <p>未导出的 field 不能被 encode，decode 的时候被初始化为 zero value</p>
 
@@ -214,6 +214,47 @@ func main() {
     json.Unmarshal(encoded,&amp;out)
 
     fmt.Printf(&quot;%#v\n&quot;,out) //prints main.MyData{One:1, two:&quot;&quot;}
+}
+</code></pre>
+
+<h3 id="struct-field-是-map-或者-pointer-时的修改:a2653e2feb85ac0f67b04a4d51202bc4">struct field 是 map 或者 pointer 时的修改</h3>
+
+<p>struct field 是 map 或者 pointer 时，可以通过 value method 修改</p>
+
+<pre><code>package main
+
+import &quot;fmt&quot;
+
+type data struct {  
+    num int
+    key *string
+    items map[string]bool
+}
+
+func (this *data) pmethod() {  
+    this.num = 7
+}
+
+func (this data) vmethod() {  
+    this.num = 8
+    *this.key = &quot;v.key&quot;
+    this.items[&quot;vmethod&quot;] = true
+}
+
+func main() {  
+    key := &quot;key.1&quot;
+    d := data{1,&amp;key,make(map[string]bool)}
+
+    fmt.Printf(&quot;num=%v key=%v items=%v\n&quot;,d.num,*d.key,d.items)
+    //prints num=1 key=key.1 items=map[]
+
+    d.pmethod()
+    fmt.Printf(&quot;num=%v key=%v items=%v\n&quot;,d.num,*d.key,d.items) 
+    //prints num=7 key=key.1 items=map[]
+
+    d.vmethod()
+    fmt.Printf(&quot;num=%v key=%v items=%v\n&quot;,d.num,*d.key,d.items)
+    //prints num=7 key=v.key items=map[vmethod:true]
 }
 </code></pre>
 
