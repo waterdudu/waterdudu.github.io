@@ -232,6 +232,25 @@ func fanIn(input1, input2 &lt;-chan string) &lt;-chan string {
     return c
 }
 </code></pre>
+
+<p>select timeout
+等你或不等</p>
+
+<pre><code>    func main() {
+    c := boring(&quot;J&quot;)
+
+    for {
+        select {
+            case s := &lt;-c:
+                fmt.Println(s)
+            case &lt;-time.After( time.Second ):
+                fmt.Println(&quot;too slow&quot;)
+                return
+
+        }
+    }
+}
+</code></pre>
 </div></article>
 					
 						<div class="share">
