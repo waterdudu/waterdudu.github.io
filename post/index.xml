@@ -429,6 +429,24 @@ func main() {
     fmt.Println(data[0],data[1],data[2]) //prints &amp;amp;{10} &amp;amp;{20} &amp;amp;{30}
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;slice:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;slice&lt;/h3&gt;
+
+&lt;p&gt;请使用 copy 来防止共享 slice&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func get() []byte {  
+    raw := make([]byte,10000)
+    fmt.Println(len(raw),cap(raw),&amp;amp;raw[0]) //prints: 10000 10000 &amp;lt;byte_addr_x&amp;gt;
+    res := make([]byte,3)
+    copy(res,raw[:3])
+    return res
+}
+
+func main() {  
+    data := get()
+    fmt.Println(len(data),cap(data),&amp;amp;data[0]) //prints: 3 3 &amp;lt;byte_addr_y&amp;gt;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;
