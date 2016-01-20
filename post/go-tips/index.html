@@ -315,6 +315,119 @@ redirect 失败时 resp, err 都 != nil，此时需要对 resp 做出错处理�
 
 </code></pre>
 
+<h3 id="json-number-decode:a2653e2feb85ac0f67b04a4d51202bc4">json number decode</h3>
+
+<p>json 默认把数字 decode 成 float64，如需把它当作 int 使用时有以下几种方式：</p>
+
+<ul>
+<li>float64 =&gt; int</li>
+</ul>
+
+<pre><code>var data = []byte(`{&quot;status&quot;: 200}`)
+
+var result map[string]interface{}
+if err := json.Unmarshal(data, &amp;result); err != nil {
+    fmt.Println(&quot;error:&quot;, err)
+    return
+}
+
+var status = uint64(result[&quot;status&quot;].(float64)) //ok
+</code></pre>
+
+<ul>
+<li>use a Decoder type to unmarshal JSON, represent JSON numbers using the Number interface type</li>
+</ul>
+
+<pre><code>  var data = []byte(`{&quot;status&quot;: 200}`)
+
+  var result map[string]interface{}
+  var decoder = json.NewDecoder(bytes.NewReader(data))
+  decoder.UseNumber()
+
+  if err := decoder.Decode(&amp;result); err != nil {
+    fmt.Println(&quot;error:&quot;, err)
+    return
+  }
+
+  var status,_ = result[&quot;status&quot;].(json.Number).Int64() //ok
+</code></pre>
+
+<ul>
+<li>use the string representation of your Number value to unmarshal it to a different numeric type</li>
+</ul>
+
+<pre><code>var data = []byte(`{&quot;status&quot;: 200}`)
+
+var result map[string]interface{}
+var decoder = json.NewDecoder(bytes.NewReader(data))
+decoder.UseNumber()
+
+if err := decoder.Decode(&amp;result); err != nil {
+    fmt.Println(&quot;error:&quot;, err)
+    return
+}
+
+var status uint64
+if err := json.Unmarshal([]byte(result[&quot;status&quot;].(json.Number).String()), &amp;status); err != nil {
+    fmt.Println(&quot;error:&quot;, err)
+    return
+}
+
+</code></pre>
+
+<ul>
+<li>use a struct type that maps your numeric value to the numeric type you need.</li>
+</ul>
+
+<pre><code>  var data = []byte(`{&quot;status&quot;: 200}`)
+
+  var result struct {
+    Status uint64 `json:&quot;status&quot;`
+  }
+
+  if err := json.NewDecoder(bytes.NewReader(data)).Decode(&amp;result); err != nil {
+    fmt.Println(&quot;error:&quot;, err)
+    return
+  }
+</code></pre>
+
+<ul>
+<li>use a struct that maps your numeric value to the json.RawMessage type if you need to defer the value decoding.
+这个条件判断时有用（如 status 可能是 200 也可能是 ok）</li>
+</ul>
+
+<pre><code>    records := [][]byte{
+        []byte(`{&quot;status&quot;: 200, &quot;tag&quot;:&quot;one&quot;}`),
+        []byte(`{&quot;status&quot;:&quot;ok&quot;, &quot;tag&quot;:&quot;two&quot;}`),
+    }
+
+    for idx, record := range records {
+        var result struct {
+            StatusCode uint64
+            StatusName string
+            Status     json.RawMessage `json:&quot;status&quot;`
+            Tag        string          `json:&quot;tag&quot;`
+        }
+
+        if err := json.NewDecoder(bytes.NewReader(record)).Decode(&amp;result); err != nil {
+            fmt.Println(&quot;error:&quot;, err)
+            return
+        }
+
+        var sstatus string
+        if err := json.Unmarshal(result.Status, &amp;sstatus); err == nil {
+            result.StatusName = sstatus
+        }
+
+        var nstatus uint64
+        if err := json.Unmarshal(result.Status, &amp;nstatus); err == nil {
+            result.StatusCode = nstatus
+        }
+
+        fmt.Printf(&quot;[%v] result =&gt; %+v\n&quot;, idx, result)
+    }
+</code></pre>
+
 <h3 id="template:a2653e2feb85ac0f67b04a4d51202bc4">template</h3>
 
 <p>template 加载可以有多种方式:</p>
