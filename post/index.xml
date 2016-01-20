@@ -617,6 +617,24 @@ func main() {
     }
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;channel:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;channel&lt;/h3&gt;
+
+&lt;p&gt;返回 chan 的函数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func boring(msg string) &amp;lt;-chan string {
+    c := make(chan string)
+
+    go func() {
+        for i := 0; ; i++ {
+            c &amp;lt;- fmt.Sprintf(&amp;quot;%s %d&amp;quot;, msg, i)
+            time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
+        }
+    }()
+
+    return c
+}
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;

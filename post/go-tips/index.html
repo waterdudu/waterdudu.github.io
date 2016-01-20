@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>go tips - waterdudu blog</title>
-	<meta name="author" content="map[email: name:dudu]">
+	<meta name="author" content="map[name:dudu email:]">
 
 	
 	
@@ -681,6 +681,24 @@ func main() {
         fmt.Println(&quot;[not an int] value =&gt;&quot;,data) 
         //prints: [not an int] value =&gt; great (as expected)
     }
+</code></pre>
+
+<h3 id="channel:a2653e2feb85ac0f67b04a4d51202bc4">channel</h3>
+
+<p>返回 chan 的函数</p>
+
+<pre><code>func boring(msg string) &lt;-chan string {
+    c := make(chan string)
+
+    go func() {
+        for i := 0; ; i++ {
+            c &lt;- fmt.Sprintf(&quot;%s %d&quot;, msg, i)
+            time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
+        }
+    }()
+
+    return c
+}
 </code></pre>
 
 <h3 id="template:a2653e2feb85ac0f67b04a4d51202bc4">template</h3>
