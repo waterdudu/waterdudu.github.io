@@ -121,6 +121,36 @@ fmt.Printf(&amp;quot;%v (len: %d) \n&amp;quot;, pList, pList.Len())
 
 &lt;p&gt;go 不支持 prefix increment or decrement&lt;/p&gt;
 
+&lt;h3 id=&#34;未导出:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;未导出&lt;/h3&gt;
+
+&lt;p&gt;未导出的 field 不能被 encode，decode 的时候被初始化为 zero value&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (  
+    &amp;quot;fmt&amp;quot;
+    &amp;quot;encoding/json&amp;quot;
+)
+
+type MyData struct {  
+    One int
+    two string
+}
+
+func main() {  
+    in := MyData{1,&amp;quot;two&amp;quot;}
+    fmt.Printf(&amp;quot;%#v\n&amp;quot;,in) //prints main.MyData{One:1, two:&amp;quot;two&amp;quot;}
+
+    encoded,_ := json.Marshal(in)
+    fmt.Println(string(encoded)) //prints {&amp;quot;One&amp;quot;:1}
+
+    var out MyData
+    json.Unmarshal(encoded,&amp;amp;out)
+
+    fmt.Printf(&amp;quot;%#v\n&amp;quot;,out) //prints main.MyData{One:1, two:&amp;quot;&amp;quot;}
+}
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;

@@ -187,6 +187,36 @@ fmt.Printf(&quot;%v (len: %d) \n&quot;, pList, pList.Len())
 
 <p>go 不支持 prefix increment or decrement</p>
 
+<h3 id="未导出:a2653e2feb85ac0f67b04a4d51202bc4">未导出</h3>
+
+<p>未导出的 field 不能被 encode，decode 的时候被初始化为 zero value</p>
+
+<pre><code>package main
+
+import (  
+    &quot;fmt&quot;
+    &quot;encoding/json&quot;
+)
+
+type MyData struct {  
+    One int
+    two string
+}
+
+func main() {  
+    in := MyData{1,&quot;two&quot;}
+    fmt.Printf(&quot;%#v\n&quot;,in) //prints main.MyData{One:1, two:&quot;two&quot;}
+
+    encoded,_ := json.Marshal(in)
+    fmt.Println(string(encoded)) //prints {&quot;One&quot;:1}
+
+    var out MyData
+    json.Unmarshal(encoded,&amp;out)
+
+    fmt.Printf(&quot;%#v\n&quot;,out) //prints main.MyData{One:1, two:&quot;&quot;}
+}
+</code></pre>
+
 <h3 id="template:a2653e2feb85ac0f67b04a4d51202bc4">template</h3>
 
 <p>template 加载可以有多种方式:</p>
