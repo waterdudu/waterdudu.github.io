@@ -512,6 +512,74 @@ func main() {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;闭包问题:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;闭包问题&lt;/h3&gt;
+
+&lt;p&gt;注：javascript 教程也有涉及&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;copy 变量&lt;/li&gt;
+&lt;li&gt;参数传递给匿名函数&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;copy 变量&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    data := []string{&amp;quot;one&amp;quot;,&amp;quot;two&amp;quot;,&amp;quot;three&amp;quot;}
+
+    for _,v := range data {
+        vcopy := v //
+        go func() {
+            fmt.Println(vcopy)
+        }()
+    }
+
+    time.Sleep(3 * time.Second)
+    //goroutines print: one, two, three
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参数传递&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    data := []string{&amp;quot;one&amp;quot;,&amp;quot;two&amp;quot;,&amp;quot;three&amp;quot;}
+
+    for _,v := range data {
+        go func(in string) {
+            fmt.Println(in)
+        }(v)
+    }
+
+    time.Sleep(3 * time.Second)
+    //goroutines print: one, two, three
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个有点反人类
+在 for 里加上：&lt;code&gt;v := v&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (  
+    &amp;quot;fmt&amp;quot;
+    &amp;quot;time&amp;quot;
+)
+
+type field struct {  
+    name string
+}
+
+func (p *field) print() {  
+    fmt.Println(p.name)
+}
+
+func main() {  
+    data := []field{{&amp;quot;one&amp;quot;},{&amp;quot;two&amp;quot;},{&amp;quot;three&amp;quot;}}
+
+    for _,v := range data {
+        v := v
+        go v.print()
+    }
+
+    time.Sleep(3 * time.Second)
+    //goroutines print: one, two, three
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;
