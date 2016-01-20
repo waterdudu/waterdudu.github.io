@@ -7,7 +7,45 @@
     <language>en-us</language>
     <author>dudu</author>
     
-    <updated>Mon, 18 Jan 2016 13:41:35 CST</updated>
+    <updated>Wed, 20 Jan 2016 14:51:48 CST</updated>
+    
+    <item>
+      <title>go concurrency patterns</title>
+      <link>http://waterdudu.github.io/post/go-concurrency-patterns/</link>
+      <pubDate>Wed, 20 Jan 2016 14:51:48 CST</pubDate>
+      <author>dudu</author>
+      <guid>http://waterdudu.github.io/post/go-concurrency-patterns/</guid>
+      <description>
+
+&lt;h3 id=&#34;fanin:9357571808d2807c9bcef92c59571acd&#34;&gt;fanIn&lt;/h3&gt;
+
+&lt;p&gt;pattern&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/*
+A -&amp;gt;
+       C -&amp;gt;
+B -&amp;gt; 
+*/
+
+func fanIn(input1, input2 &amp;lt;-chan string) &amp;lt;-chan string {
+    c := make(chan string)
+
+    go func() { for { c &amp;lt;- &amp;lt;-input1 } }()
+    go func() { for { c &amp;lt;- &amp;lt;-input2 } }()
+    return c
+}
+
+func main() {
+    c := fanIn(boring(&amp;quot;Joe&amp;quot;), boring(&amp;quot;Ann&amp;quot;))
+    for i := 0; i &amp;lt; 10; i++ {
+        fmt.Println(&amp;lt;-c)
+    }
+    fmt.Println(&amp;quot;You&#39;re both boring. I&#39;m leaving&amp;quot;)
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>go tips</title>
