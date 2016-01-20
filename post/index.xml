@@ -1107,6 +1107,55 @@ func test_select() {
     }
 }
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;method-call:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;method call&lt;/h3&gt;
+
+&lt;p&gt;Map elements are not addressable. Variables referenced through interfaces are also not addressable.&lt;/p&gt;
+
+&lt;p&gt;以下出错&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;import &amp;quot;fmt&amp;quot;
+
+type data struct {  
+    name string
+}
+
+func (p *data) print() {  
+    fmt.Println(&amp;quot;name:&amp;quot;,p.name)
+}
+
+type printer interface {  
+    print()
+}
+
+func main() {  
+    d1 := data{&amp;quot;one&amp;quot;}
+    d1.print() //ok
+
+    var in printer = data{&amp;quot;two&amp;quot;} //error
+    in.print()
+
+    m := map[string]data {&amp;quot;x&amp;quot;:data{&amp;quot;three&amp;quot;}}
+    m[&amp;quot;x&amp;quot;].print() //error
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;update-map:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;update map&lt;/h3&gt;
+
+&lt;p&gt;map elements are not addressable
+If you have a map of struct values you can&amp;rsquo;t update individual struct fields.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+type data struct {  
+    name string
+}
+
+func main() {  
+    m := map[string]data {&amp;quot;x&amp;quot;:{&amp;quot;one&amp;quot;}}
+    m[&amp;quot;x&amp;quot;].name = &amp;quot;two&amp;quot; //error
+}
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
