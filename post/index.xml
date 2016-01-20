@@ -79,6 +79,31 @@ fmt.Printf(&amp;quot;%v (len: %d) \n&amp;quot;, pList, pList.Len())
     //prints: 0x41 0xfe 0x2 0xff 0x4 (good)
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;for-range-map-随机:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;for range map 随机&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;    m := map[string]int{&amp;quot;one&amp;quot;: 1, &amp;quot;two&amp;quot;: 2, &amp;quot;three&amp;quot;: 3, &amp;quot;four&amp;quot;: 4}
+    for k, v := range m {
+        fmt.Println(k, v)
+    }
+
+    // first time run
+    
+    // [ `run` | done: 9.628665ms ]
+    //  one 1
+    //  two 2
+    //  three 3
+    //  four 4
+
+
+    // second time run
+
+    // [ `run` | done: 8.847101ms ]
+    //  three 3
+    //  four 4
+    //  one 1
+    //  two 2
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;
