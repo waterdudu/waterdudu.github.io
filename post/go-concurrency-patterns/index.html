@@ -283,6 +283,29 @@ func fanIn(input1, input2 &lt;-chan string) &lt;-chan string {
         }
     }
 </code></pre>
+
+<p>quit channel</p>
+
+<pre><code>quit := make(chan string)
+c := boring(&quot;J&quot;, quit)
+
+for i := rand.Intn(10); i &gt;= 0; i-- {
+    fmt.Println(i)
+}
+quit &lt;- &quot;Bye!&quot;
+fmt.Println(&quot;J says: %q\n&quot;, &lt;-quit)
+
+</code></pre>
+
+<pre><code>select {
+    case c &lt;- fmt.Sprintf(&quot;%s: %d&quot;, msg, i)
+        // do nothing
+    case &lt;-quit:
+        cleanup()
+        quit &lt;- &quot;See you!&quot;
+    return
+}
+</code></pre>
 </div></article>
 					
 						<div class="share">
