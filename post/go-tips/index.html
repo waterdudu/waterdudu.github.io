@@ -835,6 +835,61 @@ func main() {
 }
 
 </code></pre>
+
+<h3 id="goroutines:a2653e2feb85ac0f67b04a4d51202bc4">goroutines</h3>
+
+<p>go concurrency pattern 2012 采用 unbuffered channel 来保存 search result
+当一个返回时，其他 goroutine 等着 send data，这会导致资源泄漏。
+应该采用 bufferred channel 来缓存 results</p>
+
+<pre><code>func First(query string, replicas ...Search) Result {  
+    c := make(chan Result,len(replicas))
+    searchReplica := func(i int) { c &lt;- replicas[i](query) }
+    for i := range replicas {
+        go searchReplica(i)
+    }
+    return &lt;-c
+}
+</code></pre>
+
+<p>或者用 buffer 为 1 的 channel，通过 select 来获取结果。</p>
+
+<pre><code>func First(query string, replicas ...Search) Result {  
+    c := make(chan Result,1)
+    searchReplica := func(i int) { 
+        select {
+        case c &lt;- replicas[i](query):
+        default:
+        }
+    }
+    for i := range replicas {
+        go searchReplica(i)
+    }
+    return &lt;-c
+}
+</code></pre>
+
+<h3 id="select:a2653e2feb85ac0f67b04a4d51202bc4">select</h3>
+
+<p>select 会等待向 channel 发送 data 返回
+这也就是为什么 google search 会用 select 来等待多个 replica 的 search result</p>
+
+<pre><code>func sleep_return_int() int {
+    time.Sleep(1000 * time.Millisecond)
+    return 1
+}
+
+func test_select() {
+    ch := make(chan int, 1)
+
+    select {
+    case ch &lt;- sleep_return_int():
+        fmt.Println(&quot;ch1 pop one element&quot;)
+    default:
+        fmt.Println(&quot;default&quot;)
+    }
+}
+</code></pre>
 </div></article>
 					
 						<div class="share">
