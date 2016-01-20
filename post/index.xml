@@ -595,6 +595,28 @@ func main() {
 
 &lt;p&gt;可以把需要 defer 的地方 wrapper 一个 func&lt;/p&gt;
 
+&lt;h3 id=&#34;type-assertion:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;type assertion&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;
+    var data interface{} = &amp;quot;great&amp;quot;
+
+    // don&#39;t
+    if data, ok := data.(int); ok {
+        fmt.Println(&amp;quot;[is an int] value =&amp;gt;&amp;quot;,data)
+    } else {
+        fmt.Println(&amp;quot;[not an int] value =&amp;gt;&amp;quot;,data) 
+        //prints: [not an int] value =&amp;gt; 0 (not &amp;quot;great&amp;quot;)
+    }
+
+    // do
+    if res, ok := data.(int); ok {
+        fmt.Println(&amp;quot;[is an int] value =&amp;gt;&amp;quot;,res)
+    } else {
+        fmt.Println(&amp;quot;[not an int] value =&amp;gt;&amp;quot;,data) 
+        //prints: [not an int] value =&amp;gt; great (as expected)
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;

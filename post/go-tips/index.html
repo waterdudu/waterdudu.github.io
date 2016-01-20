@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>go tips - waterdudu blog</title>
-	<meta name="author" content="map[name:dudu email:]">
+	<meta name="author" content="map[email: name:dudu]">
 
 	
 	
@@ -660,6 +660,28 @@ func main() {
 <p>The deferred calls are executed at the end of the containing function and not at the end of the containing code block</p>
 
 <p>可以把需要 defer 的地方 wrapper 一个 func</p>
+
+<h3 id="type-assertion:a2653e2feb85ac0f67b04a4d51202bc4">type assertion</h3>
+
+<pre><code>
+    var data interface{} = &quot;great&quot;
+
+    // don't
+    if data, ok := data.(int); ok {
+        fmt.Println(&quot;[is an int] value =&gt;&quot;,data)
+    } else {
+        fmt.Println(&quot;[not an int] value =&gt;&quot;,data) 
+        //prints: [not an int] value =&gt; 0 (not &quot;great&quot;)
+    }
+
+    // do
+    if res, ok := data.(int); ok {
+        fmt.Println(&quot;[is an int] value =&gt;&quot;,res)
+    } else {
+        fmt.Println(&quot;[not an int] value =&gt;&quot;,data) 
+        //prints: [not an int] value =&gt; great (as expected)
+    }
+</code></pre>
 
 <h3 id="template:a2653e2feb85ac0f67b04a4d51202bc4">template</h3>
 
