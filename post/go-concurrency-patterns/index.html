@@ -212,6 +212,26 @@ func fanIn(inputs ... &lt;-chan Message) &lt;-chan Message {
 
 }
 </code></pre>
+
+<p>重写 fadeIn</p>
+
+<pre><code>
+func fanIn(input1, input2 &lt;-chan string) &lt;-chan string {
+    c := make(chan string)
+
+    go func() {
+        for {
+            select {
+                case s := &lt;-input1: c &lt;- s
+                case s := &lt;-input2: c &lt;- s
+
+            }
+        } 
+    }()
+
+    return c
+}
+</code></pre>
 </div></article>
 					
 						<div class="share">
