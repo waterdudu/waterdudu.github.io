@@ -580,6 +580,21 @@ func main() {
     //goroutines print: one, two, three
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;defer:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;defer&lt;/h3&gt;
+
+&lt;p&gt;参数是在 defer 被 evaluated 的时候 evaluated 的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var i int = 1
+
+    defer fmt.Println(&amp;quot;result =&amp;gt;&amp;quot;,func() int { return i * 2 }())
+    i++
+    //prints: result =&amp;gt; 2 (not ok if you expected 4)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The deferred calls are executed at the end of the containing function and not at the end of the containing code block&lt;/p&gt;
+
+&lt;p&gt;可以把需要 defer 的地方 wrapper 一个 func&lt;/p&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;

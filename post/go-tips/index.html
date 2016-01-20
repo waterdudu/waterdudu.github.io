@@ -646,6 +646,21 @@ func main() {
     //goroutines print: one, two, three
 </code></pre>
 
+<h3 id="defer:a2653e2feb85ac0f67b04a4d51202bc4">defer</h3>
+
+<p>参数是在 defer 被 evaluated 的时候 evaluated 的</p>
+
+<pre><code>    var i int = 1
+
+    defer fmt.Println(&quot;result =&gt;&quot;,func() int { return i * 2 }())
+    i++
+    //prints: result =&gt; 2 (not ok if you expected 4)
+</code></pre>
+
+<p>The deferred calls are executed at the end of the containing function and not at the end of the containing code block</p>
+
+<p>可以把需要 defer 的地方 wrapper 一个 func</p>
+
 <h3 id="template:a2653e2feb85ac0f67b04a4d51202bc4">template</h3>
 
 <p>template 加载可以有多种方式:</p>
