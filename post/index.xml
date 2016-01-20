@@ -21,6 +21,8 @@
 
 &lt;p&gt;pattern&lt;/p&gt;
 
+&lt;p&gt;c &amp;lt;- &amp;lt;-input1 含义，把 input1 的信息拿出丢给 c&lt;/p&gt;
+
 &lt;pre&gt;&lt;code&gt;/*
 A -&amp;gt;
        C -&amp;gt;
@@ -42,6 +44,90 @@ func main() {
     }
     fmt.Println(&amp;quot;You&#39;re both boring. I&#39;m leaving&amp;quot;)
 }
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;channel-of-channel:9357571808d2807c9bcef92c59571acd&#34;&gt;channel of channel&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;// +build OMIT
+
+package main
+
+import (
+    &amp;quot;fmt&amp;quot;
+    &amp;quot;math/rand&amp;quot;
+    &amp;quot;time&amp;quot;
+)
+
+type Message struct {
+    str string
+    wait chan bool
+}
+
+func main() {
+    c := fanIn(boring(&amp;quot;Joe&amp;quot;), boring(&amp;quot;Ann&amp;quot;)) // HL
+
+    // main 函数等待五次
+    // 先从 fanIn 返回的 channel 里读 message（这是一个 Message 的 channel）
+    // 读到消息（boring 函数里的 c &amp;lt;- Message 这句），则打印输出
+    // 接下来再从 fanIn 的 channel 里读数据 ，读出来再打印输出
+
+    // 接下来再设置 msg1, msg2 的 wait channel（共享的）为true
+    // 告诉 boring 运行的 goroutine 可以再生产啦！
+    // 于是那两个 goroutine 就又开始塞数据了（c &amp;lt;- Message{}）
+
+    // 注意：每次都是 msg1.wait &amp;lt;- true, msg2.wait &amp;lt;- true 
+    // 告诉 goroutine，可以再给我数据了
+    for i := 0; i &amp;lt; 5; i++ {
+        msg1 := &amp;lt;-c; fmt.Println(msg1.str)
+        msg2 := &amp;lt;-c; fmt.Println(msg2.str)
+        msg1.wait &amp;lt;- true
+        msg2.wait &amp;lt;- true
+    }
+
+    fmt.Println(&amp;quot;You&#39;re all boring; I&#39;m leaving.&amp;quot;)
+}
+
+func boring(msg string) &amp;lt;-chan Message { // Returns receive-only channel of strings.
+
+    // boring 的 goroutine 循环写数据，写完数据睡一会儿，起来看看是不是需要再 wait
+    // 如果不需要再 wait，那么就退出
+    // 写完再继续写，直到 main 退出
+
+    c := make(chan Message)
+
+    // 多个 Message 共享这个 waitForIt channel
+    // 当 main 函数连续调用 msg.wait &amp;lt;- true 时
+    // 下面的 func 函数被调用
+    //（&amp;lt;-waitForIt 是 block 的，如果 main 函数不丢信息到 wait channel，func不会调用）
+    waitForIt := make(chan bool) // Shared between all messages.
+
+    go func() { // We launch the goroutine from inside the function.
+        for i := 0; ; i++ {
+
+            c &amp;lt;- Message{ fmt.Sprintf(&amp;quot;%s: %d&amp;quot;, msg, i), waitForIt }
+            time.Sleep(time.Duration(rand.Intn(2e3)) * time.Millisecond)
+            // 如果 main 函数不通过 msg.wait &amp;lt;- true 写数据，func 会 block
+            &amp;lt;-waitForIt
+
+        }
+    }()
+
+    return c
+}
+
+
+// 参考 fakeIn 的 pattern
+// 把来参数列表的多个 channel 合并到一个 channel
+func fanIn(inputs ... &amp;lt;-chan Message) &amp;lt;-chan Message {
+    c := make(chan Message)
+    for i := range inputs {
+        input := inputs[i] // New instance of &#39;input&#39; for each loop.
+        go func() { for { c &amp;lt;- &amp;lt;-input } }()
+    }
+    return c
+}
+
 
 &lt;/code&gt;&lt;/pre&gt;
 </description>
