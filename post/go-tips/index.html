@@ -292,11 +292,13 @@ redirect 失败时 resp, err 都 != nil，此时需要对 resp 做出错处理�
 向很多 server 发送请求时需要关闭连接来保证性能（或者增加 open file limit）。</p>
 
 <ul>
-<li>设置 Close = true
-<code>req.Close = true</code></li>
-<li>添加 request header
-```req.Header.Add(&ldquo;Connection&rdquo;, &ldquo;close&rdquo;)</li>
+<li>设置 Close = true</li>
 </ul>
+
+<p><code>req.Close = true</code>
+* 添加 request header</p>
+
+<p><code>req.Header.Add(&quot;Connection&quot;, &quot;close&quot;)</code></p>
 
 <pre><code>    req, err := http.NewRequest(&quot;GET&quot;,&quot;http://golang.org&quot;,nil)
     if err != nil {
