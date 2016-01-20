@@ -284,7 +284,7 @@ func fanIn(input1, input2 &lt;-chan string) &lt;-chan string {
     }
 </code></pre>
 
-<p>quit channel</p>
+<h3 id="quit-channel:9357571808d2807c9bcef92c59571acd">quit channel</h3>
 
 <pre><code>quit := make(chan string)
 c := boring(&quot;J&quot;, quit)
@@ -305,6 +305,53 @@ fmt.Println(&quot;J says: %q\n&quot;, &lt;-quit)
         quit &lt;- &quot;See you!&quot;
     return
 }
+</code></pre>
+
+<h3 id="replica-search:9357571808d2807c9bcef92c59571acd">replica search</h3>
+
+<p>把同一 query 让多个 server 做检索，返回第一个返回的作为 search result</p>
+
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;math/rand&quot;
+    &quot;time&quot;
+)
+
+type Result string
+type Search func(query string) Result
+
+
+// 把同一 query 让多个 server 做检索，返回第一个返回的作为 search result
+func First(query string, replicas ...Search) Result {
+    c := make(chan Result)
+    searchReplica := func(i int) { c &lt;- replicas[i](query) }
+    for i := range replicas {
+        go searchReplica(i)
+    }
+    return &lt;-c
+}
+
+func main() {
+    rand.Seed(time.Now().UnixNano())
+    start := time.Now()
+    result := First(&quot;golang&quot;,
+        fakeSearch(&quot;replica 1&quot;),
+        fakeSearch(&quot;replica 2&quot;))
+    elapsed := time.Since(start)
+    fmt.Println(result)
+    fmt.Println(elapsed)
+}
+
+func fakeSearch(kind string) Search {
+        return func(query string) Result {
+              time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+              return Result(fmt.Sprintf(&quot;%s result for %q\n&quot;, kind, query))
+        }
+}
+
+
 </code></pre>
 </div></article>
 					

@@ -218,7 +218,7 @@ func fanIn(input1, input2 &amp;lt;-chan string) &amp;lt;-chan string {
     }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;quit channel&lt;/p&gt;
+&lt;h3 id=&#34;quit-channel:9357571808d2807c9bcef92c59571acd&#34;&gt;quit channel&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;quit := make(chan string)
 c := boring(&amp;quot;J&amp;quot;, quit)
@@ -239,6 +239,53 @@ fmt.Println(&amp;quot;J says: %q\n&amp;quot;, &amp;lt;-quit)
         quit &amp;lt;- &amp;quot;See you!&amp;quot;
     return
 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;replica-search:9357571808d2807c9bcef92c59571acd&#34;&gt;replica search&lt;/h3&gt;
+
+&lt;p&gt;把同一 query 让多个 server 做检索，返回第一个返回的作为 search result&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+    &amp;quot;fmt&amp;quot;
+    &amp;quot;math/rand&amp;quot;
+    &amp;quot;time&amp;quot;
+)
+
+type Result string
+type Search func(query string) Result
+
+
+// 把同一 query 让多个 server 做检索，返回第一个返回的作为 search result
+func First(query string, replicas ...Search) Result {
+    c := make(chan Result)
+    searchReplica := func(i int) { c &amp;lt;- replicas[i](query) }
+    for i := range replicas {
+        go searchReplica(i)
+    }
+    return &amp;lt;-c
+}
+
+func main() {
+    rand.Seed(time.Now().UnixNano())
+    start := time.Now()
+    result := First(&amp;quot;golang&amp;quot;,
+        fakeSearch(&amp;quot;replica 1&amp;quot;),
+        fakeSearch(&amp;quot;replica 2&amp;quot;))
+    elapsed := time.Since(start)
+    fmt.Println(result)
+    fmt.Println(elapsed)
+}
+
+func fakeSearch(kind string) Search {
+        return func(query string) Result {
+              time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+              return Result(fmt.Sprintf(&amp;quot;%s result for %q\n&amp;quot;, kind, query))
+        }
+}
+
+
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
