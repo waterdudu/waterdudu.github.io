@@ -115,8 +115,7 @@ func main() {
 
 <h3 id="channel-of-channel:9357571808d2807c9bcef92c59571acd">channel of channel</h3>
 
-<pre><code>// +build OMIT
-
+<pre><code>
 package main
 
 import (
@@ -195,6 +194,23 @@ func fanIn(inputs ... &lt;-chan Message) &lt;-chan Message {
 }
 
 
+</code></pre>
+
+<h3 id="select:9357571808d2807c9bcef92c59571acd">select</h3>
+
+<p>如果多于 2 个 case 满足条件，随机选取一个</p>
+
+<pre><code>select {
+    case v1 := &lt;-c1:
+        fmt.Println(v1)
+    case v2 := &lt;-c2:
+        fmt.Println(v2)
+    case c3 &lt;- 23:
+        fmt.Println(23)
+    default:
+        fmt.Println(&quot;default&quot;)
+
+}
 </code></pre>
 </div></article>
 					
