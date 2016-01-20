@@ -367,6 +367,18 @@ if err := json.Unmarshal([]byte(result[&amp;quot;status&amp;quot;].(json.Number)
     }
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h3 id=&#34;比较-deepequal:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;比较，DeepEqual&lt;/h3&gt;
+
+&lt;p&gt;当 struct field 可比较时才能用 == 比较，否则  compile error&lt;/p&gt;
+
+&lt;p&gt;DeepEqual 认为 nil 和 empty 不等&lt;/p&gt;
+
+&lt;p&gt;string.EqualFold 比较 unicode 字符，case insensive&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    fmt.Println(strings.EqualFold(&amp;quot;HELLO&amp;quot;, &amp;quot;hello&amp;quot;))
+    fmt.Println(strings.EqualFold(&amp;quot;ÑOÑO&amp;quot;, &amp;quot;ñoño&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
 
 &lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;
