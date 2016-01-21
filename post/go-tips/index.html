@@ -1010,6 +1010,17 @@ in = data, type is not nil, thus <code>in == nil</code> return false</p>
 <h3 id="json:a2653e2feb85ac0f67b04a4d51202bc4">json</h3>
 
 <p><a href="https://github.com/waterdudu/go-simplejson/blob/master/simplejson_t.go" title="simplejson test">simple json</a></p>
+
+<p>使用 simple json 解析 json</p>
+
+<p>simple json 会把 array 里的元素当作字符串处理，可以通过 reflect 来知晓。</p>
+
+<p>arr : [1 2 3 9 1.23], i : 10, ms : simplejson
+kind : string, value : 1
+kind : string, value : 2
+kind : string, value : 3
+kind : string, value : 9
+kind : string, value : 1.23</p>
 </div></article>
 					
 						<div class="share">
