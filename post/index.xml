@@ -1239,6 +1239,43 @@ kind : string, value : 3
 kind : string, value : 9
 kind : string, value : 1.23
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;regexp:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;regexp&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+    &amp;quot;fmt&amp;quot;
+    &amp;quot;regexp&amp;quot;
+)
+
+func main() {
+    a := &amp;quot;I am learning Go language&amp;quot;
+
+    re, _ := regexp.Compile(&amp;quot;[a-zA-Z]+&amp;quot;)
+
+    //查找符合正则的第一个, output: I
+    one := re.Find([]byte(a))
+    fmt.Println(&amp;quot;Find:&amp;quot;, string(one))
+
+    //查找符合正则的所有slice,n小于0表示返回全部符合的字符串，不然就是返回指定的长度
+    // output: 
+    // I
+    // am
+    // ...
+    // language
+
+    // findAll return type: [][]byte
+    all := re.FindAll([]byte(a), -1)
+    // fmt.Println(&amp;quot;FindAll&amp;quot;, all)
+    for _, r := range all {
+        fmt.Println(string(r))
+        // fmt.Printf(&amp;quot;%v\n&amp;quot;, r)
+    }
+
+}
+
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
