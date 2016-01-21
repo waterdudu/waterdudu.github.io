@@ -1223,6 +1223,10 @@ in = data, type is not nil, thus &lt;code&gt;in == nil&lt;/code&gt; return false
     fmt.Println(in,in == nil)     //prints: &amp;lt;nil&amp;gt; false
     //&#39;data&#39; is &#39;nil&#39;, but &#39;in&#39; is not &#39;nil&#39;
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;json:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;json&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/waterdudu/go-simplejson/blob/master/simplejson_t.go&#34; title=&#34;simplejson test&#34;&gt;simple json&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
