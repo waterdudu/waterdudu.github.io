@@ -300,6 +300,12 @@ func fakeSearch(kind string) Search {
       <guid>http://waterdudu.github.io/post/go-tips/</guid>
       <description>
 
+&lt;h3 id=&#34;资源:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;资源&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/golang/go/wiki/ golang/go/wiki&#34;&gt;github.com/golang/go/wiki&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
 &lt;h3 id=&#34;访问-map-的-key-value:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;访问 map 的 key, value&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;x := map[string]string{
