@@ -304,6 +304,7 @@ func fakeSearch(kind string) Search {
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/golang/go/wiki/ golang/go/wiki&#34;&gt;github.com/golang/go/wiki&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://golang.org/doc/faq faq&#34;&gt;go faq&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&#34;访问-map-的-key-value:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;访问 map 的 key, value&lt;/h3&gt;
@@ -1218,6 +1219,8 @@ func main() {
 
 &lt;p&gt;Interface variables will be &amp;ldquo;nil&amp;rdquo; only when their type and value fields are &amp;ldquo;nil&amp;rdquo;.
 in = data, type is not nil, thus &lt;code&gt;in == nil&lt;/code&gt; return false&lt;/p&gt;
+
+&lt;p&gt;具体可参考这里：&lt;a href=&#34;https://golang.org/doc/faq#nil_error nil interface&#34;&gt;nil interface&lt;/a&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;    var data *byte
     var in interface{}
