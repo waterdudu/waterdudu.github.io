@@ -1232,12 +1232,13 @@ in = data, type is not nil, thus &lt;code&gt;in == nil&lt;/code&gt; return false
 
 &lt;p&gt;simple json 会把 array 里的元素当作字符串处理，可以通过 reflect 来知晓。&lt;/p&gt;
 
-&lt;p&gt;arr : [1 2 3 9 1.23], i : 10, ms : simplejson
+&lt;pre&gt;&lt;code&gt;arr : [1 2 3 9 1.23], i : 10, ms : simplejson
 kind : string, value : 1
 kind : string, value : 2
 kind : string, value : 3
 kind : string, value : 9
-kind : string, value : 1.23&lt;/p&gt;
+kind : string, value : 1.23
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

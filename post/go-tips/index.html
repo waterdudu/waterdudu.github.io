@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>go tips - waterdudu blog</title>
-	<meta name="author" content="map[name:dudu email:]">
+	<meta name="author" content="map[email: name:dudu]">
 
 	
 	
@@ -1015,12 +1015,13 @@ in = data, type is not nil, thus <code>in == nil</code> return false</p>
 
 <p>simple json 会把 array 里的元素当作字符串处理，可以通过 reflect 来知晓。</p>
 
-<p>arr : [1 2 3 9 1.23], i : 10, ms : simplejson
+<pre><code>arr : [1 2 3 9 1.23], i : 10, ms : simplejson
 kind : string, value : 1
 kind : string, value : 2
 kind : string, value : 3
 kind : string, value : 9
-kind : string, value : 1.23</p>
+kind : string, value : 1.23
+</code></pre>
 </div></article>
 					
 						<div class="share">
