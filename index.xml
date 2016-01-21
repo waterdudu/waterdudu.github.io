@@ -1282,6 +1282,42 @@ func main() {
 }
 
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;xss:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;XSS&lt;/h3&gt;
+
+&lt;p&gt;预防&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;过滤参数&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;HTMLEscapeString、JSEscapeString&lt;/p&gt;
+
+&lt;h3 id=&#34;scrypt-使用:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;scrypt 使用&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+// go get -v code.google.com/p/go.crypto/scrypt
+
+import (
+    &amp;quot;fmt&amp;quot;
+    &amp;quot;golang.org/x/crypto/scrypt&amp;quot;
+)
+
+func main() {
+
+    salt := &amp;quot;@#)#*@%^&amp;amp;****&amp;amp;*()(!@&amp;gt;DS:&amp;quot;
+    str := &amp;quot;123456&amp;quot;
+    dk, err := scrypt.Key([]byte(str), []byte(salt), 16384, 8, 1, 32)
+    if err != nil {
+        fmt.Println(&amp;quot;scrypt error&amp;quot;)
+        return
+    }
+    fmt.Printf(&amp;quot;password using scrypt(123456) = %x &amp;quot;, dk)
+
+}
+
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
