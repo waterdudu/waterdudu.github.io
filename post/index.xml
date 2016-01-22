@@ -119,6 +119,13 @@ ReactDOM.render(
 );
 
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;call webpack&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;webpack -w
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;open index.html and see.&lt;/p&gt;
 </description>
     </item>
     
