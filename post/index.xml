@@ -252,6 +252,10 @@ module.exports = List
 
 &lt;p&gt;what is props? why can we do like &lt;code&gt;this.props.friends.map ...&lt;/code&gt;
 what is state?&lt;/p&gt;
+
+&lt;h3 id=&#34;next:67f377003d8e128a03b229dc0a3f87a9&#34;&gt;next&lt;/h3&gt;
+
+&lt;p&gt;React Redux&lt;/p&gt;
 </description>
     </item>
     
