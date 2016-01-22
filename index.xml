@@ -91,6 +91,34 @@ module.exports = {
 }
 
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next create Main.js&lt;/p&gt;
+
+&lt;p&gt;Main.js&lt;/p&gt;
+
+&lt;p&gt;React.createClass create react component for us.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Main.js
+
+var React = require(&#39;react&#39;);
+var ReactDOM = require(&#39;react-dom&#39;);
+
+var Main = React.createClass({
+    render: function() {
+        return (
+            &amp;lt;div&amp;gt;
+                Hello world
+            &amp;lt;/div&amp;gt;
+            )
+    }
+})
+
+ReactDOM.render(
+      &amp;lt;Main /&amp;gt;,
+      document.getElementById(&#39;app&#39;)
+);
+
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
