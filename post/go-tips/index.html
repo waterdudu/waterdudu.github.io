@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>go tips - waterdudu blog</title>
-	<meta name="author" content="map[email: name:dudu]">
+	<meta name="author" content="map[name:dudu email:]">
 
 	
 	
@@ -1277,6 +1277,17 @@ func main() {
     }
 }
 
+</code></pre>
+
+<h3 id="blank-identifier:a2653e2feb85ac0f67b04a4d51202bc4">_ blank identifier</h3>
+
+<p>把 _ 想象成 /dev/null
+不要不管 err，一定要每个 err 都要 check</p>
+
+<pre><code>// Bad! This code will crash if path does not exist. fi, _ := os.Stat(path)
+if fi.IsDir() {
+    fmt.Printf(&quot;%s is a directory\n&quot;, path) 
+}
 </code></pre>
 </div></article>
 					

@@ -1745,6 +1745,17 @@ func main() {
 }
 
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;blank-identifier:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;_ blank identifier&lt;/h3&gt;
+
+&lt;p&gt;把 _ 想象成 /dev/null
+不要不管 err，一定要每个 err 都要 check&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Bad! This code will crash if path does not exist. fi, _ := os.Stat(path)
+if fi.IsDir() {
+    fmt.Printf(&amp;quot;%s is a directory\n&amp;quot;, path) 
+}
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
