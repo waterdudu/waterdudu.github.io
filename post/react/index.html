@@ -83,7 +83,7 @@
     <h1 class="title" itemprop="name">react</h1>
 	<div class="entry-content" itemprop="articleBody">
 
-<p>当更新 model 的时候，react 做了两件事：</p>
+<p>react do two things when model is updated.</p>
 
 <ul>
 <li>run diffing algorithm, which identifies what has changed</li>
@@ -162,7 +162,8 @@ module.exports = {
 
 <p>Main.js</p>
 
-<p>React.createClass create react component for us.</p>
+<p>React.createClass create react component for us.
+Every react component needs a render method.</p>
 
 <pre><code>// Main.js
 
@@ -192,6 +193,104 @@ ReactDOM.render(
 </code></pre>
 
 <p>open index.html and see.</p>
+
+<p>Each component can has its state</p>
+
+<p>TODO:
+getInitialState ?</p>
+
+<pre><code>var Main = React.createClass({
+    getInitialState() {
+        return {
+            friends: ['John', 'Tom']
+        }
+    },
+    render: function() {
+        return (
+            &lt;div&gt;
+                Hello world
+            &lt;/div&gt;
+            &lt;div&gt;
+                My Friends: {this.state.friends}
+            &lt;/div&gt;
+            )
+    }
+})
+</code></pre>
+
+<p>render can be written like this:</p>
+
+<p>render : function() {} =&gt; render() {}</p>
+
+<pre><code>    render() {
+        return (
+            &lt;div&gt;
+                &lt;p&gt;Hello world&lt;/p&gt;
+                My Friends: {this.state.friends}
+                &lt;br /&gt;
+            &lt;/div&gt;
+            )
+    }
+</code></pre>
+
+<p>Now suppose you have other component named List, you want to import it in Main component.
+You could do like this.</p>
+
+<p>Create a file called List.js in app/component.</p>
+
+<p>List.js</p>
+
+<pre><code>// List.js
+
+var React = require('react');
+// var ReactDOM = require('react-dom');
+
+var List = React.createClass({
+    render() {
+        return (
+                &lt;div&gt; My List data &lt;/div&gt;
+            )
+    }
+})
+
+// this works
+module.exports = List
+// exports default List
+</code></pre>
+
+<p>require it in Main.js</p>
+
+<pre><code>// main.js
+
+var React = require('react');
+var ReactDOM = require('react-dom');
+var List = require('./List')
+
+
+var Main = React.createClass({
+    getInitialState() {
+        return {
+            friends: ['John', 'Tom']
+        }
+    },
+    render() {
+        return (
+            &lt;div&gt;
+                &lt;p&gt;Hello world&lt;/p&gt;
+                My Friends: {this.state.friends}
+                &lt;List /&gt;
+                &lt;br /&gt;
+            &lt;/div&gt;
+            )
+    }
+})
+
+ReactDOM.render(
+      &lt;Main /&gt;,
+      document.getElementById('app')
+);
+
+</code></pre>
 </div></article>
 					
 						<div class="share">

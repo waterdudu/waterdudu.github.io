@@ -17,7 +17,7 @@
       <guid>http://waterdudu.github.io/post/react/</guid>
       <description>
 
-&lt;p&gt;当更新 model 的时候，react 做了两件事：&lt;/p&gt;
+&lt;p&gt;react do two things when model is updated.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;run diffing algorithm, which identifies what has changed&lt;/li&gt;
@@ -96,7 +96,8 @@ module.exports = {
 
 &lt;p&gt;Main.js&lt;/p&gt;
 
-&lt;p&gt;React.createClass create react component for us.&lt;/p&gt;
+&lt;p&gt;React.createClass create react component for us.
+Every react component needs a render method.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;// Main.js
 
@@ -126,6 +127,104 @@ ReactDOM.render(
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;open index.html and see.&lt;/p&gt;
+
+&lt;p&gt;Each component can has its state&lt;/p&gt;
+
+&lt;p&gt;TODO:
+getInitialState ?&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var Main = React.createClass({
+    getInitialState() {
+        return {
+            friends: [&#39;John&#39;, &#39;Tom&#39;]
+        }
+    },
+    render: function() {
+        return (
+            &amp;lt;div&amp;gt;
+                Hello world
+            &amp;lt;/div&amp;gt;
+            &amp;lt;div&amp;gt;
+                My Friends: {this.state.friends}
+            &amp;lt;/div&amp;gt;
+            )
+    }
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;render can be written like this:&lt;/p&gt;
+
+&lt;p&gt;render : function() {} =&amp;gt; render() {}&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    render() {
+        return (
+            &amp;lt;div&amp;gt;
+                &amp;lt;p&amp;gt;Hello world&amp;lt;/p&amp;gt;
+                My Friends: {this.state.friends}
+                &amp;lt;br /&amp;gt;
+            &amp;lt;/div&amp;gt;
+            )
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now suppose you have other component named List, you want to import it in Main component.
+You could do like this.&lt;/p&gt;
+
+&lt;p&gt;Create a file called List.js in app/component.&lt;/p&gt;
+
+&lt;p&gt;List.js&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// List.js
+
+var React = require(&#39;react&#39;);
+// var ReactDOM = require(&#39;react-dom&#39;);
+
+var List = React.createClass({
+    render() {
+        return (
+                &amp;lt;div&amp;gt; My List data &amp;lt;/div&amp;gt;
+            )
+    }
+})
+
+// this works
+module.exports = List
+// exports default List
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;require it in Main.js&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// main.js
+
+var React = require(&#39;react&#39;);
+var ReactDOM = require(&#39;react-dom&#39;);
+var List = require(&#39;./List&#39;)
+
+
+var Main = React.createClass({
+    getInitialState() {
+        return {
+            friends: [&#39;John&#39;, &#39;Tom&#39;]
+        }
+    },
+    render() {
+        return (
+            &amp;lt;div&amp;gt;
+                &amp;lt;p&amp;gt;Hello world&amp;lt;/p&amp;gt;
+                My Friends: {this.state.friends}
+                &amp;lt;List /&amp;gt;
+                &amp;lt;br /&amp;gt;
+            &amp;lt;/div&amp;gt;
+            )
+    }
+})
+
+ReactDOM.render(
+      &amp;lt;Main /&amp;gt;,
+      document.getElementById(&#39;app&#39;)
+);
+
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
