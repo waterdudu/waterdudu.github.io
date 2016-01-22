@@ -291,6 +291,28 @@ ReactDOM.render(
 );
 
 </code></pre>
+
+<p>pass friends to List components</p>
+
+<pre><code>// List.js
+
+var React = require('react');
+
+var List = React.createClass({
+    render() {
+        const friendList = this.props.friends.map((item, index) =&gt; {
+            return &lt;li key={index}&gt; {item} &lt;/li&gt;
+        })
+        return (
+            &lt;ul&gt;
+                {friendList}
+            &lt;/ul&gt;
+        )
+    }
+})
+
+module.exports = List
+</code></pre>
 </div></article>
 					
 						<div class="share">

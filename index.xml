@@ -225,6 +225,28 @@ ReactDOM.render(
 );
 
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;pass friends to List components&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// List.js
+
+var React = require(&#39;react&#39;);
+
+var List = React.createClass({
+    render() {
+        const friendList = this.props.friends.map((item, index) =&amp;gt; {
+            return &amp;lt;li key={index}&amp;gt; {item} &amp;lt;/li&amp;gt;
+        })
+        return (
+            &amp;lt;ul&amp;gt;
+                {friendList}
+            &amp;lt;/ul&amp;gt;
+        )
+    }
+})
+
+module.exports = List
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
