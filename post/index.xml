@@ -247,6 +247,11 @@ var List = React.createClass({
 
 module.exports = List
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;toc_1:67f377003d8e128a03b229dc0a3f87a9&#34;&gt;?&lt;/h3&gt;
+
+&lt;p&gt;what is props? why can we do like &lt;code&gt;this.props.friends.map ...&lt;/code&gt;
+what is state?&lt;/p&gt;
 </description>
     </item>
     
