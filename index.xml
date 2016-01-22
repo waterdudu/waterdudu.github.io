@@ -1663,6 +1663,46 @@ EB : 1.152921504606847e+18
 ZB : 1.1805916207174113e+21
 YB : 1.2089258196146292e+24
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;go 能给 user-defined type（这里是 ByteSize） 定义 method&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+func (b ByteSize) String() string {
+    switch {
+    case b &amp;gt;= YB:
+        return fmt.Sprintf(&amp;quot;%.2fYB&amp;quot;, b/YB)
+    case b &amp;gt;= ZB:
+        return fmt.Sprintf(&amp;quot;%.2fZB&amp;quot;, b/ZB)
+    case b &amp;gt;= EB:
+        return fmt.Sprintf(&amp;quot;%.2fEB&amp;quot;, b/EB)
+    case b &amp;gt;= PB:
+        return fmt.Sprintf(&amp;quot;%.2fPB&amp;quot;, b/PB)
+    case b &amp;gt;= TB:
+        return fmt.Sprintf(&amp;quot;%.2fTB&amp;quot;, b/TB)
+    case b &amp;gt;= GB:
+        return fmt.Sprintf(&amp;quot;%.2fGB&amp;quot;, b/GB)
+    case b &amp;gt;= MB:
+        return fmt.Sprintf(&amp;quot;%.2fMB&amp;quot;, b/MB)
+    case b &amp;gt;= KB:
+        return fmt.Sprintf(&amp;quot;%.2fKB&amp;quot;, b/KB)
+    }
+    return fmt.Sprintf(&amp;quot;%.2fB&amp;quot;, b)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;thus  &lt;code&gt;fmt.Println(ByteSize(1024))&lt;/code&gt; output &lt;code&gt;// 1.00KB&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;自定义-string:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;自定义 String&lt;/h3&gt;
+
+&lt;p&gt;Sprintf will only call the String method when it wants a string, and %f wants a floating- point value.&lt;/p&gt;
+
+&lt;p&gt;所以下面的做法会是死循环：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type MyString string
+func (m MyString) String() string {
+    return fmt.Sprintf(&amp;quot;MyString=%s&amp;quot;, m) // Error: will recur forever.
+}
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

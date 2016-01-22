@@ -1196,6 +1196,46 @@ EB : 1.152921504606847e+18
 ZB : 1.1805916207174113e+21
 YB : 1.2089258196146292e+24
 </code></pre>
+
+<p>go 能给 user-defined type（这里是 ByteSize） 定义 method</p>
+
+<pre><code>
+func (b ByteSize) String() string {
+    switch {
+    case b &gt;= YB:
+        return fmt.Sprintf(&quot;%.2fYB&quot;, b/YB)
+    case b &gt;= ZB:
+        return fmt.Sprintf(&quot;%.2fZB&quot;, b/ZB)
+    case b &gt;= EB:
+        return fmt.Sprintf(&quot;%.2fEB&quot;, b/EB)
+    case b &gt;= PB:
+        return fmt.Sprintf(&quot;%.2fPB&quot;, b/PB)
+    case b &gt;= TB:
+        return fmt.Sprintf(&quot;%.2fTB&quot;, b/TB)
+    case b &gt;= GB:
+        return fmt.Sprintf(&quot;%.2fGB&quot;, b/GB)
+    case b &gt;= MB:
+        return fmt.Sprintf(&quot;%.2fMB&quot;, b/MB)
+    case b &gt;= KB:
+        return fmt.Sprintf(&quot;%.2fKB&quot;, b/KB)
+    }
+    return fmt.Sprintf(&quot;%.2fB&quot;, b)
+}
+</code></pre>
+
+<p>thus  <code>fmt.Println(ByteSize(1024))</code> output <code>// 1.00KB</code></p>
+
+<h3 id="自定义-string:a2653e2feb85ac0f67b04a4d51202bc4">自定义 String</h3>
+
+<p>Sprintf will only call the String method when it wants a string, and %f wants a floating- point value.</p>
+
+<p>所以下面的做法会是死循环：</p>
+
+<pre><code>type MyString string
+func (m MyString) String() string {
+    return fmt.Sprintf(&quot;MyString=%s&quot;, m) // Error: will recur forever.
+}
+</code></pre>
 </div></article>
 					
 						<div class="share">
