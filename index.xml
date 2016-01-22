@@ -1543,6 +1543,36 @@ func main() {
 }
 
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;format:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;format&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;type T struct {
+    a int
+    b float64
+    c string
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;%v&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;v 代表 value
+对于 struct T &lt;code&gt;t := &amp;amp;T {7, -2.34, &amp;quot;abc\tdef&amp;quot;  }&lt;/code&gt; 打印: &lt;code&gt;&amp;amp;{7 -2.35 abc    def}&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;%+v&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;加了 + 打印 fields 的 names
+&lt;code&gt;&amp;amp;{a:7 b:-2.35 c:abc    def }&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;%#v&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;加了 # 多打印了 package
+&lt;code&gt;&amp;amp;main.T{a: 7, b:-2.35, c:&amp;quot;abc\tdef&amp;quot;}&lt;/code&gt;&lt;/p&gt;
 </description>
     </item>
     

@@ -1107,6 +1107,36 @@ func main() {
 }
 
 </code></pre>
+
+<h3 id="format:a2653e2feb85ac0f67b04a4d51202bc4">format</h3>
+
+<pre><code>type T struct {
+    a int
+    b float64
+    c string
+}
+</code></pre>
+
+<ul>
+<li>%v</li>
+</ul>
+
+<p>v 代表 value
+对于 struct T <code>t := &amp;T {7, -2.34, &quot;abc\tdef&quot;  }</code> 打印: <code>&amp;{7 -2.35 abc    def}</code></p>
+
+<ul>
+<li>%+v</li>
+</ul>
+
+<p>加了 + 打印 fields 的 names
+<code>&amp;{a:7 b:-2.35 c:abc    def }</code></p>
+
+<ul>
+<li>%#v</li>
+</ul>
+
+<p>加了 # 多打印了 package
+<code>&amp;main.T{a: 7, b:-2.35, c:&quot;abc\tdef&quot;}</code></p>
 </div></article>
 					
 						<div class="share">
