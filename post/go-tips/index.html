@@ -1137,6 +1137,65 @@ func main() {
 
 <p>加了 # 多打印了 package
 <code>&amp;main.T{a: 7, b:-2.35, c:&quot;abc\tdef&quot;}</code></p>
+
+<h3 id="iota:a2653e2feb85ac0f67b04a4d51202bc4">iota</h3>
+
+<p>下面的代码 iota 表达式被 repeated</p>
+
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+)
+
+type ByteSize float64
+
+const (
+    _ = iota
+    // 1 左移 10 位 ＝ 2^10 ＝ 1024
+    KB ByteSize = 1 &lt;&lt; (10 * iota) // 1024
+    MB
+    GB
+    TB
+    PB
+    EB
+    ZB
+    YB
+)
+
+func main() {
+
+    zero := uint(0)
+    fmt.Printf(&quot;1 &lt;&lt; zero : %v\n&quot;, 1&lt;&lt;zero)
+
+    fmt.Printf(&quot;KB : %v\n&quot;, KB)
+    fmt.Printf(&quot;MB : %v\n&quot;, MB)
+    fmt.Printf(&quot;GB : %v\n&quot;, GB)
+    fmt.Printf(&quot;TB : %v\n&quot;, TB)
+    fmt.Printf(&quot;PB : %v\n&quot;, PB)
+    fmt.Printf(&quot;EB : %v\n&quot;, EB)
+    fmt.Printf(&quot;ZB : %v\n&quot;, ZB)
+    fmt.Printf(&quot;YB : %v\n&quot;, YB)
+
+    // a := 1 &lt;&lt; (10 * 1)
+    // fmt.Printf(&quot;%v\n&quot;, a)
+
+}
+
+</code></pre>
+
+<p>output</p>
+
+<pre><code>1 &lt;&lt; zero : 1
+KB : 1024
+MB : 1.048576e+06
+GB : 1.073741824e+09
+TB : 1.099511627776e+12
+PB : 1.125899906842624e+15
+EB : 1.152921504606847e+18
+ZB : 1.1805916207174113e+21
+YB : 1.2089258196146292e+24
+</code></pre>
 </div></article>
 					
 						<div class="share">

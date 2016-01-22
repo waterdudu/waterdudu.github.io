@@ -1604,6 +1604,65 @@ func main() {
 
 &lt;p&gt;加了 # 多打印了 package
 &lt;code&gt;&amp;amp;main.T{a: 7, b:-2.35, c:&amp;quot;abc\tdef&amp;quot;}&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;iota:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;iota&lt;/h3&gt;
+
+&lt;p&gt;下面的代码 iota 表达式被 repeated&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+    &amp;quot;fmt&amp;quot;
+)
+
+type ByteSize float64
+
+const (
+    _ = iota
+    // 1 左移 10 位 ＝ 2^10 ＝ 1024
+    KB ByteSize = 1 &amp;lt;&amp;lt; (10 * iota) // 1024
+    MB
+    GB
+    TB
+    PB
+    EB
+    ZB
+    YB
+)
+
+func main() {
+
+    zero := uint(0)
+    fmt.Printf(&amp;quot;1 &amp;lt;&amp;lt; zero : %v\n&amp;quot;, 1&amp;lt;&amp;lt;zero)
+
+    fmt.Printf(&amp;quot;KB : %v\n&amp;quot;, KB)
+    fmt.Printf(&amp;quot;MB : %v\n&amp;quot;, MB)
+    fmt.Printf(&amp;quot;GB : %v\n&amp;quot;, GB)
+    fmt.Printf(&amp;quot;TB : %v\n&amp;quot;, TB)
+    fmt.Printf(&amp;quot;PB : %v\n&amp;quot;, PB)
+    fmt.Printf(&amp;quot;EB : %v\n&amp;quot;, EB)
+    fmt.Printf(&amp;quot;ZB : %v\n&amp;quot;, ZB)
+    fmt.Printf(&amp;quot;YB : %v\n&amp;quot;, YB)
+
+    // a := 1 &amp;lt;&amp;lt; (10 * 1)
+    // fmt.Printf(&amp;quot;%v\n&amp;quot;, a)
+
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;output&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1 &amp;lt;&amp;lt; zero : 1
+KB : 1024
+MB : 1.048576e+06
+GB : 1.073741824e+09
+TB : 1.099511627776e+12
+PB : 1.125899906842624e+15
+EB : 1.152921504606847e+18
+ZB : 1.1805916207174113e+21
+YB : 1.2089258196146292e+24
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
