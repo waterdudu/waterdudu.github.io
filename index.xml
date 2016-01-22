@@ -588,6 +588,8 @@ fmt.Println(string(xbytes))
 &lt;li&gt;调用 value recieiver method，只要调用者是 value type，或者它的 value 可以被取值（*）&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;p&gt;The rule about pointers vs. values for receivers is that value methods can be invoked on pointers and values, but pointer methods can only be invoked on pointers.&lt;/p&gt;
+
 &lt;pre&gt;&lt;code&gt;type List [] int
 
 func (l List) Len() int { return len(l) }
@@ -1702,6 +1704,46 @@ func (b ByteSize) String() string {
 func (m MyString) String() string {
     return fmt.Sprintf(&amp;quot;MyString=%s&amp;quot;, m) // Error: will recur forever.
 }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;sort:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;sort&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://nerdyworm.com/blog/2013/05/15/sorting-a-slice-of-structs-in-go/&#34;&gt;sort slice of struct&lt;/a&gt;
+&lt;a href=&#34;https://gobyexample.com/sorting-by-functions&#34;&gt;sort by function&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;args-func:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;args func&lt;/h3&gt;
+
+&lt;p&gt;当访问 &lt;a href=&#34;http://127.0.0.1:9090/args&#34;&gt;http://127.0.0.1:9090/args&lt;/a&gt; 时，打印命令行参数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl &amp;quot;http://127.0.0.1:9090/args&amp;quot;
+[/var/folders/r9/g_vq_93n593fbsjv14kff3g80000gn/T/go-build115571102/command-line-arguments/_obj/exe/args_server]
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;args_server.go&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (
+    &amp;quot;fmt&amp;quot;
+    &amp;quot;log&amp;quot;
+    &amp;quot;net/http&amp;quot;
+    &amp;quot;os&amp;quot;
+)
+
+func ArgServer(w http.ResponseWriter, req *http.Request) {
+    fmt.Fprintln(w, os.Args)
+}
+
+func main() {
+
+    http.Handle(&amp;quot;/args&amp;quot;, http.HandlerFunc(ArgServer))
+    err := http.ListenAndServe(&amp;quot;:9090&amp;quot;, nil) //设置监听的端口
+    if err != nil {
+        log.Fatal(&amp;quot;ListenAndServe: &amp;quot;, err)
+    }
+}
+
 &lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>

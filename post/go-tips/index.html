@@ -5,7 +5,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>go tips - waterdudu blog</title>
-	<meta name="author" content="map[name:dudu email:]">
+	<meta name="author" content="map[email: name:dudu]">
 
 	
 	
@@ -120,6 +120,8 @@ fmt.Println(string(xbytes))
 <li>调用 pointer receiver method，只要调用者是 pointer type，或者它能被取地址（&amp;）</li>
 <li>调用 value recieiver method，只要调用者是 value type，或者它的 value 可以被取值（*）</li>
 </ul>
+
+<p>The rule about pointers vs. values for receivers is that value methods can be invoked on pointers and values, but pointer methods can only be invoked on pointers.</p>
 
 <pre><code>type List [] int
 
@@ -1235,6 +1237,46 @@ func (b ByteSize) String() string {
 func (m MyString) String() string {
     return fmt.Sprintf(&quot;MyString=%s&quot;, m) // Error: will recur forever.
 }
+</code></pre>
+
+<h3 id="sort:a2653e2feb85ac0f67b04a4d51202bc4">sort</h3>
+
+<p><a href="http://nerdyworm.com/blog/2013/05/15/sorting-a-slice-of-structs-in-go/">sort slice of struct</a>
+<a href="https://gobyexample.com/sorting-by-functions">sort by function</a></p>
+
+<h3 id="args-func:a2653e2feb85ac0f67b04a4d51202bc4">args func</h3>
+
+<p>当访问 <a href="http://127.0.0.1:9090/args">http://127.0.0.1:9090/args</a> 时，打印命令行参数</p>
+
+<pre><code>curl &quot;http://127.0.0.1:9090/args&quot;
+[/var/folders/r9/g_vq_93n593fbsjv14kff3g80000gn/T/go-build115571102/command-line-arguments/_obj/exe/args_server]
+
+</code></pre>
+
+<p>args_server.go</p>
+
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;log&quot;
+    &quot;net/http&quot;
+    &quot;os&quot;
+)
+
+func ArgServer(w http.ResponseWriter, req *http.Request) {
+    fmt.Fprintln(w, os.Args)
+}
+
+func main() {
+
+    http.Handle(&quot;/args&quot;, http.HandlerFunc(ArgServer))
+    err := http.ListenAndServe(&quot;:9090&quot;, nil) //设置监听的端口
+    if err != nil {
+        log.Fatal(&quot;ListenAndServe: &quot;, err)
+    }
+}
+
 </code></pre>
 </div></article>
 					
