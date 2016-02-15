@@ -663,7 +663,7 @@ func fakeSearch(kind string) Search {
 
 <h3 id="访问-map-的-key-value:a2653e2feb85ac0f67b04a4d51202bc4">访问 map 的 key, value</h3>
 
-<pre><code>x := map[string]string{
+<pre><code class="language-go">x := map[string]string{
     &quot;name&quot;: &quot;dudu&quot;,
     &quot;love&quot;: &quot;many&quot;,
 }
@@ -675,7 +675,7 @@ if _, ok := x[&quot;love&quot;]; !ok {
 
 <h3 id="修改-string-时-转换成-slice:a2653e2feb85ac0f67b04a4d51202bc4">修改 string 时，转换成 slice</h3>
 
-<pre><code>x := &quot;strings are read-only&quot;
+<pre><code class="language-go">x := &quot;strings are read-only&quot;
 xbytes := []byte(x)
 xbytes[0] = 'S'
 
@@ -691,7 +691,7 @@ fmt.Println(string(xbytes))
 
 <p>The rule about pointers vs. values for receivers is that value methods can be invoked on pointers and values, but pointer methods can only be invoked on pointers.</p>
 
-<pre><code>type List [] int
+<pre><code class="language-go">type List [] int
 
 func (l List) Len() int { return len(l) }
 func (l *List) Append(val int) { *l = append(*l, val) }
@@ -712,55 +712,55 @@ fmt.Printf(&quot;%v (len: %d) \n&quot;, pList, pList.Len())
 <p>for range 默认会把 string 当作 utf-8 字符，如果不能解析，则返回 0xfffd。
 需要把它转换成 byte slice 让结果正确。</p>
 
-<pre><code>    data := &quot;A\xfe\x02\xff\x04&quot;
-    for _,v := range data {
-        fmt.Printf(&quot;%#x &quot;,v)
-    }
-    //prints: 0x41 0xfffd 0x2 0xfffd 0x4 (not ok)
+<pre><code class="language-go">data := &quot;A\xfe\x02\xff\x04&quot;
+for _,v := range data {
+    fmt.Printf(&quot;%#x &quot;,v)
+}
+//prints: 0x41 0xfffd 0x2 0xfffd 0x4 (not ok)
 
-    fmt.Println()
-    for _,v := range []byte(data) {
-        fmt.Printf(&quot;%#x &quot;,v)
-    }
-    //prints: 0x41 0xfe 0x2 0xff 0x4 (good)
+fmt.Println()
+for _,v := range []byte(data) {
+    fmt.Printf(&quot;%#x &quot;,v)
+}
+//prints: 0x41 0xfe 0x2 0xff 0x4 (good)
 </code></pre>
 
 <h3 id="for-range-map-随机:a2653e2feb85ac0f67b04a4d51202bc4">for range map 随机</h3>
 
-<pre><code>    m := map[string]int{&quot;one&quot;: 1, &quot;two&quot;: 2, &quot;three&quot;: 3, &quot;four&quot;: 4}
-    for k, v := range m {
-        fmt.Println(k, v)
-    }
+<pre><code class="language-go">m := map[string]int{&quot;one&quot;: 1, &quot;two&quot;: 2, &quot;three&quot;: 3, &quot;four&quot;: 4}
+for k, v := range m {
+    fmt.Println(k, v)
+}
 
-    // first time run
-    
-    // [ `run` | done: 9.628665ms ]
-    //  one 1
-    //  two 2
-    //  three 3
-    //  four 4
+// first time run
+
+// [ `run` | done: 9.628665ms ]
+//  one 1
+//  two 2
+//  three 3
+//  four 4
 
 
-    // second time run
+// second time run
 
-    // [ `run` | done: 8.847101ms ]
-    //  three 3
-    //  four 4
-    //  one 1
-    //  two 2
+// [ `run` | done: 8.847101ms ]
+//  three 3
+//  four 4
+//  one 1
+//  two 2
 </code></pre>
 
 <h3 id="switch:a2653e2feb85ac0f67b04a4d51202bc4">switch</h3>
 
 <p>switch 默认是 fallthrough 的，可以在 case 语句里写成 list，或者使用 fallthrough 语句</p>
 
-<pre><code>    isSpace := func(ch byte) bool {
-        switch(ch) {
-        case ' ', '\t':
-            return true
-        }
-        return false
+<pre><code class="language-go">isSpace := func(ch byte) bool {
+    switch(ch) {
+    case ' ', '\t':
+        return true
     }
+    return false
+}
 </code></pre>
 
 <h3 id="i:a2653e2feb85ac0f67b04a4d51202bc4">++i</h3>
@@ -771,7 +771,7 @@ fmt.Printf(&quot;%v (len: %d) \n&quot;, pList, pList.Len())
 
 <p>未导出的 field 不能被 encode，decode 的时候被初始化为 zero value</p>
 
-<pre><code>package main
+<pre><code class="language-go">package main
 
 import (  
     &quot;fmt&quot;
@@ -801,7 +801,7 @@ func main() {
 
 <p>struct field 是 map 或者 pointer 时，可以通过 value method 修改</p>
 
-<pre><code>package main
+<pre><code class="language-go">package main
 
 import &quot;fmt&quot;
 
@@ -843,24 +843,24 @@ func main() {
 <p>同时判断 err 和 resp
 redirect 失败时 resp, err 都 != nil，此时需要对 resp 做出错处理，关闭 resp.Body</p>
 
-<pre><code>    resp, err := http.Get(&quot;https://api.ipify.org?format=json&quot;)
-    if resp != nil {
-        defer resp.Body.Close()
-    }
+<pre><code class="language-go">resp, err := http.Get(&quot;https://api.ipify.org?format=json&quot;)
+if resp != nil {
+    defer resp.Body.Close()
+}
 
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
+if err != nil {
+    fmt.Println(err)
+    return
+}
 
-    defer resp.Body.Close()//ok, most of the time :-)
-    body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
+defer resp.Body.Close()//ok, most of the time :-)
+body, err := ioutil.ReadAll(resp.Body)
+if err != nil {
+    fmt.Println(err)
+    return
+}
 
-    fmt.Println(string(body))
+fmt.Println(string(body))
 </code></pre>
 
 <h3 id="close-http-connection:a2653e2feb85ac0f67b04a4d51202bc4">close http connection</h3>
@@ -883,20 +883,20 @@ redirect 失败时 resp, err 都 != nil，此时需要对 resp 做出错处理�
 
 <p><code>req.Header.Add(&quot;Connection&quot;, &quot;close&quot;)</code></p>
 
-<pre><code>    req, err := http.NewRequest(&quot;GET&quot;,&quot;http://golang.org&quot;,nil)
-    if err != nil {
-        fmt.Println(err)
-        return
-    }
+<pre><code class="language-go">req, err := http.NewRequest(&quot;GET&quot;,&quot;http://golang.org&quot;,nil)
+if err != nil {
+    fmt.Println(err)
+    return
+}
 
-    req.Close = true
-    //or do this:
-    //req.Header.Add(&quot;Connection&quot;, &quot;close&quot;)
+req.Close = true
+//or do this:
+//req.Header.Add(&quot;Connection&quot;, &quot;close&quot;)
 
-    resp, err := http.DefaultClient.Do(req)
-    if resp != nil {
-        defer resp.Body.Close()
-    }
+resp, err := http.DefaultClient.Do(req)
+if resp != nil {
+    defer resp.Body.Close()
+}
 
 </code></pre>
 
@@ -908,7 +908,7 @@ redirect 失败时 resp, err 都 != nil，此时需要对 resp 做出错处理�
 <li>float64 =&gt; int</li>
 </ul>
 
-<pre><code>var data = []byte(`{&quot;status&quot;: 200}`)
+<pre><code class="language-go">var data = []byte(`{&quot;status&quot;: 200}`)
 
 var result map[string]interface{}
 if err := json.Unmarshal(data, &amp;result); err != nil {
@@ -923,7 +923,7 @@ var status = uint64(result[&quot;status&quot;].(float64)) //ok
 <li>use a Decoder type to unmarshal JSON, represent JSON numbers using the Number interface type</li>
 </ul>
 
-<pre><code>  var data = []byte(`{&quot;status&quot;: 200}`)
+<pre><code class="language-go">  var data = []byte(`{&quot;status&quot;: 200}`)
 
   var result map[string]interface{}
   var decoder = json.NewDecoder(bytes.NewReader(data))
@@ -941,7 +941,7 @@ var status = uint64(result[&quot;status&quot;].(float64)) //ok
 <li>use the string representation of your Number value to unmarshal it to a different numeric type</li>
 </ul>
 
-<pre><code>var data = []byte(`{&quot;status&quot;: 200}`)
+<pre><code class="language-go">var data = []byte(`{&quot;status&quot;: 200}`)
 
 var result map[string]interface{}
 var decoder = json.NewDecoder(bytes.NewReader(data))
@@ -964,7 +964,7 @@ if err := json.Unmarshal([]byte(result[&quot;status&quot;].(json.Number).String(
 <li>use a struct type that maps your numeric value to the numeric type you need.</li>
 </ul>
 
-<pre><code>  var data = []byte(`{&quot;status&quot;: 200}`)
+<pre><code class="language-go">  var data = []byte(`{&quot;status&quot;: 200}`)
 
   var result struct {
     Status uint64 `json:&quot;status&quot;`
@@ -981,36 +981,36 @@ if err := json.Unmarshal([]byte(result[&quot;status&quot;].(json.Number).String(
 这个条件判断时有用（如 status 可能是 200 也可能是 ok）</li>
 </ul>
 
-<pre><code>    records := [][]byte{
-        []byte(`{&quot;status&quot;: 200, &quot;tag&quot;:&quot;one&quot;}`),
-        []byte(`{&quot;status&quot;:&quot;ok&quot;, &quot;tag&quot;:&quot;two&quot;}`),
+<pre><code class="language-go">records := [][]byte{
+    []byte(`{&quot;status&quot;: 200, &quot;tag&quot;:&quot;one&quot;}`),
+    []byte(`{&quot;status&quot;:&quot;ok&quot;, &quot;tag&quot;:&quot;two&quot;}`),
+}
+
+for idx, record := range records {
+    var result struct {
+        StatusCode uint64
+        StatusName string
+        Status     json.RawMessage `json:&quot;status&quot;`
+        Tag        string          `json:&quot;tag&quot;`
     }
 
-    for idx, record := range records {
-        var result struct {
-            StatusCode uint64
-            StatusName string
-            Status     json.RawMessage `json:&quot;status&quot;`
-            Tag        string          `json:&quot;tag&quot;`
-        }
-
-        if err := json.NewDecoder(bytes.NewReader(record)).Decode(&amp;result); err != nil {
-            fmt.Println(&quot;error:&quot;, err)
-            return
-        }
-
-        var sstatus string
-        if err := json.Unmarshal(result.Status, &amp;sstatus); err == nil {
-            result.StatusName = sstatus
-        }
-
-        var nstatus uint64
-        if err := json.Unmarshal(result.Status, &amp;nstatus); err == nil {
-            result.StatusCode = nstatus
-        }
-
-        fmt.Printf(&quot;[%v] result =&gt; %+v\n&quot;, idx, result)
+    if err := json.NewDecoder(bytes.NewReader(record)).Decode(&amp;result); err != nil {
+        fmt.Println(&quot;error:&quot;, err)
+        return
     }
+
+    var sstatus string
+    if err := json.Unmarshal(result.Status, &amp;sstatus); err == nil {
+        result.StatusName = sstatus
+    }
+
+    var nstatus uint64
+    if err := json.Unmarshal(result.Status, &amp;nstatus); err == nil {
+        result.StatusCode = nstatus
+    }
+
+    fmt.Printf(&quot;[%v] result =&gt; %+v\n&quot;, idx, result)
+}
 </code></pre>
 
 <h3 id="比较-deepequal:a2653e2feb85ac0f67b04a4d51202bc4">比较，DeepEqual</h3>
@@ -1021,7 +1021,7 @@ if err := json.Unmarshal([]byte(result[&quot;status&quot;].(json.Number).String(
 
 <p>string.EqualFold 比较 unicode 字符，case insensive</p>
 
-<pre><code>    fmt.Println(strings.EqualFold(&quot;HELLO&quot;, &quot;hello&quot;))
+<pre><code class="language-go">    fmt.Println(strings.EqualFold(&quot;HELLO&quot;, &quot;hello&quot;))
     fmt.Println(strings.EqualFold(&quot;ÑOÑO&quot;, &quot;ñoño&quot;))
 </code></pre>
 
@@ -1029,7 +1029,7 @@ if err := json.Unmarshal([]byte(result[&quot;status&quot;].(json.Number).String(
 
 <p>必须在 defer 里，不可把 recover 放在 func 里</p>
 
-<pre><code>func doRecover() {  
+<pre><code class="language-go">func doRecover() {  
     fmt.Println(&quot;recovered =&gt;&quot;,recover()) //prints: recovered =&gt; &lt;nil&gt;
 }
 
@@ -1046,40 +1046,40 @@ func main() {
 
 <p>for range data value 变量是 collection data 的 copy，不可以用它更新 collection</p>
 
-<pre><code>    data := []int{1,2,3}
-    for _,v := range data {
-        v *= 10 //original item is not changed
-    }
+<pre><code class="language-go">data := []int{1,2,3}
+for _,v := range data {
+    v *= 10 //original item is not changed
+}
 
-    fmt.Println(&quot;data:&quot;,data) //prints data: [1 2 3]
+fmt.Println(&quot;data:&quot;,data) //prints data: [1 2 3]
 </code></pre>
 
 <p>使用 index operator 来更新</p>
 
-<pre><code>    data := []int{1,2,3}
-    for i,_ := range data {
-        data[i] *= 10
-    }
+<pre><code class="language-go">data := []int{1,2,3}
+for i,_ := range data {
+    data[i] *= 10
+}
 
-    fmt.Println(&quot;data:&quot;,data) //prints data: [10 20 30]
+fmt.Println(&quot;data:&quot;,data) //prints data: [10 20 30]
 </code></pre>
 
 <p>如果 slice 是 pointer value，除了采用 index 方式，可采用下面方式更新</p>
 
-<pre><code>    data := []*struct{num int} {{1},{2},{3}}
+<pre><code class="language-go">data := []*struct{num int} {{1},{2},{3}}
 
-    for _,v := range data {
-        v.num *= 10
-    }
+for _,v := range data {
+    v.num *= 10
+}
 
-    fmt.Println(data[0],data[1],data[2]) //prints &amp;{10} &amp;{20} &amp;{30}
+fmt.Println(data[0],data[1],data[2]) //prints &amp;{10} &amp;{20} &amp;{30}
 </code></pre>
 
 <h3 id="slice:a2653e2feb85ac0f67b04a4d51202bc4">slice</h3>
 
 <p>请使用 copy 来防止共享 slice</p>
 
-<pre><code>func get() []byte {  
+<pre><code class="language-go">func get() []byte {  
     raw := make([]byte,10000)
     fmt.Println(len(raw),cap(raw),&amp;raw[0]) //prints: 10000 10000 &lt;byte_addr_x&gt;
     res := make([]byte,3)
@@ -1097,27 +1097,27 @@ func main() {
 
 <p>使用 full slice expression，比较优雅</p>
 
-<pre><code>    source := []string{&quot;Apple&quot;, &quot;Orange&quot;, &quot;Plum&quot;, &quot;Banana&quot;, &quot;Grape&quot;}
+<pre><code class="language-go">source := []string{&quot;Apple&quot;, &quot;Orange&quot;, &quot;Plum&quot;, &quot;Banana&quot;, &quot;Grape&quot;}
 
-    // slice 被 detach 了
-    slice1 := source[2:3:3]
-    slice2 := source[2:]
+// slice 被 detach 了
+slice1 := source[2:3:3]
+slice2 := source[2:]
 
-    slice1 = append(slice1, &quot;Kiwi&quot;)
+slice1 = append(slice1, &quot;Kiwi&quot;)
 
-    // source =&gt; [Apple Orange Plum Banana Grape]
-    fmt.Printf(&quot;source =&gt; %v\n&quot;, source)
-    // slice1 =&gt; [Plum Kiwi]
-    fmt.Printf(&quot;slice1 =&gt; %v\n&quot;, slice1)
-    // slice2 =&gt; [Plum Banana Grape]
-    fmt.Printf(&quot;slice2 =&gt; %v\n&quot;, slice2)
+// source =&gt; [Apple Orange Plum Banana Grape]
+fmt.Printf(&quot;source =&gt; %v\n&quot;, source)
+// slice1 =&gt; [Plum Kiwi]
+fmt.Printf(&quot;slice1 =&gt; %v\n&quot;, slice1)
+// slice2 =&gt; [Plum Banana Grape]
+fmt.Printf(&quot;slice2 =&gt; %v\n&quot;, slice2)
 </code></pre>
 
 <h3 id="集成-method-set:a2653e2feb85ac0f67b04a4d51202bc4">集成 method set</h3>
 
 <p>自定义 struct 不继承方法集</p>
 
-<pre><code>package main
+<pre><code class="language-go">package main
 
 import &quot;sync&quot;
 
@@ -1132,7 +1132,7 @@ func main() {
 
 <p>但是你可以用 type embedding 来实现 method set 继承</p>
 
-<pre><code>import &quot;sync&quot;
+<pre><code class="language-go">import &quot;sync&quot;
 
 type myLocker struct {  
     sync.Mutex
@@ -1147,7 +1147,7 @@ func main() {
 
 <p>Interface type declarations also retain their method sets.</p>
 
-<pre><code>import &quot;sync&quot;
+<pre><code class="language-go">import &quot;sync&quot;
 
 type myLocker sync.Locker
 
@@ -1169,37 +1169,37 @@ func main() {
 
 <p>copy 变量</p>
 
-<pre><code>    data := []string{&quot;one&quot;,&quot;two&quot;,&quot;three&quot;}
+<pre><code class="language-go">data := []string{&quot;one&quot;,&quot;two&quot;,&quot;three&quot;}
 
-    for _,v := range data {
-        vcopy := v //
-        go func() {
-            fmt.Println(vcopy)
-        }()
-    }
+for _,v := range data {
+    vcopy := v //
+    go func() {
+        fmt.Println(vcopy)
+    }()
+}
 
-    time.Sleep(3 * time.Second)
-    //goroutines print: one, two, three
+time.Sleep(3 * time.Second)
+//goroutines print: one, two, three
 </code></pre>
 
 <p>参数传递</p>
 
-<pre><code>    data := []string{&quot;one&quot;,&quot;two&quot;,&quot;three&quot;}
+<pre><code class="language-go">data := []string{&quot;one&quot;,&quot;two&quot;,&quot;three&quot;}
 
-    for _,v := range data {
-        go func(in string) {
-            fmt.Println(in)
-        }(v)
-    }
+for _,v := range data {
+    go func(in string) {
+        fmt.Println(in)
+    }(v)
+}
 
-    time.Sleep(3 * time.Second)
-    //goroutines print: one, two, three
+time.Sleep(3 * time.Second)
+//goroutines print: one, two, three
 </code></pre>
 
 <p>这个有点反人类
 在 for 里加上：<code>v := v</code></p>
 
-<pre><code>package main
+<pre><code class="language-go">package main
 
 import (  
     &quot;fmt&quot;
@@ -1230,11 +1230,11 @@ func main() {
 
 <p>参数是在 defer 被 evaluated 的时候 evaluated 的</p>
 
-<pre><code>    var i int = 1
+<pre><code class="language-go">var i int = 1
 
-    defer fmt.Println(&quot;result =&gt;&quot;,func() int { return i * 2 }())
-    i++
-    //prints: result =&gt; 2 (not ok if you expected 4)
+defer fmt.Println(&quot;result =&gt;&quot;,func() int { return i * 2 }())
+i++
+//prints: result =&gt; 2 (not ok if you expected 4)
 </code></pre>
 
 <p>The deferred calls are executed at the end of the containing function and not at the end of the containing code block</p>
@@ -1243,31 +1243,30 @@ func main() {
 
 <h3 id="type-assertion:a2653e2feb85ac0f67b04a4d51202bc4">type assertion</h3>
 
-<pre><code>
-    var data interface{} = &quot;great&quot;
+<pre><code class="language-go">var data interface{} = &quot;great&quot;
 
-    // don't
-    if data, ok := data.(int); ok {
-        fmt.Println(&quot;[is an int] value =&gt;&quot;,data)
-    } else {
-        fmt.Println(&quot;[not an int] value =&gt;&quot;,data) 
-        //prints: [not an int] value =&gt; 0 (not &quot;great&quot;)
-    }
+// don't
+if data, ok := data.(int); ok {
+    fmt.Println(&quot;[is an int] value =&gt;&quot;,data)
+} else {
+    fmt.Println(&quot;[not an int] value =&gt;&quot;,data) 
+    //prints: [not an int] value =&gt; 0 (not &quot;great&quot;)
+}
 
-    // do
-    if res, ok := data.(int); ok {
-        fmt.Println(&quot;[is an int] value =&gt;&quot;,res)
-    } else {
-        fmt.Println(&quot;[not an int] value =&gt;&quot;,data) 
-        //prints: [not an int] value =&gt; great (as expected)
-    }
+// do
+if res, ok := data.(int); ok {
+    fmt.Println(&quot;[is an int] value =&gt;&quot;,res)
+} else {
+    fmt.Println(&quot;[not an int] value =&gt;&quot;,data) 
+    //prints: [not an int] value =&gt; great (as expected)
+}
 </code></pre>
 
 <h3 id="channel:a2653e2feb85ac0f67b04a4d51202bc4">channel</h3>
 
 <p>返回 chan 的函数</p>
 
-<pre><code>func boring(msg string) &lt;-chan string {
+<pre><code class="language-go">func boring(msg string) &lt;-chan string {
     c := make(chan string)
 
     go func() {
@@ -1292,7 +1291,7 @@ func main() {
 
 <p>简单</p>
 
-<pre><code>
+<pre><code class="language-go">
 type Tag struct {
     TName string
 }
@@ -1344,7 +1343,10 @@ func main() {
 
 <p>content.gtpl 定义了 template 名字：content</p>
 
-<pre><code class="language-content.gtpl">{{define &quot;content&quot;}}
+<p><strong>content.gtpl</strong></p>
+
+<pre><code class="language-html">
+{{define &quot;content&quot;}}
 &lt;ul&gt;
     {{range .}}
         &lt;li&gt;{{.FirstName}} {{.LastName}} is {{.Age}} years old.
@@ -1358,7 +1360,9 @@ func main() {
 
 <p>layout.gtpl 使用 content.gtpl 定义的 content template</p>
 
-<pre><code class="language-layout.gtpl">&lt;div class=&quot;outer&quot;&gt;
+<p><strong>layout.gtpl</strong></p>
+
+<pre><code class="language-html">&lt;div class=&quot;outer&quot;&gt;
     &lt;h1&gt;{{.Title}}&lt;/h1&gt;
     {{template &quot;content&quot; .Content}}
 &lt;/div&gt;
@@ -1366,7 +1370,7 @@ func main() {
 
 <p>在 go 文件中使用</p>
 
-<pre><code>package main
+<pre><code class="language-html">package main
 
 import (
     &quot;os&quot;
@@ -1422,7 +1426,7 @@ func main() {
 当一个返回时，其他 goroutine 等着 send data，这会导致资源泄漏。
 应该采用 bufferred channel 来缓存 results</p>
 
-<pre><code>func First(query string, replicas ...Search) Result {  
+<pre><code class="language-go">func First(query string, replicas ...Search) Result {  
     c := make(chan Result,len(replicas))
     searchReplica := func(i int) { c &lt;- replicas[i](query) }
     for i := range replicas {
@@ -1434,7 +1438,7 @@ func main() {
 
 <p>或者用 buffer 为 1 的 channel，通过 select 来获取结果。</p>
 
-<pre><code>func First(query string, replicas ...Search) Result {  
+<pre><code class="language-go">func First(query string, replicas ...Search) Result {  
     c := make(chan Result,1)
     searchReplica := func(i int) { 
         select {
@@ -1454,7 +1458,7 @@ func main() {
 <p>select 会等待向 channel 发送 data 返回
 这也就是为什么 google search 会用 select 来等待多个 replica 的 search result</p>
 
-<pre><code>func sleep_return_int() int {
+<pre><code class="language-go">func sleep_return_int() int {
     time.Sleep(1000 * time.Millisecond)
     return 1
 }
@@ -1477,7 +1481,7 @@ func test_select() {
 
 <p>以下出错</p>
 
-<pre><code>import &quot;fmt&quot;
+<pre><code class="language-go">import &quot;fmt&quot;
 
 type data struct {  
     name string
@@ -1508,7 +1512,7 @@ func main() {
 <p>map elements are not addressable
 If you have a map of struct values you can&rsquo;t update individual struct fields.</p>
 
-<pre><code>package main
+<pre><code class="language-go">package main
 
 type data struct {  
     name string
@@ -1526,7 +1530,7 @@ func main() {
 <li>使用临时变量</li>
 </ul>
 
-<pre><code>type data struct {  
+<pre><code class="language-go">type data struct {  
     name string
 }
 
@@ -1543,7 +1547,7 @@ func main() {
 <li>使用 map of pointers</li>
 </ul>
 
-<pre><code>type data struct {  
+<pre><code class="language-go">type data struct {  
     name string
 }
 
@@ -1558,7 +1562,7 @@ func main() {
 
 <p>slice elements are addressable</p>
 
-<pre><code>type data struct {  
+<pre><code class="language-go">type data struct {  
     name string
 }
 
@@ -1578,15 +1582,15 @@ in = data, type is not nil, thus <code>in == nil</code> return false</p>
 
 <p>具体可参考这里：<a href="https://golang.org/doc/faq#nil_error">nil interface</a></p>
 
-<pre><code>    var data *byte
-    var in interface{}
+<pre><code class="language-go">var data *byte
+var in interface{}
 
-    fmt.Println(data,data == nil) //prints: &lt;nil&gt; true
-    fmt.Println(in,in == nil)     //prints: &lt;nil&gt; true
+fmt.Println(data,data == nil) //prints: &lt;nil&gt; true
+fmt.Println(in,in == nil)     //prints: &lt;nil&gt; true
 
-    in = data
-    fmt.Println(in,in == nil)     //prints: &lt;nil&gt; false
-    //'data' is 'nil', but 'in' is not 'nil'
+in = data
+fmt.Println(in,in == nil)     //prints: &lt;nil&gt; false
+//'data' is 'nil', but 'in' is not 'nil'
 </code></pre>
 
 <h3 id="json:a2653e2feb85ac0f67b04a4d51202bc4">json</h3>
@@ -1607,7 +1611,7 @@ kind : string, value : 1.23
 
 <h3 id="regexp:a2653e2feb85ac0f67b04a4d51202bc4">regexp</h3>
 
-<pre><code>package main
+<pre><code class="language-go">package main
 
 import (
     &quot;fmt&quot;
@@ -1654,7 +1658,7 @@ func main() {
 
 <h3 id="scrypt-使用:a2653e2feb85ac0f67b04a4d51202bc4">scrypt 使用</h3>
 
-<pre><code>package main
+<pre><code class="language-go">package main
 
 // go get -v code.google.com/p/go.crypto/scrypt
 
@@ -1680,7 +1684,7 @@ func main() {
 
 <h3 id="format:a2653e2feb85ac0f67b04a4d51202bc4">format</h3>
 
-<pre><code>type T struct {
+<pre><code class="language-go">type T struct {
     a int
     b float64
     c string
@@ -1712,7 +1716,7 @@ func main() {
 
 <p>下面的代码 iota 表达式被 repeated</p>
 
-<pre><code>package main
+<pre><code class="language-go">package main
 
 import (
     &quot;fmt&quot;
@@ -1769,7 +1773,7 @@ YB : 1.2089258196146292e+24
 
 <p>go 能给 user-defined type（这里是 ByteSize） 定义 method</p>
 
-<pre><code>
+<pre><code class="language-go">
 func (b ByteSize) String() string {
     switch {
     case b &gt;= YB:
@@ -1801,7 +1805,7 @@ func (b ByteSize) String() string {
 
 <p>所以下面的做法会是死循环：</p>
 
-<pre><code>type MyString string
+<pre><code class="language-go">type MyString string
 func (m MyString) String() string {
     return fmt.Sprintf(&quot;MyString=%s&quot;, m) // Error: will recur forever.
 }
@@ -1823,7 +1827,7 @@ func (m MyString) String() string {
 
 <p>args_server.go</p>
 
-<pre><code>package main
+<pre><code class="language-go">package main
 
 import (
     &quot;fmt&quot;
@@ -1852,7 +1856,7 @@ func main() {
 <p>把 _ 想象成 /dev/null
 不要不管 err，一定要每个 err 都要 check</p>
 
-<pre><code>// Bad! This code will crash if path does not exist. fi, _ := os.Stat(path)
+<pre><code class="language-go">// Bad! This code will crash if path does not exist. fi, _ := os.Stat(path)
 if fi.IsDir() {
     fmt.Printf(&quot;%s is a directory\n&quot;, path) 
 }
