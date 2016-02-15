@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>My New Hugo Site</title>
+      <title> on My New Hugo Site </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
     <link>http://waterdudu.github.io/</link>
-    <description>Recent content on My New Hugo Site</description>
-    <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 14 Feb 2016 17:22:30 +0800</lastBuildDate>
-    <atom:link href="http://waterdudu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <updated>Sun, 14 Feb 2016 17:22:30 CST</updated>
     
     <item>
       <title>hello</title>
       <link>http://waterdudu.github.io/post/hello/</link>
-      <pubDate>Sun, 14 Feb 2016 17:22:30 +0800</pubDate>
+      <pubDate>Sun, 14 Feb 2016 17:22:30 CST</pubDate>
       
       <guid>http://waterdudu.github.io/post/hello/</guid>
       <description></description>
@@ -21,29 +21,16 @@
     <item>
       <title>test</title>
       <link>http://waterdudu.github.io/post/test/</link>
-      <pubDate>Sun, 14 Feb 2016 17:16:50 +0800</pubDate>
+      <pubDate>Sun, 14 Feb 2016 17:16:50 CST</pubDate>
       
       <guid>http://waterdudu.github.io/post/test/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>about</title>
-      <link>http://waterdudu.github.io/about/</link>
-      <pubDate>Sun, 14 Feb 2016 16:14:43 +0800</pubDate>
-      
-      <guid>http://waterdudu.github.io/about/</guid>
-      <description>&lt;p&gt;Something
-x&lt;/p&gt;
-
-&lt;p&gt;hello&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
       <title>go</title>
       <link>http://waterdudu.github.io/post/go/</link>
-      <pubDate>Sun, 14 Feb 2016 15:41:49 +0800</pubDate>
+      <pubDate>Sun, 14 Feb 2016 15:41:49 CST</pubDate>
       
       <guid>http://waterdudu.github.io/post/go/</guid>
       <description></description>
@@ -52,7 +39,7 @@ x&lt;/p&gt;
     <item>
       <title>react</title>
       <link>http://waterdudu.github.io/post/react/</link>
-      <pubDate>Thu, 21 Jan 2016 20:56:01 +0800</pubDate>
+      <pubDate>Thu, 21 Jan 2016 20:56:01 CST</pubDate>
       
       <guid>http://waterdudu.github.io/post/react/</guid>
       <description>
@@ -302,7 +289,7 @@ what is state?&lt;/p&gt;
     <item>
       <title>go concurrency patterns</title>
       <link>http://waterdudu.github.io/post/go-concurrency-patterns/</link>
-      <pubDate>Wed, 20 Jan 2016 14:51:48 +0800</pubDate>
+      <pubDate>Wed, 20 Jan 2016 14:51:48 CST</pubDate>
       
       <guid>http://waterdudu.github.io/post/go-concurrency-patterns/</guid>
       <description>
@@ -585,7 +572,7 @@ func fakeSearch(kind string) Search {
     <item>
       <title>go tips</title>
       <link>http://waterdudu.github.io/post/go-tips/</link>
-      <pubDate>Mon, 18 Jan 2016 13:41:35 +0800</pubDate>
+      <pubDate>Mon, 18 Jan 2016 13:41:35 CST</pubDate>
       
       <guid>http://waterdudu.github.io/post/go-tips/</guid>
       <description>
@@ -1807,7 +1794,7 @@ if fi.IsDir() {
     <item>
       <title>photomosaic</title>
       <link>http://waterdudu.github.io/post/photomosaic/</link>
-      <pubDate>Sat, 14 Nov 2015 23:49:14 +0800</pubDate>
+      <pubDate>Sat, 14 Nov 2015 23:49:14 CST</pubDate>
       
       <guid>http://waterdudu.github.io/post/photomosaic/</guid>
       <description>
@@ -1830,7 +1817,7 @@ if fi.IsDir() {
     <item>
       <title>swiftwordpolicy</title>
       <link>http://waterdudu.github.io/post/swiftwordpolicy/</link>
-      <pubDate>Sat, 07 Nov 2015 10:09:13 +0800</pubDate>
+      <pubDate>Sat, 07 Nov 2015 10:09:13 CST</pubDate>
       
       <guid>http://waterdudu.github.io/post/swiftwordpolicy/</guid>
       <description>&lt;p&gt;Privacy Policy (effective date October 4, 2015)
@@ -1858,7 +1845,7 @@ Our mobile applications comply with the Children’s Online Privacy Protection A
     <item>
       <title>first</title>
       <link>http://waterdudu.github.io/post/first/</link>
-      <pubDate>Fri, 06 Nov 2015 22:45:04 +0800</pubDate>
+      <pubDate>Fri, 06 Nov 2015 22:45:04 CST</pubDate>
       
       <guid>http://waterdudu.github.io/post/first/</guid>
       <description>&lt;p&gt;hey first&lt;/p&gt;
