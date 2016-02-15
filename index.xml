@@ -1309,7 +1309,8 @@ func main() {
 
 &lt;p&gt;在 go 文件中使用&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;
+package main
 
 import (
     &amp;quot;os&amp;quot;
