@@ -900,377 +900,339 @@ if err := json.Unmarshal([]byte(result[&amp;quot;status&amp;quot;].(json.Number)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ul&gt;
-&lt;li&gt;use a struct type that maps your numeric value to the numeric type you need.
-``&lt;code&gt;
-var data = []byte(&lt;/code&gt;{&amp;ldquo;status&amp;rdquo;: 200}`)&lt;/li&gt;
+&lt;li&gt;use a struct type that maps your numeric value to the numeric type you need.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;var result struct {
-    Status uint64 &lt;code&gt;json:&amp;quot;status&amp;quot;&lt;/code&gt;
-  }&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  var data = []byte(`{&amp;quot;status&amp;quot;: 200}`)
 
-&lt;p&gt;if err := json.NewDecoder(bytes.NewReader(data)).Decode(&amp;amp;result); err != nil {
-    fmt.Println(&amp;ldquo;error:&amp;ldquo;, err)
+  var result struct {
+    Status uint64 `json:&amp;quot;status&amp;quot;`
+  }
+
+  if err := json.NewDecoder(bytes.NewReader(data)).Decode(&amp;amp;result); err != nil {
+    fmt.Println(&amp;quot;error:&amp;quot;, err)
     return
-  }&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-* use a struct that maps your numeric value to the json.RawMessage type if you need to defer the value decoding.
-这个条件判断时有用（如 status 可能是 200 也可能是 ok）
-
+  }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;records := [][]byte{
-    []byte(`{&amp;quot;status&amp;quot;: 200, &amp;quot;tag&amp;quot;:&amp;quot;one&amp;quot;}`),
-    []byte(`{&amp;quot;status&amp;quot;:&amp;quot;ok&amp;quot;, &amp;quot;tag&amp;quot;:&amp;quot;two&amp;quot;}`),
+&lt;ul&gt;
+&lt;li&gt;use a struct that maps your numeric value to the json.RawMessage type if you need to defer the value decoding.
+这个条件判断时有用（如 status 可能是 200 也可能是 ok）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;    records := [][]byte{
+        []byte(`{&amp;quot;status&amp;quot;: 200, &amp;quot;tag&amp;quot;:&amp;quot;one&amp;quot;}`),
+        []byte(`{&amp;quot;status&amp;quot;:&amp;quot;ok&amp;quot;, &amp;quot;tag&amp;quot;:&amp;quot;two&amp;quot;}`),
+    }
+
+    for idx, record := range records {
+        var result struct {
+            StatusCode uint64
+            StatusName string
+            Status     json.RawMessage `json:&amp;quot;status&amp;quot;`
+            Tag        string          `json:&amp;quot;tag&amp;quot;`
+        }
+
+        if err := json.NewDecoder(bytes.NewReader(record)).Decode(&amp;amp;result); err != nil {
+            fmt.Println(&amp;quot;error:&amp;quot;, err)
+            return
+        }
+
+        var sstatus string
+        if err := json.Unmarshal(result.Status, &amp;amp;sstatus); err == nil {
+            result.StatusName = sstatus
+        }
+
+        var nstatus uint64
+        if err := json.Unmarshal(result.Status, &amp;amp;nstatus); err == nil {
+            result.StatusCode = nstatus
+        }
+
+        fmt.Printf(&amp;quot;[%v] result =&amp;gt; %+v\n&amp;quot;, idx, result)
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;比较-deepequal:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;比较，DeepEqual&lt;/h3&gt;
+
+&lt;p&gt;当 struct field 可比较时才能用 == 比较，否则  compile error&lt;/p&gt;
+
+&lt;p&gt;DeepEqual 认为 nil 和 empty 不等&lt;/p&gt;
+
+&lt;p&gt;string.EqualFold 比较 unicode 字符，case insensive&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    fmt.Println(strings.EqualFold(&amp;quot;HELLO&amp;quot;, &amp;quot;hello&amp;quot;))
+    fmt.Println(strings.EqualFold(&amp;quot;ÑOÑO&amp;quot;, &amp;quot;ñoño&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;recover:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;recover&lt;/h3&gt;
+
+&lt;p&gt;必须在 defer 里，不可把 recover 放在 func 里&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func doRecover() {  
+    fmt.Println(&amp;quot;recovered =&amp;gt;&amp;quot;,recover()) //prints: recovered =&amp;gt; &amp;lt;nil&amp;gt;
 }
 
-for idx, record := range records {
-    var result struct {
-        StatusCode uint64
-        StatusName string
-        Status     json.RawMessage `json:&amp;quot;status&amp;quot;`
-        Tag        string          `json:&amp;quot;tag&amp;quot;`
-    }
-
-    if err := json.NewDecoder(bytes.NewReader(record)).Decode(&amp;amp;result); err != nil {
-        fmt.Println(&amp;quot;error:&amp;quot;, err)
-        return
-    }
-
-    var sstatus string
-    if err := json.Unmarshal(result.Status, &amp;amp;sstatus); err == nil {
-        result.StatusName = sstatus
-    }
-
-    var nstatus uint64
-    if err := json.Unmarshal(result.Status, &amp;amp;nstatus); err == nil {
-        result.StatusCode = nstatus
-    }
-
-    fmt.Printf(&amp;quot;[%v] result =&amp;gt; %+v\n&amp;quot;, idx, result)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;
-### 比较，DeepEqual
-
-当 struct field 可比较时才能用 == 比较，否则  compile error
-
-DeepEqual 认为 nil 和 empty 不等
-
-string.EqualFold 比较 unicode 字符，case insensive
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;fmt.Println(strings.EqualFold(&amp;quot;HELLO&amp;quot;, &amp;quot;hello&amp;quot;))
-fmt.Println(strings.EqualFold(&amp;quot;ÑOÑO&amp;quot;, &amp;quot;ñoño&amp;quot;))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;
-### recover
-必须在 defer 里，不可把 recover 放在 func 里
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;func doRecover() {&lt;br /&gt;
-    fmt.Println(&amp;ldquo;recovered =&amp;gt;&amp;rdquo;,recover()) //prints: recovered =&amp;gt; &lt;nil&gt;
-}&lt;/p&gt;
-
-&lt;p&gt;func main() {&lt;br /&gt;
+func main() {  
     defer func() {
         doRecover() //panic is not recovered
-    }()&lt;/p&gt;
+    }()
 
-&lt;pre&gt;&lt;code&gt;panic(&amp;quot;not good&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;}&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-### for range 更新数据
-
-for range data value 变量是 collection data 的 copy，不可以用它更新 collection
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;data := []int{1,2,3}
-for _,v := range data {
-    v *= 10 //original item is not changed
+    panic(&amp;quot;not good&amp;quot;)
 }
-
-fmt.Println(&amp;quot;data:&amp;quot;,data) //prints data: [1 2 3]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;
-使用 index operator 来更新
+&lt;h3 id=&#34;for-range-更新数据:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;for range 更新数据&lt;/h3&gt;
 
+&lt;p&gt;for range data value 变量是 collection data 的 copy，不可以用它更新 collection&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    data := []int{1,2,3}
+    for _,v := range data {
+        v *= 10 //original item is not changed
+    }
+
+    fmt.Println(&amp;quot;data:&amp;quot;,data) //prints data: [1 2 3]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;data := []int{1,2,3}
-for i,_ := range data {
-    data[i] *= 10
-}
+&lt;p&gt;使用 index operator 来更新&lt;/p&gt;
 
-fmt.Println(&amp;quot;data:&amp;quot;,data) //prints data: [10 20 30]
+&lt;pre&gt;&lt;code&gt;    data := []int{1,2,3}
+    for i,_ := range data {
+        data[i] *= 10
+    }
+
+    fmt.Println(&amp;quot;data:&amp;quot;,data) //prints data: [10 20 30]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;
-如果 slice 是 pointer value，除了采用 index 方式，可采用下面方式更新
+&lt;p&gt;如果 slice 是 pointer value，除了采用 index 方式，可采用下面方式更新&lt;/p&gt;
 
+&lt;pre&gt;&lt;code&gt;    data := []*struct{num int} {{1},{2},{3}}
+
+    for _,v := range data {
+        v.num *= 10
+    }
+
+    fmt.Println(data[0],data[1],data[2]) //prints &amp;amp;{10} &amp;amp;{20} &amp;amp;{30}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;data := []*struct{num int} {{1},{2},{3}}
+&lt;h3 id=&#34;slice:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;slice&lt;/h3&gt;
 
-for _,v := range data {
-    v.num *= 10
-}
+&lt;p&gt;请使用 copy 来防止共享 slice&lt;/p&gt;
 
-fmt.Println(data[0],data[1],data[2]) //prints &amp;amp;{10} &amp;amp;{20} &amp;amp;{30}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;
-### slice
-
-请使用 copy 来防止共享 slice
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;func get() []byte {&lt;br /&gt;
+&lt;pre&gt;&lt;code&gt;func get() []byte {  
     raw := make([]byte,10000)
-    fmt.Println(len(raw),cap(raw),&amp;amp;raw[0]) //prints: 10000 10000 &lt;byte_addr_x&gt;
+    fmt.Println(len(raw),cap(raw),&amp;amp;raw[0]) //prints: 10000 10000 &amp;lt;byte_addr_x&amp;gt;
     res := make([]byte,3)
     copy(res,raw[:3])
     return res
-}&lt;/p&gt;
+}
 
-&lt;p&gt;func main() {&lt;br /&gt;
+func main() {  
     data := get()
-    fmt.Println(len(data),cap(data),&amp;amp;data[0]) //prints: 3 3 &lt;byte_addr_y&gt;
-}&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-### slice data corruption
-使用 full slice expression，比较优雅
-
+    fmt.Println(len(data),cap(data),&amp;amp;data[0]) //prints: 3 3 &amp;lt;byte_addr_y&amp;gt;
+}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;source := []string{&amp;quot;Apple&amp;quot;, &amp;quot;Orange&amp;quot;, &amp;quot;Plum&amp;quot;, &amp;quot;Banana&amp;quot;, &amp;quot;Grape&amp;quot;}
+&lt;h3 id=&#34;slice-data-corruption:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;slice data corruption&lt;/h3&gt;
 
-// slice 被 detach 了
-slice1 := source[2:3:3]
-slice2 := source[2:]
+&lt;p&gt;使用 full slice expression，比较优雅&lt;/p&gt;
 
-slice1 = append(slice1, &amp;quot;Kiwi&amp;quot;)
+&lt;pre&gt;&lt;code&gt;    source := []string{&amp;quot;Apple&amp;quot;, &amp;quot;Orange&amp;quot;, &amp;quot;Plum&amp;quot;, &amp;quot;Banana&amp;quot;, &amp;quot;Grape&amp;quot;}
 
-// source =&amp;gt; [Apple Orange Plum Banana Grape]
-fmt.Printf(&amp;quot;source =&amp;gt; %v\n&amp;quot;, source)
-// slice1 =&amp;gt; [Plum Kiwi]
-fmt.Printf(&amp;quot;slice1 =&amp;gt; %v\n&amp;quot;, slice1)
-// slice2 =&amp;gt; [Plum Banana Grape]
-fmt.Printf(&amp;quot;slice2 =&amp;gt; %v\n&amp;quot;, slice2)
+    // slice 被 detach 了
+    slice1 := source[2:3:3]
+    slice2 := source[2:]
+
+    slice1 = append(slice1, &amp;quot;Kiwi&amp;quot;)
+
+    // source =&amp;gt; [Apple Orange Plum Banana Grape]
+    fmt.Printf(&amp;quot;source =&amp;gt; %v\n&amp;quot;, source)
+    // slice1 =&amp;gt; [Plum Kiwi]
+    fmt.Printf(&amp;quot;slice1 =&amp;gt; %v\n&amp;quot;, slice1)
+    // slice2 =&amp;gt; [Plum Banana Grape]
+    fmt.Printf(&amp;quot;slice2 =&amp;gt; %v\n&amp;quot;, slice2)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;
-### 集成 method set
-自定义 struct 不继承方法集
+&lt;h3 id=&#34;集成-method-set:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;集成 method set&lt;/h3&gt;
 
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;自定义 struct 不继承方法集&lt;/p&gt;
 
-&lt;p&gt;package main&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;package main
 
-&lt;p&gt;import &amp;ldquo;sync&amp;rdquo;&lt;/p&gt;
+import &amp;quot;sync&amp;quot;
 
-&lt;p&gt;type myMutex sync.Mutex&lt;/p&gt;
+type myMutex sync.Mutex
 
-&lt;p&gt;func main() {&lt;br /&gt;
+func main() {  
     var mtx myMutex
     mtx.Lock() //error
-    mtx.Unlock() //error&lt;br /&gt;
-}&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;但是你可以用 type embedding 来实现 method set 继承
+    mtx.Unlock() //error  
+}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;import &amp;ldquo;sync&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;但是你可以用 type embedding 来实现 method set 继承&lt;/p&gt;
 
-&lt;p&gt;type myLocker struct {&lt;br /&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;quot;sync&amp;quot;
+
+type myLocker struct {  
     sync.Mutex
-}&lt;/p&gt;
+}
 
-&lt;p&gt;func main() {&lt;br /&gt;
+func main() {  
     var lock myLocker
     lock.Lock() //ok
     lock.Unlock() //ok
-}&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-Interface type declarations also retain their method sets.
-
+}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;import &amp;ldquo;sync&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Interface type declarations also retain their method sets.&lt;/p&gt;
 
-&lt;p&gt;type myLocker sync.Locker&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;quot;sync&amp;quot;
 
-&lt;p&gt;func main() {&lt;br /&gt;
+type myLocker sync.Locker
+
+func main() {  
     var lock myLocker = new(sync.Mutex)
     lock.Lock() //ok
     lock.Unlock() //ok
-}&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;
-### 闭包问题
-
-注：javascript 教程也有涉及
-
-* copy 变量
-* 参数传递给匿名函数
-
-copy 变量
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;data := []string{&amp;quot;one&amp;quot;,&amp;quot;two&amp;quot;,&amp;quot;three&amp;quot;}
-
-for _,v := range data {
-    vcopy := v //
-    go func() {
-        fmt.Println(vcopy)
-    }()
-}
-
-time.Sleep(3 * time.Second)
-//goroutines print: one, two, three
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;
-参数传递
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;data := []string{&amp;quot;one&amp;quot;,&amp;quot;two&amp;quot;,&amp;quot;three&amp;quot;}
-
-for _,v := range data {
-    go func(in string) {
-        fmt.Println(in)
-    }(v)
-}
-
-time.Sleep(3 * time.Second)
-//goroutines print: one, two, three
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;
-这个有点反人类
-在 for 里加上：``` v := v ```
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;package main&lt;/p&gt;
-
-&lt;p&gt;import (&lt;br /&gt;
-    &amp;ldquo;fmt&amp;rdquo;
-    &amp;ldquo;time&amp;rdquo;
-)&lt;/p&gt;
-
-&lt;p&gt;type field struct {&lt;br /&gt;
-    name string
-}&lt;/p&gt;
-
-&lt;p&gt;func (p *field) print() {&lt;br /&gt;
-    fmt.Println(p.name)
-}&lt;/p&gt;
-
-&lt;p&gt;func main() {&lt;br /&gt;
-    data := []field{{&amp;ldquo;one&amp;rdquo;},{&amp;ldquo;two&amp;rdquo;},{&amp;ldquo;three&amp;rdquo;}}&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;for _,v := range data {
-    v := v
-    go v.print()
-}
-
-time.Sleep(3 * time.Second)
-//goroutines print: one, two, three
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;
-
-### defer
-
-参数是在 defer 被 evaluated 的时候 evaluated 的
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;var i int = 1
-
-defer fmt.Println(&amp;quot;result =&amp;gt;&amp;quot;,func() int { return i * 2 }())
-i++
-//prints: result =&amp;gt; 2 (not ok if you expected 4)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;
-The deferred calls are executed at the end of the containing function and not at the end of the containing code block
-
-可以把需要 defer 的地方 wrapper 一个 func
-
-### type assertion
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code&gt;var data interface{} = &amp;quot;great&amp;quot;
-
-// don&#39;t
-if data, ok := data.(int); ok {
-    fmt.Println(&amp;quot;[is an int] value =&amp;gt;&amp;quot;,data)
-} else {
-    fmt.Println(&amp;quot;[not an int] value =&amp;gt;&amp;quot;,data) 
-    //prints: [not an int] value =&amp;gt; 0 (not &amp;quot;great&amp;quot;)
-}
-
-// do
-if res, ok := data.(int); ok {
-    fmt.Println(&amp;quot;[is an int] value =&amp;gt;&amp;quot;,res)
-} else {
-    fmt.Println(&amp;quot;[not an int] value =&amp;gt;&amp;quot;,data) 
-    //prints: [not an int] value =&amp;gt; great (as expected)
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;
-### channel
+&lt;h3 id=&#34;闭包问题:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;闭包问题&lt;/h3&gt;
 
-返回 chan 的函数
+&lt;p&gt;注：javascript 教程也有涉及&lt;/p&gt;
 
-&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;copy 变量&lt;/li&gt;
+&lt;li&gt;参数传递给匿名函数&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;func boring(msg string) &amp;lt;-chan string {
-    c := make(chan string)&lt;/p&gt;
+&lt;p&gt;copy 变量&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;go func() {
-    for i := 0; ; i++ {
-        c &amp;lt;- fmt.Sprintf(&amp;quot;%s %d&amp;quot;, msg, i)
-        time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
+&lt;pre&gt;&lt;code&gt;    data := []string{&amp;quot;one&amp;quot;,&amp;quot;two&amp;quot;,&amp;quot;three&amp;quot;}
+
+    for _,v := range data {
+        vcopy := v //
+        go func() {
+            fmt.Println(vcopy)
+        }()
     }
-}()
 
-return c
+    time.Sleep(3 * time.Second)
+    //goroutines print: one, two, three
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;参数传递&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    data := []string{&amp;quot;one&amp;quot;,&amp;quot;two&amp;quot;,&amp;quot;three&amp;quot;}
+
+    for _,v := range data {
+        go func(in string) {
+            fmt.Println(in)
+        }(v)
+    }
+
+    time.Sleep(3 * time.Second)
+    //goroutines print: one, two, three
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个有点反人类
+在 for 里加上：&lt;code&gt;v := v&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package main
+
+import (  
+    &amp;quot;fmt&amp;quot;
+    &amp;quot;time&amp;quot;
+)
+
+type field struct {  
+    name string
+}
+
+func (p *field) print() {  
+    fmt.Println(p.name)
+}
+
+func main() {  
+    data := []field{{&amp;quot;one&amp;quot;},{&amp;quot;two&amp;quot;},{&amp;quot;three&amp;quot;}}
+
+    for _,v := range data {
+        v := v
+        go v.print()
+    }
+
+    time.Sleep(3 * time.Second)
+    //goroutines print: one, two, three
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;defer:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;defer&lt;/h3&gt;
+
+&lt;p&gt;参数是在 defer 被 evaluated 的时候 evaluated 的&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    var i int = 1
+
+    defer fmt.Println(&amp;quot;result =&amp;gt;&amp;quot;,func() int { return i * 2 }())
+    i++
+    //prints: result =&amp;gt; 2 (not ok if you expected 4)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The deferred calls are executed at the end of the containing function and not at the end of the containing code block&lt;/p&gt;
+
+&lt;p&gt;可以把需要 defer 的地方 wrapper 一个 func&lt;/p&gt;
+
+&lt;h3 id=&#34;type-assertion:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;type assertion&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;
+    var data interface{} = &amp;quot;great&amp;quot;
 
-### template
+    // don&#39;t
+    if data, ok := data.(int); ok {
+        fmt.Println(&amp;quot;[is an int] value =&amp;gt;&amp;quot;,data)
+    } else {
+        fmt.Println(&amp;quot;[not an int] value =&amp;gt;&amp;quot;,data) 
+        //prints: [not an int] value =&amp;gt; 0 (not &amp;quot;great&amp;quot;)
+    }
 
-template 加载可以有多种方式:
-
-* Parse
-* ParseFiles
-
-简单
+    // do
+    if res, ok := data.(int); ok {
+        fmt.Println(&amp;quot;[is an int] value =&amp;gt;&amp;quot;,res)
+    } else {
+        fmt.Println(&amp;quot;[not an int] value =&amp;gt;&amp;quot;,data) 
+        //prints: [not an int] value =&amp;gt; great (as expected)
+    }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;type Tag struct {
+&lt;h3 id=&#34;channel:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;channel&lt;/h3&gt;
+
+&lt;p&gt;返回 chan 的函数&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func boring(msg string) &amp;lt;-chan string {
+    c := make(chan string)
+
+    go func() {
+        for i := 0; ; i++ {
+            c &amp;lt;- fmt.Sprintf(&amp;quot;%s %d&amp;quot;, msg, i)
+            time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
+        }
+    }()
+
+    return c
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;template&lt;/h3&gt;
+
+&lt;p&gt;template 加载可以有多种方式:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Parse&lt;/li&gt;
+&lt;li&gt;ParseFiles&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;简单&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;
+type Tag struct {
     TName string
 }
 type Person struct {
@@ -1279,13 +1241,13 @@ type Person struct {
     Age       int
     Emails    []string
     Tags      []*Tag
-}&lt;/p&gt;
+}
 
-&lt;p&gt;func main() {
-    t1 := Tag{TName: &amp;ldquo;java&amp;rdquo;}
-    t2 := Tag{TName: &amp;ldquo;go&amp;rdquo;}
-    t := template.New(&amp;ldquo;persion tag example&amp;rdquo;)
-    t, _ = t.Parse(&lt;code&gt;person with tags {{.FirstName}} !
+func main() {
+    t1 := Tag{TName: &amp;quot;java&amp;quot;}
+    t2 := Tag{TName: &amp;quot;go&amp;quot;}
+    t := template.New(&amp;quot;persion tag example&amp;quot;)
+    t, _ = t.Parse(`person with tags {{.FirstName}} !
         {{range .Emails}}
             email : {{.}}
         {{end}}
@@ -1294,36 +1256,34 @@ type Person struct {
                 tag is : {{.TName}}
             {{end}}
         {{end}}
-&lt;/code&gt;)
+    `)
     p := Person{
-        FirstName: &amp;ldquo;d&amp;rdquo;,
-        LastName:  &amp;ldquo;X&amp;rdquo;,
-        Emails:    []string{&amp;ldquo;a@gmail.com&amp;rdquo;, &amp;ldquo;b@gmail.com&amp;rdquo;},
+        FirstName: &amp;quot;d&amp;quot;,
+        LastName:  &amp;quot;X&amp;quot;,
+        Emails:    []string{&amp;quot;a@gmail.com&amp;quot;, &amp;quot;b@gmail.com&amp;quot;},
         Tags:      []*Tag{&amp;amp;t1, &amp;amp;t2},
-    }&lt;/p&gt;
+    }
 
-&lt;pre&gt;&lt;code&gt;t.Execute(os.Stdout, p)
+    t.Execute(os.Stdout, p)
+}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;output&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;output
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;person with tags d !
+&lt;pre&gt;&lt;code&gt;person with tags d !
             email : a@gmail.com
             email : b@gmail.com
                 tag is : java
-                tag is : go&lt;/p&gt;
+                tag is : go
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code&gt;
-### 组合 template
+&lt;h3 id=&#34;组合-template:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;组合 template&lt;/h3&gt;
 
-把一个页面分成 layout 和 content，layout 负责布局， content 负责展示内容
+&lt;p&gt;把一个页面分成 layout 和 content，layout 负责布局， content 负责展示内容&lt;/p&gt;
 
-content.gtpl 定义了 template 名字：content
-``` content.gtpl
-{{define &amp;quot;content&amp;quot;}}
+&lt;p&gt;content.gtpl 定义了 template 名字：content&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-content.gtpl&#34;&gt;{{define &amp;quot;content&amp;quot;}}
 &amp;lt;ul&amp;gt;
     {{range .}}
         &amp;lt;li&amp;gt;{{.FirstName}} {{.LastName}} is {{.Age}} years old.
