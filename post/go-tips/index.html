@@ -1,87 +1,54 @@
-<!DOCTYPE HTML>
-
-<html lang="en-us">
-
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
 <head>
-	<meta charset="utf-8">
-	<title>go tips - waterdudu blog</title>
-	<meta name="author" content="map[name:dudu email:]">
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.15" />
 
-	
-	
-	<meta name="description" content="">
-	
-
-	
-	<meta name="HandheldFriendly" content="True">
-	<meta name="MobileOptimized" content="320">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-    
-	<link href='/index.xml' rel="alternate" title="waterdudu blog" type="application/atom+xml">
-	
-	<link rel="canonical" href="http://waterdudu.github.io/post/go-tips/">
-	<link href="http://waterdudu.github.io//favicon.png" rel="shortcut icon">
-	<link href="http://waterdudu.github.io//css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-	<link href="http://waterdudu.github.io//css/font-awesome.min.css" media="screen, projection" rel="stylesheet" type="text/css">
-	
-	<link href='http://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-	
   
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
+  <title> go tips &middot; My New Hugo Site </title>
+
+  
+  <link rel="stylesheet" href="http://waterdudu.github.io/css/poole.css">
+  <link rel="stylesheet" href="http://waterdudu.github.io/css/syntax.css">
+  <link rel="stylesheet" href="http://waterdudu.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://waterdudu.github.io/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="http://waterdudu.github.io/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="My New Hugo Site" />
 </head>
 
+	<body class="">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="http://waterdudu.github.io/"><h1>My New Hugo Site</h1></a>
+      <p class="lead">
+       Tesla&#39;s Awesome Hugo Site 
+      </p>
+    </div>
 
-<body>
-	<div class="container">
-		<div class="left-col">
-			<div class="intrude-less">
-			<header id="header" class="inner"><div class="profilepic">
-	
-	
-	
+    <ul class="sidebar-nav">
+      <li><a href="http://waterdudu.github.io/">Home</a> </li>
+      
+    </ul>
+
+    <p>&copy; 2016. All rights reserved. </p>
+  </div>
 </div>
 
-<nav id="main-nav"><ul class="main">
-    <li><a href="/">Blog</a></li>
-    <li><a href="">About</a></li>
-    <li><a href="/post/">Archives</a></li>
-</ul>
 
-</nav>
-<nav id="sub-nav">
-	<div class="social">
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-    	
-    	
-			<a class="rss" href='/index.xml' title="RSS">RSS</a>
-		
-	</div>
-</nav>
-</header>
-			</div>
-		</div>
-		<div class="mid-col">
-			
-			<div class="mid-col-container">
-				<div id="content" class="inner">
-					<div itemscope itemtype="http://schema.org/Blog">
-					<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-    <h1 class="title" itemprop="name">go tips</h1>
-	<div class="entry-content" itemprop="articleBody">
+		<div class="content container">
+			<div class="post">
+			 	<h1>go tips</h1>
+			  <span class="post-date">Mon, Jan 18, 2016</span>
+			      
 
 <h3 id="资源:a2653e2feb85ac0f67b04a4d51202bc4">资源</h3>
 
@@ -393,339 +360,377 @@ if err := json.Unmarshal([]byte(result[&quot;status&quot;].(json.Number).String(
 </code></pre>
 
 <ul>
-<li>use a struct type that maps your numeric value to the numeric type you need.</li>
+<li>use a struct type that maps your numeric value to the numeric type you need.
+``<code>
+var data = []byte(</code>{&ldquo;status&rdquo;: 200}`)</li>
 </ul>
 
-<pre><code>  var data = []byte(`{&quot;status&quot;: 200}`)
+<p>var result struct {
+    Status uint64 <code>json:&quot;status&quot;</code>
+  }</p>
 
-  var result struct {
-    Status uint64 `json:&quot;status&quot;`
-  }
-
-  if err := json.NewDecoder(bytes.NewReader(data)).Decode(&amp;result); err != nil {
-    fmt.Println(&quot;error:&quot;, err)
+<p>if err := json.NewDecoder(bytes.NewReader(data)).Decode(&amp;result); err != nil {
+    fmt.Println(&ldquo;error:&ldquo;, err)
     return
-  }
+  }</p>
+
+<pre><code>
+* use a struct that maps your numeric value to the json.RawMessage type if you need to defer the value decoding.
+这个条件判断时有用（如 status 可能是 200 也可能是 ok）
+
 </code></pre>
 
-<ul>
-<li>use a struct that maps your numeric value to the json.RawMessage type if you need to defer the value decoding.
-这个条件判断时有用（如 status 可能是 200 也可能是 ok）</li>
-</ul>
-
-<pre><code>    records := [][]byte{
-        []byte(`{&quot;status&quot;: 200, &quot;tag&quot;:&quot;one&quot;}`),
-        []byte(`{&quot;status&quot;:&quot;ok&quot;, &quot;tag&quot;:&quot;two&quot;}`),
-    }
-
-    for idx, record := range records {
-        var result struct {
-            StatusCode uint64
-            StatusName string
-            Status     json.RawMessage `json:&quot;status&quot;`
-            Tag        string          `json:&quot;tag&quot;`
-        }
-
-        if err := json.NewDecoder(bytes.NewReader(record)).Decode(&amp;result); err != nil {
-            fmt.Println(&quot;error:&quot;, err)
-            return
-        }
-
-        var sstatus string
-        if err := json.Unmarshal(result.Status, &amp;sstatus); err == nil {
-            result.StatusName = sstatus
-        }
-
-        var nstatus uint64
-        if err := json.Unmarshal(result.Status, &amp;nstatus); err == nil {
-            result.StatusCode = nstatus
-        }
-
-        fmt.Printf(&quot;[%v] result =&gt; %+v\n&quot;, idx, result)
-    }
-</code></pre>
-
-<h3 id="比较-deepequal:a2653e2feb85ac0f67b04a4d51202bc4">比较，DeepEqual</h3>
-
-<p>当 struct field 可比较时才能用 == 比较，否则  compile error</p>
-
-<p>DeepEqual 认为 nil 和 empty 不等</p>
-
-<p>string.EqualFold 比较 unicode 字符，case insensive</p>
-
-<pre><code>    fmt.Println(strings.EqualFold(&quot;HELLO&quot;, &quot;hello&quot;))
-    fmt.Println(strings.EqualFold(&quot;ÑOÑO&quot;, &quot;ñoño&quot;))
-</code></pre>
-
-<h3 id="recover:a2653e2feb85ac0f67b04a4d51202bc4">recover</h3>
-
-<p>必须在 defer 里，不可把 recover 放在 func 里</p>
-
-<pre><code>func doRecover() {  
-    fmt.Println(&quot;recovered =&gt;&quot;,recover()) //prints: recovered =&gt; &lt;nil&gt;
+<pre><code>records := [][]byte{
+    []byte(`{&quot;status&quot;: 200, &quot;tag&quot;:&quot;one&quot;}`),
+    []byte(`{&quot;status&quot;:&quot;ok&quot;, &quot;tag&quot;:&quot;two&quot;}`),
 }
 
-func main() {  
+for idx, record := range records {
+    var result struct {
+        StatusCode uint64
+        StatusName string
+        Status     json.RawMessage `json:&quot;status&quot;`
+        Tag        string          `json:&quot;tag&quot;`
+    }
+
+    if err := json.NewDecoder(bytes.NewReader(record)).Decode(&amp;result); err != nil {
+        fmt.Println(&quot;error:&quot;, err)
+        return
+    }
+
+    var sstatus string
+    if err := json.Unmarshal(result.Status, &amp;sstatus); err == nil {
+        result.StatusName = sstatus
+    }
+
+    var nstatus uint64
+    if err := json.Unmarshal(result.Status, &amp;nstatus); err == nil {
+        result.StatusCode = nstatus
+    }
+
+    fmt.Printf(&quot;[%v] result =&gt; %+v\n&quot;, idx, result)
+}
+</code></pre>
+
+<pre><code>
+### 比较，DeepEqual
+
+当 struct field 可比较时才能用 == 比较，否则  compile error
+
+DeepEqual 认为 nil 和 empty 不等
+
+string.EqualFold 比较 unicode 字符，case insensive
+</code></pre>
+
+<pre><code>fmt.Println(strings.EqualFold(&quot;HELLO&quot;, &quot;hello&quot;))
+fmt.Println(strings.EqualFold(&quot;ÑOÑO&quot;, &quot;ñoño&quot;))
+</code></pre>
+
+<pre><code>
+### recover
+必须在 defer 里，不可把 recover 放在 func 里
+
+</code></pre>
+
+<p>func doRecover() {<br />
+    fmt.Println(&ldquo;recovered =&gt;&rdquo;,recover()) //prints: recovered =&gt; <nil>
+}</p>
+
+<p>func main() {<br />
     defer func() {
         doRecover() //panic is not recovered
-    }()
+    }()</p>
 
-    panic(&quot;not good&quot;)
+<pre><code>panic(&quot;not good&quot;)
+</code></pre>
+
+<p>}</p>
+
+<pre><code>
+### for range 更新数据
+
+for range data value 变量是 collection data 的 copy，不可以用它更新 collection
+
+</code></pre>
+
+<pre><code>data := []int{1,2,3}
+for _,v := range data {
+    v *= 10 //original item is not changed
 }
+
+fmt.Println(&quot;data:&quot;,data) //prints data: [1 2 3]
 </code></pre>
 
-<h3 id="for-range-更新数据:a2653e2feb85ac0f67b04a4d51202bc4">for range 更新数据</h3>
+<pre><code>
+使用 index operator 来更新
 
-<p>for range data value 变量是 collection data 的 copy，不可以用它更新 collection</p>
-
-<pre><code>    data := []int{1,2,3}
-    for _,v := range data {
-        v *= 10 //original item is not changed
-    }
-
-    fmt.Println(&quot;data:&quot;,data) //prints data: [1 2 3]
 </code></pre>
 
-<p>使用 index operator 来更新</p>
+<pre><code>data := []int{1,2,3}
+for i,_ := range data {
+    data[i] *= 10
+}
 
-<pre><code>    data := []int{1,2,3}
-    for i,_ := range data {
-        data[i] *= 10
-    }
-
-    fmt.Println(&quot;data:&quot;,data) //prints data: [10 20 30]
+fmt.Println(&quot;data:&quot;,data) //prints data: [10 20 30]
 </code></pre>
 
-<p>如果 slice 是 pointer value，除了采用 index 方式，可采用下面方式更新</p>
+<pre><code>
+如果 slice 是 pointer value，除了采用 index 方式，可采用下面方式更新
 
-<pre><code>    data := []*struct{num int} {{1},{2},{3}}
-
-    for _,v := range data {
-        v.num *= 10
-    }
-
-    fmt.Println(data[0],data[1],data[2]) //prints &amp;{10} &amp;{20} &amp;{30}
 </code></pre>
 
-<h3 id="slice:a2653e2feb85ac0f67b04a4d51202bc4">slice</h3>
+<pre><code>data := []*struct{num int} {{1},{2},{3}}
 
-<p>请使用 copy 来防止共享 slice</p>
+for _,v := range data {
+    v.num *= 10
+}
 
-<pre><code>func get() []byte {  
+fmt.Println(data[0],data[1],data[2]) //prints &amp;{10} &amp;{20} &amp;{30}
+</code></pre>
+
+<pre><code>
+### slice
+
+请使用 copy 来防止共享 slice
+
+</code></pre>
+
+<p>func get() []byte {<br />
     raw := make([]byte,10000)
-    fmt.Println(len(raw),cap(raw),&amp;raw[0]) //prints: 10000 10000 &lt;byte_addr_x&gt;
+    fmt.Println(len(raw),cap(raw),&amp;raw[0]) //prints: 10000 10000 <byte_addr_x>
     res := make([]byte,3)
     copy(res,raw[:3])
     return res
-}
+}</p>
 
-func main() {  
+<p>func main() {<br />
     data := get()
-    fmt.Println(len(data),cap(data),&amp;data[0]) //prints: 3 3 &lt;byte_addr_y&gt;
-}
+    fmt.Println(len(data),cap(data),&amp;data[0]) //prints: 3 3 <byte_addr_y>
+}</p>
+
+<pre><code>
+### slice data corruption
+使用 full slice expression，比较优雅
+
 </code></pre>
 
-<h3 id="slice-data-corruption:a2653e2feb85ac0f67b04a4d51202bc4">slice data corruption</h3>
+<pre><code>source := []string{&quot;Apple&quot;, &quot;Orange&quot;, &quot;Plum&quot;, &quot;Banana&quot;, &quot;Grape&quot;}
 
-<p>使用 full slice expression，比较优雅</p>
+// slice 被 detach 了
+slice1 := source[2:3:3]
+slice2 := source[2:]
 
-<pre><code>    source := []string{&quot;Apple&quot;, &quot;Orange&quot;, &quot;Plum&quot;, &quot;Banana&quot;, &quot;Grape&quot;}
+slice1 = append(slice1, &quot;Kiwi&quot;)
 
-    // slice 被 detach 了
-    slice1 := source[2:3:3]
-    slice2 := source[2:]
-
-    slice1 = append(slice1, &quot;Kiwi&quot;)
-
-    // source =&gt; [Apple Orange Plum Banana Grape]
-    fmt.Printf(&quot;source =&gt; %v\n&quot;, source)
-    // slice1 =&gt; [Plum Kiwi]
-    fmt.Printf(&quot;slice1 =&gt; %v\n&quot;, slice1)
-    // slice2 =&gt; [Plum Banana Grape]
-    fmt.Printf(&quot;slice2 =&gt; %v\n&quot;, slice2)
+// source =&gt; [Apple Orange Plum Banana Grape]
+fmt.Printf(&quot;source =&gt; %v\n&quot;, source)
+// slice1 =&gt; [Plum Kiwi]
+fmt.Printf(&quot;slice1 =&gt; %v\n&quot;, slice1)
+// slice2 =&gt; [Plum Banana Grape]
+fmt.Printf(&quot;slice2 =&gt; %v\n&quot;, slice2)
 </code></pre>
 
-<h3 id="集成-method-set:a2653e2feb85ac0f67b04a4d51202bc4">集成 method set</h3>
+<pre><code>
+### 集成 method set
+自定义 struct 不继承方法集
 
-<p>自定义 struct 不继承方法集</p>
+</code></pre>
 
-<pre><code>package main
+<p>package main</p>
 
-import &quot;sync&quot;
+<p>import &ldquo;sync&rdquo;</p>
 
-type myMutex sync.Mutex
+<p>type myMutex sync.Mutex</p>
 
-func main() {  
+<p>func main() {<br />
     var mtx myMutex
     mtx.Lock() //error
-    mtx.Unlock() //error  
-}
+    mtx.Unlock() //error<br />
+}</p>
+
+<pre><code>但是你可以用 type embedding 来实现 method set 继承
 </code></pre>
 
-<p>但是你可以用 type embedding 来实现 method set 继承</p>
+<p>import &ldquo;sync&rdquo;</p>
 
-<pre><code>import &quot;sync&quot;
-
-type myLocker struct {  
+<p>type myLocker struct {<br />
     sync.Mutex
-}
+}</p>
 
-func main() {  
+<p>func main() {<br />
     var lock myLocker
     lock.Lock() //ok
     lock.Unlock() //ok
-}
+}</p>
+
+<pre><code>
+Interface type declarations also retain their method sets.
+
 </code></pre>
 
-<p>Interface type declarations also retain their method sets.</p>
+<p>import &ldquo;sync&rdquo;</p>
 
-<pre><code>import &quot;sync&quot;
+<p>type myLocker sync.Locker</p>
 
-type myLocker sync.Locker
-
-func main() {  
+<p>func main() {<br />
     var lock myLocker = new(sync.Mutex)
     lock.Lock() //ok
     lock.Unlock() //ok
-}
-</code></pre>
-
-<h3 id="闭包问题:a2653e2feb85ac0f67b04a4d51202bc4">闭包问题</h3>
-
-<p>注：javascript 教程也有涉及</p>
-
-<ul>
-<li>copy 变量</li>
-<li>参数传递给匿名函数</li>
-</ul>
-
-<p>copy 变量</p>
-
-<pre><code>    data := []string{&quot;one&quot;,&quot;two&quot;,&quot;three&quot;}
-
-    for _,v := range data {
-        vcopy := v //
-        go func() {
-            fmt.Println(vcopy)
-        }()
-    }
-
-    time.Sleep(3 * time.Second)
-    //goroutines print: one, two, three
-</code></pre>
-
-<p>参数传递</p>
-
-<pre><code>    data := []string{&quot;one&quot;,&quot;two&quot;,&quot;three&quot;}
-
-    for _,v := range data {
-        go func(in string) {
-            fmt.Println(in)
-        }(v)
-    }
-
-    time.Sleep(3 * time.Second)
-    //goroutines print: one, two, three
-</code></pre>
-
-<p>这个有点反人类
-在 for 里加上：<code>v := v</code></p>
-
-<pre><code>package main
-
-import (  
-    &quot;fmt&quot;
-    &quot;time&quot;
-)
-
-type field struct {  
-    name string
-}
-
-func (p *field) print() {  
-    fmt.Println(p.name)
-}
-
-func main() {  
-    data := []field{{&quot;one&quot;},{&quot;two&quot;},{&quot;three&quot;}}
-
-    for _,v := range data {
-        v := v
-        go v.print()
-    }
-
-    time.Sleep(3 * time.Second)
-    //goroutines print: one, two, three
-</code></pre>
-
-<h3 id="defer:a2653e2feb85ac0f67b04a4d51202bc4">defer</h3>
-
-<p>参数是在 defer 被 evaluated 的时候 evaluated 的</p>
-
-<pre><code>    var i int = 1
-
-    defer fmt.Println(&quot;result =&gt;&quot;,func() int { return i * 2 }())
-    i++
-    //prints: result =&gt; 2 (not ok if you expected 4)
-</code></pre>
-
-<p>The deferred calls are executed at the end of the containing function and not at the end of the containing code block</p>
-
-<p>可以把需要 defer 的地方 wrapper 一个 func</p>
-
-<h3 id="type-assertion:a2653e2feb85ac0f67b04a4d51202bc4">type assertion</h3>
+}</p>
 
 <pre><code>
-    var data interface{} = &quot;great&quot;
+### 闭包问题
 
-    // don't
-    if data, ok := data.(int); ok {
-        fmt.Println(&quot;[is an int] value =&gt;&quot;,data)
-    } else {
-        fmt.Println(&quot;[not an int] value =&gt;&quot;,data) 
-        //prints: [not an int] value =&gt; 0 (not &quot;great&quot;)
-    }
+注：javascript 教程也有涉及
 
-    // do
-    if res, ok := data.(int); ok {
-        fmt.Println(&quot;[is an int] value =&gt;&quot;,res)
-    } else {
-        fmt.Println(&quot;[not an int] value =&gt;&quot;,data) 
-        //prints: [not an int] value =&gt; great (as expected)
-    }
+* copy 变量
+* 参数传递给匿名函数
+
+copy 变量
+
 </code></pre>
 
-<h3 id="channel:a2653e2feb85ac0f67b04a4d51202bc4">channel</h3>
+<pre><code>data := []string{&quot;one&quot;,&quot;two&quot;,&quot;three&quot;}
 
-<p>返回 chan 的函数</p>
-
-<pre><code>func boring(msg string) &lt;-chan string {
-    c := make(chan string)
-
+for _,v := range data {
+    vcopy := v //
     go func() {
-        for i := 0; ; i++ {
-            c &lt;- fmt.Sprintf(&quot;%s %d&quot;, msg, i)
-            time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
-        }
+        fmt.Println(vcopy)
     }()
+}
 
-    return c
+time.Sleep(3 * time.Second)
+//goroutines print: one, two, three
+</code></pre>
+
+<pre><code>
+参数传递
+
+</code></pre>
+
+<pre><code>data := []string{&quot;one&quot;,&quot;two&quot;,&quot;three&quot;}
+
+for _,v := range data {
+    go func(in string) {
+        fmt.Println(in)
+    }(v)
+}
+
+time.Sleep(3 * time.Second)
+//goroutines print: one, two, three
+</code></pre>
+
+<pre><code>
+这个有点反人类
+在 for 里加上：``` v := v ```
+
+</code></pre>
+
+<p>package main</p>
+
+<p>import (<br />
+    &ldquo;fmt&rdquo;
+    &ldquo;time&rdquo;
+)</p>
+
+<p>type field struct {<br />
+    name string
+}</p>
+
+<p>func (p *field) print() {<br />
+    fmt.Println(p.name)
+}</p>
+
+<p>func main() {<br />
+    data := []field{{&ldquo;one&rdquo;},{&ldquo;two&rdquo;},{&ldquo;three&rdquo;}}</p>
+
+<pre><code>for _,v := range data {
+    v := v
+    go v.print()
+}
+
+time.Sleep(3 * time.Second)
+//goroutines print: one, two, three
+</code></pre>
+
+<pre><code>
+
+### defer
+
+参数是在 defer 被 evaluated 的时候 evaluated 的
+
+</code></pre>
+
+<pre><code>var i int = 1
+
+defer fmt.Println(&quot;result =&gt;&quot;,func() int { return i * 2 }())
+i++
+//prints: result =&gt; 2 (not ok if you expected 4)
+</code></pre>
+
+<pre><code>
+The deferred calls are executed at the end of the containing function and not at the end of the containing code block
+
+可以把需要 defer 的地方 wrapper 一个 func
+
+### type assertion
+
+</code></pre>
+
+<pre><code>var data interface{} = &quot;great&quot;
+
+// don't
+if data, ok := data.(int); ok {
+    fmt.Println(&quot;[is an int] value =&gt;&quot;,data)
+} else {
+    fmt.Println(&quot;[not an int] value =&gt;&quot;,data) 
+    //prints: [not an int] value =&gt; 0 (not &quot;great&quot;)
+}
+
+// do
+if res, ok := data.(int); ok {
+    fmt.Println(&quot;[is an int] value =&gt;&quot;,res)
+} else {
+    fmt.Println(&quot;[not an int] value =&gt;&quot;,data) 
+    //prints: [not an int] value =&gt; great (as expected)
 }
 </code></pre>
 
-<h3 id="template:a2653e2feb85ac0f67b04a4d51202bc4">template</h3>
+<pre><code>
+### channel
 
-<p>template 加载可以有多种方式:</p>
+返回 chan 的函数
 
-<ul>
-<li>Parse</li>
-<li>ParseFiles</li>
-</ul>
+</code></pre>
 
-<p>简单</p>
+<p>func boring(msg string) &lt;-chan string {
+    c := make(chan string)</p>
+
+<pre><code>go func() {
+    for i := 0; ; i++ {
+        c &lt;- fmt.Sprintf(&quot;%s %d&quot;, msg, i)
+        time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
+    }
+}()
+
+return c
+</code></pre>
+
+<p>}</p>
 
 <pre><code>
-type Tag struct {
+
+### template
+
+template 加载可以有多种方式:
+
+* Parse
+* ParseFiles
+
+简单
+</code></pre>
+
+<p>type Tag struct {
     TName string
 }
 type Person struct {
@@ -734,13 +739,13 @@ type Person struct {
     Age       int
     Emails    []string
     Tags      []*Tag
-}
+}</p>
 
-func main() {
-    t1 := Tag{TName: &quot;java&quot;}
-    t2 := Tag{TName: &quot;go&quot;}
-    t := template.New(&quot;persion tag example&quot;)
-    t, _ = t.Parse(`person with tags {{.FirstName}} !
+<p>func main() {
+    t1 := Tag{TName: &ldquo;java&rdquo;}
+    t2 := Tag{TName: &ldquo;go&rdquo;}
+    t := template.New(&ldquo;persion tag example&rdquo;)
+    t, _ = t.Parse(<code>person with tags {{.FirstName}} !
         {{range .Emails}}
             email : {{.}}
         {{end}}
@@ -749,34 +754,36 @@ func main() {
                 tag is : {{.TName}}
             {{end}}
         {{end}}
-    `)
+</code>)
     p := Person{
-        FirstName: &quot;d&quot;,
-        LastName:  &quot;X&quot;,
-        Emails:    []string{&quot;a@gmail.com&quot;, &quot;b@gmail.com&quot;},
+        FirstName: &ldquo;d&rdquo;,
+        LastName:  &ldquo;X&rdquo;,
+        Emails:    []string{&ldquo;a@gmail.com&rdquo;, &ldquo;b@gmail.com&rdquo;},
         Tags:      []*Tag{&amp;t1, &amp;t2},
-    }
+    }</p>
 
-    t.Execute(os.Stdout, p)
-}
+<pre><code>t.Execute(os.Stdout, p)
 </code></pre>
 
-<p>output</p>
+<p>}</p>
 
-<pre><code>person with tags d !
+<pre><code>output
+</code></pre>
+
+<p>person with tags d !
             email : a@gmail.com
             email : b@gmail.com
                 tag is : java
-                tag is : go
-</code></pre>
+                tag is : go</p>
 
-<h3 id="组合-template:a2653e2feb85ac0f67b04a4d51202bc4">组合 template</h3>
+<pre><code>
+### 组合 template
 
-<p>把一个页面分成 layout 和 content，layout 负责布局， content 负责展示内容</p>
+把一个页面分成 layout 和 content，layout 负责布局， content 负责展示内容
 
-<p>content.gtpl 定义了 template 名字：content</p>
-
-<pre><code class="language-content.gtpl">{{define &quot;content&quot;}}
+content.gtpl 定义了 template 名字：content
+``` content.gtpl
+{{define &quot;content&quot;}}
 &lt;ul&gt;
     {{range .}}
         &lt;li&gt;{{.FirstName}} {{.LastName}} is {{.Age}} years old.
@@ -1289,48 +1296,11 @@ if fi.IsDir() {
     fmt.Printf(&quot;%s is a directory\n&quot;, path) 
 }
 </code></pre>
-</div></article>
-					
-						<div class="share">
-	<div class="addthis_toolbox addthis_default_style ">
-	
-	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-	
-	
-	<a class="addthis_button_tweet"></a>
-	
-	
-	<a class="addthis_button_google_plusone" g:plusone:size=''></a>
-	
-	
-	</div>
-	
-  	<script type="text/javascript" src='http://s7.addthis.com/js/250/addthis_widget.js#pubid='></script>
-  	
-</div>
 
-					
-					
-					
-
-
-				    </div>
-				</div>
 			</div>
-			<footer id="footer" class="inner">Copyright &copy; 2016
 
-    dudu
-
-Design credit: <a href="http://shashankmehta.in/archive/2012/greyshade.html">Shashank Mehta</a>
-<script src="http://waterdudu.github.io//js/slash.js"></script>
-<script src="http://waterdudu.github.io//js/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-	$('.fancybox').fancybox();
-})(jQuery);
-</script></footer>
+			
 		</div>
-	</div>
-	
-</body>
+
+  </body>
 </html>
