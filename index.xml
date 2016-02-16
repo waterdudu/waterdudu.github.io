@@ -602,7 +602,7 @@ func fakeSearch(kind string) Search {
 
 &lt;h3 id=&#34;访问-map-的-key-value:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;访问 map 的 key, value&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;x := map[string]string{
+&lt;pre&gt;&lt;code&gt;x := map[string]string{
     &amp;quot;name&amp;quot;: &amp;quot;dudu&amp;quot;,
     &amp;quot;love&amp;quot;: &amp;quot;many&amp;quot;,
 }
@@ -614,7 +614,7 @@ if _, ok := x[&amp;quot;love&amp;quot;]; !ok {
 
 &lt;h3 id=&#34;修改-string-时-转换成-slice:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;修改 string 时，转换成 slice&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;x := &amp;quot;strings are read-only&amp;quot;
+&lt;pre&gt;&lt;code&gt;x := &amp;quot;strings are read-only&amp;quot;
 xbytes := []byte(x)
 xbytes[0] = &#39;S&#39;
 
@@ -630,7 +630,7 @@ fmt.Println(string(xbytes))
 
 &lt;p&gt;The rule about pointers vs. values for receivers is that value methods can be invoked on pointers and values, but pointer methods can only be invoked on pointers.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;type List [] int
+&lt;pre&gt;&lt;code&gt;type List [] int
 
 func (l List) Len() int { return len(l) }
 func (l *List) Append(val int) { *l = append(*l, val) }
@@ -651,7 +651,7 @@ fmt.Printf(&amp;quot;%v (len: %d) \n&amp;quot;, pList, pList.Len())
 &lt;p&gt;for range 默认会把 string 当作 utf-8 字符，如果不能解析，则返回 0xfffd。
 需要把它转换成 byte slice 让结果正确。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;data := &amp;quot;A\xfe\x02\xff\x04&amp;quot;
+&lt;pre&gt;&lt;code&gt;data := &amp;quot;A\xfe\x02\xff\x04&amp;quot;
 for _,v := range data {
     fmt.Printf(&amp;quot;%#x &amp;quot;,v)
 }
@@ -666,7 +666,7 @@ for _,v := range []byte(data) {
 
 &lt;h3 id=&#34;for-range-map-随机:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;for range map 随机&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;m := map[string]int{&amp;quot;one&amp;quot;: 1, &amp;quot;two&amp;quot;: 2, &amp;quot;three&amp;quot;: 3, &amp;quot;four&amp;quot;: 4}
+&lt;pre&gt;&lt;code&gt;m := map[string]int{&amp;quot;one&amp;quot;: 1, &amp;quot;two&amp;quot;: 2, &amp;quot;three&amp;quot;: 3, &amp;quot;four&amp;quot;: 4}
 for k, v := range m {
     fmt.Println(k, v)
 }
