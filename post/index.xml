@@ -855,22 +855,6 @@ if err := json.Unmarshal([]byte(result[&amp;quot;status&amp;quot;].(json.Number)
 }
 
 &lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;use a struct type that maps your numeric value to the numeric type you need.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;  var data = []byte({&amp;quot;status&amp;quot;: 200}`)
-
-  var result struct {
-    Status uint64 \`json:&amp;quot;status&amp;quot;\`
-  }
-
-  if err := json.NewDecoder(bytes.NewReader(data)).Decode(&amp;amp;result); err != nil {
-    fmt.Println(&amp;quot;error:&amp;quot;, err)
-    return
-  }
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
