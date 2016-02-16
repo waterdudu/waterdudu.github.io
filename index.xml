@@ -706,36 +706,6 @@ for k, v := range m {
 
 &lt;p&gt;go 不支持 prefix increment or decrement&lt;/p&gt;
 
-&lt;h3 id=&#34;未导出的-field-的-encode-decode:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;未导出的 field 的 encode/decode&lt;/h3&gt;
-
-&lt;p&gt;未导出的 field 不能被 encode，decode 的时候被初始化为 zero value&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;package main
-
-import (  
-    &amp;quot;fmt&amp;quot;
-    &amp;quot;encoding/json&amp;quot;
-)
-
-type MyData struct {  
-    One int
-    two string
-}
-
-func main() {  
-    in := MyData{1,&amp;quot;two&amp;quot;}
-    fmt.Printf(&amp;quot;%#v\n&amp;quot;,in) //prints main.MyData{One:1, two:&amp;quot;two&amp;quot;}
-
-    encoded,_ := json.Marshal(in)
-    fmt.Println(string(encoded)) //prints {&amp;quot;One&amp;quot;:1}
-
-    var out MyData
-    json.Unmarshal(encoded,&amp;amp;out)
-
-    fmt.Printf(&amp;quot;%#v\n&amp;quot;,out) //prints main.MyData{One:1, two:&amp;quot;&amp;quot;}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
 &lt;h3 id=&#34;struct-field-是-map-或者-pointer-时的修改:a2653e2feb85ac0f67b04a4d51202bc4&#34;&gt;struct field 是 map 或者 pointer 时的修改&lt;/h3&gt;
 
 &lt;p&gt;struct field 是 map 或者 pointer 时，可以通过 value method 修改&lt;/p&gt;
