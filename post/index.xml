@@ -680,7 +680,7 @@ for k, v := range m {
 
 &lt;p&gt;switch 默认是 fallthrough 的，可以在 case 语句里写成 list，或者使用 fallthrough 语句&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;isSpace := func(ch byte) bool {
+&lt;pre&gt;&lt;code&gt;isSpace := func(ch byte) bool {
     switch(ch) {
     case &#39; &#39;, &#39;\t&#39;:
         return true
