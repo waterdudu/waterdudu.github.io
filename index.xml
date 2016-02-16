@@ -1246,16 +1246,9 @@ func main() {
     t1 := Tag{TName: &amp;quot;java&amp;quot;}
     t2 := Tag{TName: &amp;quot;go&amp;quot;}
     t := template.New(&amp;quot;persion tag example&amp;quot;)
-    t, _ = t.Parse(`person with tags {{.FirstName}} !
-        {{range .Emails}}
-            email : {{.}}
-        {{end}}
-        {{with .Tags}}
-            {{range .}}
-                tag is : {{.TName}}
-            {{end}}
-        {{end}}
-    `)
+
+
+
     p := Person{
         FirstName: &amp;quot;d&amp;quot;,
         LastName:  &amp;quot;X&amp;quot;,
