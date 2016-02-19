@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="postgres &middot; waterdudu&#39;s blog ">
+        <meta property="og:site_name" content="waterdudu&#39;s blog"/>
+        <meta property="og:description" content="dudu&#39;s Site">
+        <meta property="og:url" content="http://waterdudu.github.io/post/postgres/" />
+        <meta property="og:locale" content="en-us">
+        <meta name="author" content="">
+        <meta name="description" content="dudu&#39;s Site">
+        <meta name="keywords" content="">
+        <meta name="generator" content="Hugo 0.15" />
+        <link rel="icon" href="http://waterdudu.github.io/assets/favicon.ico" type="image/x-icon"> 
+        <link rel="stylesheet" href="http://waterdudu.github.io/css/slender-base.css">
+        <link rel="stylesheet" href="http://waterdudu.github.io/css/slender-color-schemes.css">
+        <link rel="stylesheet" href="http://waterdudu.github.io/css/font-awesome-4.5.0.min.css">
+        <link rel="stylesheet" href="http://waterdudu.github.io/css/highlight-9.0.0-default.min.css">
+        <title>
+            
+                postgres &middot; waterdudu&#39;s blog
+            
+        </title>
+    </head>
+    <body class="color-scheme-white">
+        <div class="container">
+            <header>
+                <nav>
+                    <ul><li><a href="http://waterdudu.github.io/post/postgres/">postgres</a></li></ul>
+                </nav>
+                
+                    <h1 class="title">postgres</h1>
+                    <aside>
+                        <p>on <strong>Fri, Feb 19, 2016</strong></p>
+                    </aside>
+                
+            </header>
+<article class="article-content">
+    <p>login</p>
+
+<pre><code>psql dex_db
+</code></pre>
+
+<p>check available database <code>\l</code></p>
+
+<pre><code>dex_db=# \l
+                              List of databases
+   Name    | Owner | Encoding |   Collate   |    Ctype    | Access privileges
+-----------+-------+----------+-------------+-------------+-------------------
+ d2        | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu         +
+           |       |          |             |             | dudu=CTc/dudu    +
+           |       |          |             |             | dex=CTc/dudu
+ dex_db    | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu         +
+           |       |          |             |             | dudu=CTc/dudu    +
+           |       |          |             |             | dex=CTc/dudu
+ dexdb1    | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+ postgres  | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+ template0 | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/dudu          +
+           |       |          |             |             | dudu=CTc/dudu
+ template1 | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/dudu          +
+           |       |          |             |             | dudu=CTc/dudu
+(6 rows)
+</code></pre>
+
+<p>select db</p>
+
+<p><code>\l dex_db</code></p>
+
+<pre><code>dex_db=# \l dex_db
+                             List of databases
+  Name  | Owner | Encoding |   Collate   |    Ctype    | Access privileges
+--------+-------+----------+-------------+-------------+-------------------
+ dex_db | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu         +
+        |       |          |             |             | dudu=CTc/dudu    +
+        |       |          |             |             | dex=CTc/dudu
+(1 row)
+</code></pre>
+
+<p>list tables
+<code>\d</code></p>
+
+<pre><code>dex_db=# \d
+                  List of relations
+ Schema |          Name           |   Type   | Owner
+--------+-------------------------+----------+-------
+ public | authd_user              | table    | dex
+ public | client_identity         | table    | dex
+ public | connector_config        | table    | dex
+ public | dex_migrations          | table    | dex
+ public | key                     | table    | dex
+ public | password_info           | table    | dex
+ public | refresh_token           | table    | dex
+ public | refresh_token_id_seq    | sequence | dex
+ public | remote_identity_mapping | table    | dex
+ public | session                 | table    | dex
+ public | session_key             | table    | dex
+(11 rows)
+
+</code></pre>
+
+<p>describe table</p>
+
+<pre><code>dex_db=# \d session
+       Table &quot;public.session&quot;
+    Column    |  Type   | Modifiers
+--------------+---------+-----------
+ id           | text    | not null
+ state        | text    |
+ created_at   | bigint  |
+ expires_at   | bigint  |
+ client_id    | text    |
+ client_state | text    |
+ redirect_url | text    |
+ identity     | text    |
+ connector_id | text    |
+ user_id      | text    |
+ register     | boolean |
+ nonce        | text    |
+ scope        | text    |
+Indexes:
+    &quot;session_pkey&quot; PRIMARY KEY, btree (id)
+</code></pre>
+
+<p>select table</p>
+
+<p><code>\x on</code></p>
+
+<pre><code>dex_db=# \x on
+Expanded display is on.
+dex_db=# select * from session;
+-[ RECORD 1 ]+----------------------------------------------------------------------------------------------------------
+id           | YqEuCHscVgs=
+state        | REMOTE_ATTACHED
+created_at   | 1455864780
+expires_at   | 1455907980
+client_id    | qWXRp93pWJ6mKzoYPlOEL9kgD8_QYQhCODaSEMbb2EE=@127.0.0.1
+client_state |
+redirect_url | http://127.0.0.1:5555/callback
+identity     | {&quot;ID&quot;:&quot;115162047548008935474&quot;,&quot;Name&quot;:&quot;&quot;,&quot;Email&quot;:&quot;fianceeyi@gmail.com&quot;,&quot;ExpiresAt&quot;:&quot;2016-02-19T07:53:41Z&quot;}
+connector_id | google
+user_id      |
+register     | f
+nonce        |
+scope        | openid email profile
+-[ RECORD 2 ]+----------------------------------------------------------------------------------------------------------
+id           | 2prwA7hETTk=
+state        | EXCHANGED
+created_at   | 1455864909
+expires_at   | 1455908109
+client_id    | qWXRp93pWJ6mKzoYPlOEL9kgD8_QYQhCODaSEMbb2EE=@127.0.0.1
+client_state |
+redirect_url | http://127.0.0.1:5555/callback
+identity     | {&quot;ID&quot;:&quot;115162047548008935474&quot;,&quot;Name&quot;:&quot;&quot;,&quot;Email&quot;:&quot;fianceeyi@gmail.com&quot;,&quot;ExpiresAt&quot;:&quot;2016-02-19T07:55:26Z&quot;}
+connector_id | google
+user_id      | 0ee2468c-5e74-426f-ba01-c555d7630a38
+register     | t
+nonce        |
+scope        | openid email profile
+</code></pre>
+
+<p>drop db</p>
+
+<pre><code>DROP DATABASE mydb;
+</code></pre>
+
+<p>drop table</p>
+
+<pre><code>DROP TABLE mytable;
+</code></pre>
+
+</article>
+        </div>
+        <footer>
+            <p>Copyright 2015 &copy; waterdudu</p>
+        </footer>
+        <script src="http://waterdudu.github.io/js/highlight-9.0.0.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        
+    </body>
+</html>

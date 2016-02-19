@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Development on waterdudu&#39;s blog</title>
+    <link>http://waterdudu.github.io/categories/development/</link>
+    <description>Recent content in Development on waterdudu&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 19 Feb 2016 15:07:01 +0800</lastBuildDate>
+    <atom:link href="http://waterdudu.github.io/categories/development/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>postgres</title>
+      <link>http://waterdudu.github.io/post/postgres/</link>
+      <pubDate>Fri, 19 Feb 2016 15:07:01 +0800</pubDate>
+      
+      <guid>http://waterdudu.github.io/post/postgres/</guid>
+      <description>&lt;p&gt;login&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;psql dex_db
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;check available database &lt;code&gt;\l&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;dex_db=# \l
+                              List of databases
+   Name    | Owner | Encoding |   Collate   |    Ctype    | Access privileges
+-----------+-------+----------+-------------+-------------+-------------------
+ d2        | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu         +
+           |       |          |             |             | dudu=CTc/dudu    +
+           |       |          |             |             | dex=CTc/dudu
+ dex_db    | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu         +
+           |       |          |             |             | dudu=CTc/dudu    +
+           |       |          |             |             | dex=CTc/dudu
+ dexdb1    | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+ postgres  | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+ template0 | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/dudu          +
+           |       |          |             |             | dudu=CTc/dudu
+ template1 | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/dudu          +
+           |       |          |             |             | dudu=CTc/dudu
+(6 rows)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;select db&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;\l dex_db&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;dex_db=# \l dex_db
+                             List of databases
+  Name  | Owner | Encoding |   Collate   |    Ctype    | Access privileges
+--------+-------+----------+-------------+-------------+-------------------
+ dex_db | dudu  | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu         +
+        |       |          |             |             | dudu=CTc/dudu    +
+        |       |          |             |             | dex=CTc/dudu
+(1 row)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;list tables
+&lt;code&gt;\d&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;dex_db=# \d
+                  List of relations
+ Schema |          Name           |   Type   | Owner
+--------+-------------------------+----------+-------
+ public | authd_user              | table    | dex
+ public | client_identity         | table    | dex
+ public | connector_config        | table    | dex
+ public | dex_migrations          | table    | dex
+ public | key                     | table    | dex
+ public | password_info           | table    | dex
+ public | refresh_token           | table    | dex
+ public | refresh_token_id_seq    | sequence | dex
+ public | remote_identity_mapping | table    | dex
+ public | session                 | table    | dex
+ public | session_key             | table    | dex
+(11 rows)
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;describe table&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;dex_db=# \d session
+       Table &amp;quot;public.session&amp;quot;
+    Column    |  Type   | Modifiers
+--------------+---------+-----------
+ id           | text    | not null
+ state        | text    |
+ created_at   | bigint  |
+ expires_at   | bigint  |
+ client_id    | text    |
+ client_state | text    |
+ redirect_url | text    |
+ identity     | text    |
+ connector_id | text    |
+ user_id      | text    |
+ register     | boolean |
+ nonce        | text    |
+ scope        | text    |
+Indexes:
+    &amp;quot;session_pkey&amp;quot; PRIMARY KEY, btree (id)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;select table&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;\x on&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;dex_db=# \x on
+Expanded display is on.
+dex_db=# select * from session;
+-[ RECORD 1 ]+----------------------------------------------------------------------------------------------------------
+id           | YqEuCHscVgs=
+state        | REMOTE_ATTACHED
+created_at   | 1455864780
+expires_at   | 1455907980
+client_id    | qWXRp93pWJ6mKzoYPlOEL9kgD8_QYQhCODaSEMbb2EE=@127.0.0.1
+client_state |
+redirect_url | http://127.0.0.1:5555/callback
+identity     | {&amp;quot;ID&amp;quot;:&amp;quot;115162047548008935474&amp;quot;,&amp;quot;Name&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;Email&amp;quot;:&amp;quot;fianceeyi@gmail.com&amp;quot;,&amp;quot;ExpiresAt&amp;quot;:&amp;quot;2016-02-19T07:53:41Z&amp;quot;}
+connector_id | google
+user_id      |
+register     | f
+nonce        |
+scope        | openid email profile
+-[ RECORD 2 ]+----------------------------------------------------------------------------------------------------------
+id           | 2prwA7hETTk=
+state        | EXCHANGED
+created_at   | 1455864909
+expires_at   | 1455908109
+client_id    | qWXRp93pWJ6mKzoYPlOEL9kgD8_QYQhCODaSEMbb2EE=@127.0.0.1
+client_state |
+redirect_url | http://127.0.0.1:5555/callback
+identity     | {&amp;quot;ID&amp;quot;:&amp;quot;115162047548008935474&amp;quot;,&amp;quot;Name&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;Email&amp;quot;:&amp;quot;fianceeyi@gmail.com&amp;quot;,&amp;quot;ExpiresAt&amp;quot;:&amp;quot;2016-02-19T07:55:26Z&amp;quot;}
+connector_id | google
+user_id      | 0ee2468c-5e74-426f-ba01-c555d7630a38
+register     | t
+nonce        |
+scope        | openid email profile
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;drop db&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;DROP DATABASE mydb;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;drop table&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;DROP TABLE mytable;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -27,7 +27,7 @@
         <div class="container">
             <header>
                 <nav>
-                    <ul></ul>
+                    <ul><li><a href="http://waterdudu.github.io/post/postgres/">postgres</a></li></ul>
                 </nav>
                 
                     <h1 class="brand">waterdudu&#39;s blog</h1>
@@ -47,6 +47,15 @@
             </header>
 <section id="article-listing">
     
+    
+    <article>
+        <h1 class="article-title"><a href="http://waterdudu.github.io/post/postgres/">postgres</a></h1>
+        <p class="article-info">
+            on <strong>Fri, Feb 19, 2016</strong> by <strong></strong> &middot; <strong>3 min reading time</strong>
+        </p>
+        <p class="article-summary">login psql dex_db check available database \l dex_db=# \l List of databases Name | Owner | Encoding | Collate | Ctype | Access privileges -----------+-------+----------+-------------+-------------+------------------- d2 | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu + | | | | | dudu=CTc/dudu + | | | | | dex=CTc/dudu dex_db | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu + | | | | | dudu=CTc/dudu + | | | | | dex=CTc/dudu dexdb1 | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | postgres | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | template0 | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =c/dudu + | | | | | dudu=CTc/dudu template1 | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =c/dudu + | | | | | dudu=CTc/dudu (6 rows) select db \l dex_db dex_db=# \l dex_db List of databases Name | Owner | Encoding | Collate | Ctype | Access privileges --------+-------+----------+-------------+-------------+------------------- dex_db | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu + | | | | | dudu=CTc/dudu + | | | | | dex=CTc/dudu (1 row) list tables \d dex_db=# \d List of relations Schema | Name | Type | Owner --------+-------------------------+----------+------- public | authd_user | table | dex public | client_identity | table | dex public | connector_config | table | dex public | dex_migrations | table | dex public | key | table | dex public | password_info | table | dex public | refresh_token | table | dex public | refresh_token_id_seq | sequence | dex public | remote_identity_mapping | table | dex public | session | table | dex public | session_key | table | dex (11 rows) describe table dex_db=# \d session Table &quot;public.session&quot; Column | Type | Modifiers --------------+---------+----------- id | text | not null state | text | created_at | bigint | expires_at | bigint | client_id | text | client_state | text | redirect_url | text | identity | text | connector_id | text | user_id | text | register | boolean | nonce | text | scope | text | Indexes: &quot;session_pkey&quot; PRIMARY KEY, btree (id) select table \x on dex_db=# \x on Expanded display is on.</p>
+        <a href="http://waterdudu.github.io/post/postgres/"><p class="article-read-more"><a href="http://waterdudu.github.io/post/postgres/">Read more &rarr;</a></p>
+    </article>
     
     <article>
         <h1 class="article-title"><a href="http://waterdudu.github.io/post/hello/">hello</a></h1>
