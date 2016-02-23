@@ -6,8 +6,158 @@
     <description>Recent content in Golang on waterdudu&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 19 Feb 2016 15:07:01 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 23 Feb 2016 13:46:31 +0800</lastBuildDate>
     <atom:link href="http://waterdudu.github.io/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>oidc</title>
+      <link>http://waterdudu.github.io/post/oidc/</link>
+      <pubDate>Tue, 23 Feb 2016 13:46:31 +0800</pubDate>
+      
+      <guid>http://waterdudu.github.io/post/oidc/</guid>
+      <description>
+
+&lt;h1 id=&#34;oidc:2b30c4fc5c437b1e9b1339858d548888&#34;&gt;OIDC&lt;/h1&gt;
+
+&lt;h3 id=&#34;oidc-client:2b30c4fc5c437b1e9b1339858d548888&#34;&gt;&lt;code&gt;oidc.Client&lt;/code&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;httpClient: to send http request&lt;/li&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;type Client struct {
+	httpClient     phttp.Client
+	providerConfig *providerConfigRepo
+	credentials    ClientCredentials
+	redirectURL    string
+	scope          []string
+	keySet         key.PublicKeySet
+	providerSyncer *ProviderConfigSyncer
+
+	keySetSyncMutex sync.RWMutex
+	lastKeySetSync  time.Time
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;clientconfig:2b30c4fc5c437b1e9b1339858d548888&#34;&gt;&lt;code&gt;ClientConfig&lt;/code&gt;&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;type ClientConfig struct {
+	HTTPClient     phttp.Client
+	Credentials    ClientCredentials
+	Scope          []string
+	RedirectURL    string
+	ProviderConfig ProviderConfig
+	KeySet         key.PublicKeySet
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ProviderConfig with lock&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type providerConfigRepo struct {
+	mu     sync.RWMutex
+	config ProviderConfig // do not access directly, use Get()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;providerconfig:2b30c4fc5c437b1e9b1339858d548888&#34;&gt;ProviderConfig&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;// ProviderConfig represents the OpenID Provider Metadata specifying what
+// configurations a provider supports.
+//
+// See: http://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata
+type ProviderConfig struct {
+    Issuer               *url.URL // Required
+    AuthEndpoint         *url.URL // Required
+    TokenEndpoint        *url.URL // Required if grant types other than &amp;quot;implicit&amp;quot; are supported
+    UserInfoEndpoint     *url.URL
+    KeysEndpoint         *url.URL // Required
+    RegistrationEndpoint *url.URL
+
+    // Servers MAY choose not to advertise some supported scope values even when this
+    // parameter is used, although those defined in OpenID Core SHOULD be listed, if supported.
+    ScopesSupported []string
+    // OAuth2.0 response types supported.
+    ResponseTypesSupported []string // Required
+    // OAuth2.0 response modes supported.
+    //
+    // If omitted, defaults to DefaultResponseModesSupported.
+    ResponseModesSupported []string
+    // OAuth2.0 grant types supported.
+    //
+    // If omitted, defaults to DefaultGrantTypesSupported.
+    GrantTypesSupported []string
+    ACRValuesSupported  []string
+    // SubjectTypesSupported specifies strategies for providing values for the sub claim.
+    SubjectTypesSupported []string // Required
+
+    // JWA signing and encryption algorith values supported for ID tokens.
+    IDTokenSigningAlgValues    []string // Required
+    IDTokenEncryptionAlgValues []string
+    IDTokenEncryptionEncValues []string
+
+    // JWA signing and encryption algorith values supported for user info responses.
+    UserInfoSigningAlgValues    []string
+    UserInfoEncryptionAlgValues []string
+    UserInfoEncryptionEncValues []string
+
+    // JWA signing and encryption algorith values supported for request objects.
+    ReqObjSigningAlgValues    []string
+    ReqObjEncryptionAlgValues []string
+    ReqObjEncryptionEncValues []string
+
+    TokenEndpointAuthMethodsSupported          []string
+    TokenEndpointAuthSigningAlgValuesSupported []string
+    DisplayValuesSupported                     []string
+    ClaimTypesSupported                        []string
+    ClaimsSupported                            []string
+    ServiceDocs                                *url.URL
+    ClaimsLocalsSupported                      []string
+    UILocalsSupported                          []string
+    ClaimsParameterSupported                   bool
+    RequestParameterSupported                  bool
+    RequestURIParamaterSupported               bool
+    RequireRequestURIRegistration              bool
+
+    Policy         *url.URL
+    TermsOfService *url.URL
+
+    // Not part of the OpenID Provider Metadata
+    ExpiresAt time.Time
+}
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>scapy</title>
+      <link>http://waterdudu.github.io/post/scrapy/</link>
+      <pubDate>Tue, 23 Feb 2016 11:58:07 +0800</pubDate>
+      
+      <guid>http://waterdudu.github.io/post/scrapy/</guid>
+      <description>
+
+&lt;p&gt;refs:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://doc.scrapy.org/en/latest/intro/tutorial.html&#34;&gt;scrapy tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/scrapy/scrapy/wiki&#34;&gt;scrapy wiki&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.pluskid.org/?p=366&#34;&gt;pluskid tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://mherman.org/blog/2012/11/05/scraping-web-pages-with-scrapy/#.VsvWUpN96gw&#34;&gt;scrapying web page&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://realpython.com/blog/python/web-scraping-with-scrapy-and-mongodb/&#34;&gt;scrapy &amp;amp; mongodb&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;install-scrapy:ae320e7ea6afb117d04e71c0e04b8bc3&#34;&gt;install scrapy&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;pip install scrapy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;create-a-project:ae320e7ea6afb117d04e71c0e04b8bc3&#34;&gt;create a project&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;scrapy 
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>postgres</title>
@@ -77,6 +227,16 @@
 
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;use &lt;code&gt;encode&lt;/code&gt; to show bytea type&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;dex_db=# select id,encode(secret,&#39;escape&#39;) from client_identity;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;-[ RECORD 1 ]--------------------------------------------------------
+id     | qWXRp93pWJ6mKzoYPlOEL9kgD8_QYQhCODaSEMbb2EE=@127.0.0.1
+encode | $2a$10$a.NImDoBxch/GPO2XL/tH.Hc0wZEehZQXXPZstSb0ZNa8UDYWaK4u
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;describe table&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;dex_db=# \d session
@@ -100,9 +260,7 @@ Indexes:
     &amp;quot;session_pkey&amp;quot; PRIMARY KEY, btree (id)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;select table&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;\x on&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;select table &lt;code&gt;\x on&lt;/code&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;dex_db=# \x on
 Expanded display is on.

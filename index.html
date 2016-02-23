@@ -27,7 +27,7 @@
         <div class="container">
             <header>
                 <nav>
-                    <ul><li><a href="http://waterdudu.github.io/post/postgres/">postgres</a></li></ul>
+                    <ul><li><a href="http://waterdudu.github.io/post/oidc/">oidc</a></li><li><a href="http://waterdudu.github.io/post/postgres/">postgres</a></li><li><a href="http://waterdudu.github.io/post/scrapy/">scapy</a></li></ul>
                 </nav>
                 
                     <h1 class="brand">waterdudu&#39;s blog</h1>
@@ -49,11 +49,29 @@
     
     
     <article>
+        <h1 class="article-title"><a href="http://waterdudu.github.io/post/oidc/">oidc</a></h1>
+        <p class="article-info">
+            on <strong>Tue, Feb 23, 2016</strong> by <strong></strong> &middot; <strong>2 min reading time</strong>
+        </p>
+        <p class="article-summary">OIDC oidc.Client httpClient: to send http request type Client struct { httpClient phttp.Client providerConfig *providerConfigRepo credentials ClientCredentials redirectURL string scope []string keySet key.PublicKeySet providerSyncer *ProviderConfigSyncer keySetSyncMutex sync.RWMutex lastKeySetSync time.Time } ClientConfig type ClientConfig struct { HTTPClient phttp.Client Credentials ClientCredentials Scope []string RedirectURL string ProviderConfig ProviderConfig KeySet key.PublicKeySet } ProviderConfig with lock type providerConfigRepo struct { mu sync.RWMutex config ProviderConfig // do not access directly, use Get() } ProviderConfig // ProviderConfig represents the OpenID Provider Metadata specifying what // configurations a provider supports.</p>
+        <a href="http://waterdudu.github.io/post/oidc/"><p class="article-read-more"><a href="http://waterdudu.github.io/post/oidc/">Read more &rarr;</a></p>
+    </article>
+    
+    <article>
+        <h1 class="article-title"><a href="http://waterdudu.github.io/post/scrapy/">scapy</a></h1>
+        <p class="article-info">
+            on <strong>Tue, Feb 23, 2016</strong> by <strong></strong> &middot; <strong>1 min reading time</strong>
+        </p>
+        <p class="article-summary">refs: scrapy tutorial scrapy wiki pluskid tutorial scrapying web page scrapy &amp; mongodb install scrapy pip install scrapy create a project scrapy</p>
+        
+    </article>
+    
+    <article>
         <h1 class="article-title"><a href="http://waterdudu.github.io/post/postgres/">postgres</a></h1>
         <p class="article-info">
             on <strong>Fri, Feb 19, 2016</strong> by <strong></strong> &middot; <strong>3 min reading time</strong>
         </p>
-        <p class="article-summary">login psql dex_db check available database \l dex_db=# \l List of databases Name | Owner | Encoding | Collate | Ctype | Access privileges -----------+-------+----------+-------------+-------------+------------------- d2 | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu + | | | | | dudu=CTc/dudu + | | | | | dex=CTc/dudu dex_db | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu + | | | | | dudu=CTc/dudu + | | | | | dex=CTc/dudu dexdb1 | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | postgres | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | template0 | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =c/dudu + | | | | | dudu=CTc/dudu template1 | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =c/dudu + | | | | | dudu=CTc/dudu (6 rows) select db \l dex_db dex_db=# \l dex_db List of databases Name | Owner | Encoding | Collate | Ctype | Access privileges --------+-------+----------+-------------+-------------+------------------- dex_db | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu + | | | | | dudu=CTc/dudu + | | | | | dex=CTc/dudu (1 row) list tables \d dex_db=# \d List of relations Schema | Name | Type | Owner --------+-------------------------+----------+------- public | authd_user | table | dex public | client_identity | table | dex public | connector_config | table | dex public | dex_migrations | table | dex public | key | table | dex public | password_info | table | dex public | refresh_token | table | dex public | refresh_token_id_seq | sequence | dex public | remote_identity_mapping | table | dex public | session | table | dex public | session_key | table | dex (11 rows) describe table dex_db=# \d session Table &quot;public.session&quot; Column | Type | Modifiers --------------+---------+----------- id | text | not null state | text | created_at | bigint | expires_at | bigint | client_id | text | client_state | text | redirect_url | text | identity | text | connector_id | text | user_id | text | register | boolean | nonce | text | scope | text | Indexes: &quot;session_pkey&quot; PRIMARY KEY, btree (id) select table \x on dex_db=# \x on Expanded display is on.</p>
+        <p class="article-summary">login psql dex_db check available database \l dex_db=# \l List of databases Name | Owner | Encoding | Collate | Ctype | Access privileges -----------+-------+----------+-------------+-------------+------------------- d2 | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu + | | | | | dudu=CTc/dudu + | | | | | dex=CTc/dudu dex_db | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu + | | | | | dudu=CTc/dudu + | | | | | dex=CTc/dudu dexdb1 | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | postgres | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | template0 | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =c/dudu + | | | | | dudu=CTc/dudu template1 | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =c/dudu + | | | | | dudu=CTc/dudu (6 rows) select db \l dex_db dex_db=# \l dex_db List of databases Name | Owner | Encoding | Collate | Ctype | Access privileges --------+-------+----------+-------------+-------------+------------------- dex_db | dudu | UTF8 | en_US.UTF-8 | en_US.UTF-8 | =Tc/dudu + | | | | | dudu=CTc/dudu + | | | | | dex=CTc/dudu (1 row) list tables \d dex_db=# \d List of relations Schema | Name | Type | Owner --------+-------------------------+----------+------- public | authd_user | table | dex public | client_identity | table | dex public | connector_config | table | dex public | dex_migrations | table | dex public | key | table | dex public | password_info | table | dex public | refresh_token | table | dex public | refresh_token_id_seq | sequence | dex public | remote_identity_mapping | table | dex public | session | table | dex public | session_key | table | dex (11 rows) use encode to show bytea type dex_db=# select id,encode(secret,'escape') from client_identity; -[ RECORD 1 ]-------------------------------------------------------- id | qWXRp93pWJ6mKzoYPlOEL9kgD8_QYQhCODaSEMbb2EE=@127.0.0.1 encode | $2a$10$a.NImDoBxch/GPO2XL/tH.Hc0wZEehZQXXPZstSb0ZNa8UDYWaK4u describe table dex_db=# \d session Table &quot;public.session&quot; Column | Type | Modifiers --------------+---------+----------- id | text | not null state | text | created_at | bigint | expires_at | bigint | client_id | text | client_state | text | redirect_url | text | identity | text | connector_id | text | user_id | text | register | boolean | nonce | text | scope | text | Indexes: &quot;session_pkey&quot; PRIMARY KEY, btree (id) select table \x on dex_db=# \x on Expanded display is on.</p>
         <a href="http://waterdudu.github.io/post/postgres/"><p class="article-read-more"><a href="http://waterdudu.github.io/post/postgres/">Read more &rarr;</a></p>
     </article>
     
@@ -120,25 +138,35 @@
         
     </article>
     
-    <article>
-        <h1 class="article-title"><a href="http://waterdudu.github.io/post/swiftwordpolicy/">swiftwordpolicy</a></h1>
-        <p class="article-info">
-            on <strong>Sat, Nov 07, 2015</strong> by <strong></strong> &middot; <strong>2 min reading time</strong>
-        </p>
-        <p class="article-summary">Privacy Policy (effective date October 4, 2015) Privacy Policy of SwiftWord About This Policy This privacy policy describes the privacy practices of the website and apps published by SwiftWord Developer, which includes a link to this policy. Personal Information Collection: Apps published by SwiftWord Developer will not collect any personal information. Personal Information Sharing: Apps published by SwiftWord Developer may not share personal information about consumers with third parties for their own marketing purposes unless the consumer agreed to that sharing.</p>
-        <a href="http://waterdudu.github.io/post/swiftwordpolicy/"><p class="article-read-more"><a href="http://waterdudu.github.io/post/swiftwordpolicy/">Read more &rarr;</a></p>
-    </article>
     
-    <article>
-        <h1 class="article-title"><a href="http://waterdudu.github.io/post/first/">first</a></h1>
-        <p class="article-info">
-            on <strong>Fri, Nov 06, 2015</strong> by <strong></strong> &middot; <strong>1 min reading time</strong>
-        </p>
-        <p class="article-summary">hey first hey world</p>
+    
+    <ul class="pagination">
         
-    </article>
-    
-    
+        <li>
+            <a href="http://waterdudu.github.io/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+        </li>
+        
+        <li
+        class="disabled">
+        <a href="" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+        
+        <li
+        class="active"><a href="http://waterdudu.github.io/">1</a></li>
+        
+        <li
+        ><a href="http://waterdudu.github.io/page/2/">2</a></li>
+        
+        <li
+        >
+        <a href="http://waterdudu.github.io/page/2/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+        </li>
+        
+        <li>
+            <a href="http://waterdudu.github.io/page/2/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        </li>
+        
+    </ul>
     
 </section>
         </div>

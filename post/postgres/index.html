@@ -27,7 +27,7 @@
         <div class="container">
             <header>
                 <nav>
-                    <ul><li><a href="http://waterdudu.github.io/post/postgres/">postgres</a></li></ul>
+                    <ul><li><a href="http://waterdudu.github.io/post/oidc/">oidc</a></li><li><a href="http://waterdudu.github.io/post/postgres/">postgres</a></li><li><a href="http://waterdudu.github.io/post/scrapy/">scapy</a></li></ul>
                 </nav>
                 
                     <h1 class="title">postgres</h1>
@@ -99,6 +99,16 @@
 
 </code></pre>
 
+<p>use <code>encode</code> to show bytea type</p>
+
+<pre><code>dex_db=# select id,encode(secret,'escape') from client_identity;
+</code></pre>
+
+<pre><code>-[ RECORD 1 ]--------------------------------------------------------
+id     | qWXRp93pWJ6mKzoYPlOEL9kgD8_QYQhCODaSEMbb2EE=@127.0.0.1
+encode | $2a$10$a.NImDoBxch/GPO2XL/tH.Hc0wZEehZQXXPZstSb0ZNa8UDYWaK4u
+</code></pre>
+
 <p>describe table</p>
 
 <pre><code>dex_db=# \d session
@@ -122,9 +132,7 @@ Indexes:
     &quot;session_pkey&quot; PRIMARY KEY, btree (id)
 </code></pre>
 
-<p>select table</p>
-
-<p><code>\x on</code></p>
+<p>select table <code>\x on</code></p>
 
 <pre><code>dex_db=# \x on
 Expanded display is on.
