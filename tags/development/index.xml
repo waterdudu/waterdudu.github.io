@@ -26,7 +26,7 @@
 &lt;li&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code&gt;type Client struct {
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;type Client struct {
 	httpClient     phttp.Client
 	providerConfig *providerConfigRepo
 	credentials    ClientCredentials
@@ -42,7 +42,7 @@
 
 &lt;h3 id=&#34;clientconfig:2b30c4fc5c437b1e9b1339858d548888&#34;&gt;&lt;code&gt;ClientConfig&lt;/code&gt;&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code&gt;type ClientConfig struct {
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;type ClientConfig struct {
 	HTTPClient     phttp.Client
 	Credentials    ClientCredentials
 	Scope          []string
