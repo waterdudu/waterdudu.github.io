@@ -19,7 +19,7 @@
 
 &lt;h1 id=&#34;oidc:2b30c4fc5c437b1e9b1339858d548888&#34;&gt;OIDC&lt;/h1&gt;
 
-&lt;h3 id=&#34;oidc-client:2b30c4fc5c437b1e9b1339858d548888&#34;&gt;&lt;code&gt;oidc.Client&lt;/code&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;oidc-client:2b30c4fc5c437b1e9b1339858d548888&#34;&gt;oidc.Client&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;httpClient: to send http request&lt;/li&gt;
@@ -40,7 +40,7 @@
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;clientconfig:2b30c4fc5c437b1e9b1339858d548888&#34;&gt;&lt;code&gt;ClientConfig&lt;/code&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;clientconfig:2b30c4fc5c437b1e9b1339858d548888&#34;&gt;ClientConfig&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code&gt;type ClientConfig struct {
 	HTTPClient     phttp.Client
@@ -67,63 +67,83 @@
 //
 // See: http://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata
 type ProviderConfig struct {
-    Issuer               *url.URL // Required
-    AuthEndpoint         *url.URL // Required
-    TokenEndpoint        *url.URL // Required if grant types other than &amp;quot;implicit&amp;quot; are supported
-    UserInfoEndpoint     *url.URL
-    KeysEndpoint         *url.URL // Required
-    RegistrationEndpoint *url.URL
+	Issuer               *url.URL // Required
+	AuthEndpoint         *url.URL // Required
+	TokenEndpoint        *url.URL // Required if grant types other than &amp;quot;implicit&amp;quot; are supported
+	UserInfoEndpoint     *url.URL
+	KeysEndpoint         *url.URL // Required
+	RegistrationEndpoint *url.URL
 
-    // Servers MAY choose not to advertise some supported scope values even when this
-    // parameter is used, although those defined in OpenID Core SHOULD be listed, if supported.
-    ScopesSupported []string
-    // OAuth2.0 response types supported.
-    ResponseTypesSupported []string // Required
-    // OAuth2.0 response modes supported.
-    //
-    // If omitted, defaults to DefaultResponseModesSupported.
-    ResponseModesSupported []string
-    // OAuth2.0 grant types supported.
-    //
-    // If omitted, defaults to DefaultGrantTypesSupported.
-    GrantTypesSupported []string
-    ACRValuesSupported  []string
-    // SubjectTypesSupported specifies strategies for providing values for the sub claim.
-    SubjectTypesSupported []string // Required
+	// Servers MAY choose not to advertise some supported scope values even when this
+	// parameter is used, although those defined in OpenID Core SHOULD be listed, if supported.
+	ScopesSupported []string
+	// OAuth2.0 response types supported.
+	ResponseTypesSupported []string // Required
+	// OAuth2.0 response modes supported.
+	//
+	// If omitted, defaults to DefaultResponseModesSupported.
+	ResponseModesSupported []string
+	// OAuth2.0 grant types supported.
+	//
+	// If omitted, defaults to DefaultGrantTypesSupported.
+	GrantTypesSupported []string
+	ACRValuesSupported  []string
+	// SubjectTypesSupported specifies strategies for providing values for the sub claim.
+	SubjectTypesSupported []string // Required
 
-    // JWA signing and encryption algorith values supported for ID tokens.
-    IDTokenSigningAlgValues    []string // Required
-    IDTokenEncryptionAlgValues []string
-    IDTokenEncryptionEncValues []string
+	// JWA signing and encryption algorith values supported for ID tokens.
+	IDTokenSigningAlgValues    []string // Required
+	IDTokenEncryptionAlgValues []string
+	IDTokenEncryptionEncValues []string
 
-    // JWA signing and encryption algorith values supported for user info responses.
-    UserInfoSigningAlgValues    []string
-    UserInfoEncryptionAlgValues []string
-    UserInfoEncryptionEncValues []string
+	// JWA signing and encryption algorith values supported for user info responses.
+	UserInfoSigningAlgValues    []string
+	UserInfoEncryptionAlgValues []string
+	UserInfoEncryptionEncValues []string
 
-    // JWA signing and encryption algorith values supported for request objects.
-    ReqObjSigningAlgValues    []string
-    ReqObjEncryptionAlgValues []string
-    ReqObjEncryptionEncValues []string
+	// JWA signing and encryption algorith values supported for request objects.
+	ReqObjSigningAlgValues    []string
+	ReqObjEncryptionAlgValues []string
+	ReqObjEncryptionEncValues []string
 
-    TokenEndpointAuthMethodsSupported          []string
-    TokenEndpointAuthSigningAlgValuesSupported []string
-    DisplayValuesSupported                     []string
-    ClaimTypesSupported                        []string
-    ClaimsSupported                            []string
-    ServiceDocs                                *url.URL
-    ClaimsLocalsSupported                      []string
-    UILocalsSupported                          []string
-    ClaimsParameterSupported                   bool
-    RequestParameterSupported                  bool
-    RequestURIParamaterSupported               bool
-    RequireRequestURIRegistration              bool
+	TokenEndpointAuthMethodsSupported          []string
+	TokenEndpointAuthSigningAlgValuesSupported []string
+	DisplayValuesSupported                     []string
+	ClaimTypesSupported                        []string
+	ClaimsSupported                            []string
+	ServiceDocs                                *url.URL
+	ClaimsLocalsSupported                      []string
+	UILocalsSupported                          []string
+	ClaimsParameterSupported                   bool
+	RequestParameterSupported                  bool
+	RequestURIParamaterSupported               bool
+	RequireRequestURIRegistration              bool
 
-    Policy         *url.URL
-    TermsOfService *url.URL
+	Policy         *url.URL
+	TermsOfService *url.URL
 
-    // Not part of the OpenID Provider Metadata
-    ExpiresAt time.Time
+	// Not part of the OpenID Provider Metadata
+	ExpiresAt time.Time
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;oauth2:2b30c4fc5c437b1e9b1339858d548888&#34;&gt;OAuth2&lt;/h1&gt;
+
+&lt;h3 id=&#34;oauth2-client:2b30c4fc5c437b1e9b1339858d548888&#34;&gt;oauth2.Client&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;type Client struct {
+	hc          phttp.Client
+	creds       ClientCredentials
+	scope       []string
+	authURL     *url.URL
+	redirectURL *url.URL
+	tokenURL    *url.URL
+	authMethod  string
+}
+
+type ClientCredentials struct {
+	ID     string
+	Secret string
 }
 &lt;/code&gt;&lt;/pre&gt;
 </description>
