@@ -169,6 +169,29 @@ type ClientCredentials struct {
 }
 </code></pre>
 
+<p>TokenResponse</p>
+
+<pre><code>type TokenResponse struct {
+	AccessToken  string
+	TokenType    string
+	Expires      int
+	IDToken      string
+	RefreshToken string // OPTIONAL.
+	Scope        string // OPTIONAL, if identical to the scope requested by the client, otherwise, REQUIRED.
+	RawBody      []byte // In case callers need some other non-standard info from the token response
+}
+
+type AuthCodeRequest struct {
+	ResponseType string
+	ClientID     string
+	RedirectURL  *url.URL
+	Scope        []string
+	State        string
+}
+
+
+</code></pre>
+
 </article>
         </div>
         <footer>

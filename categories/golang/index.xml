@@ -146,6 +146,29 @@ type ClientCredentials struct {
 	Secret string
 }
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;TokenResponse&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type TokenResponse struct {
+	AccessToken  string
+	TokenType    string
+	Expires      int
+	IDToken      string
+	RefreshToken string // OPTIONAL.
+	Scope        string // OPTIONAL, if identical to the scope requested by the client, otherwise, REQUIRED.
+	RawBody      []byte // In case callers need some other non-standard info from the token response
+}
+
+type AuthCodeRequest struct {
+	ResponseType string
+	ClientID     string
+	RedirectURL  *url.URL
+	Scope        []string
+	State        string
+}
+
+
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
@@ -293,7 +316,7 @@ expires_at   | 1455907980
 client_id    | qWXRp93pWJ6mKzoYPlOEL9kgD8_QYQhCODaSEMbb2EE=@127.0.0.1
 client_state |
 redirect_url | http://127.0.0.1:5555/callback
-identity     | {&amp;quot;ID&amp;quot;:&amp;quot;115162047548008935474&amp;quot;,&amp;quot;Name&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;Email&amp;quot;:&amp;quot;fianceeyi@gmail.com&amp;quot;,&amp;quot;ExpiresAt&amp;quot;:&amp;quot;2016-02-19T07:53:41Z&amp;quot;}
+identity     | {&amp;quot;ID&amp;quot;:&amp;quot;115162047548008935474&amp;quot;,&amp;quot;Name&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;Email&amp;quot;:&amp;quot;iamwhoami@gmail.com&amp;quot;,&amp;quot;ExpiresAt&amp;quot;:&amp;quot;2016-02-19T07:53:41Z&amp;quot;}
 connector_id | google
 user_id      |
 register     | f
@@ -307,7 +330,7 @@ expires_at   | 1455908109
 client_id    | qWXRp93pWJ6mKzoYPlOEL9kgD8_QYQhCODaSEMbb2EE=@127.0.0.1
 client_state |
 redirect_url | http://127.0.0.1:5555/callback
-identity     | {&amp;quot;ID&amp;quot;:&amp;quot;115162047548008935474&amp;quot;,&amp;quot;Name&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;Email&amp;quot;:&amp;quot;fianceeyi@gmail.com&amp;quot;,&amp;quot;ExpiresAt&amp;quot;:&amp;quot;2016-02-19T07:55:26Z&amp;quot;}
+identity     | {&amp;quot;ID&amp;quot;:&amp;quot;115162047548008935474&amp;quot;,&amp;quot;Name&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;Email&amp;quot;:&amp;quot;iamwhoami@gmail.com&amp;quot;,&amp;quot;ExpiresAt&amp;quot;:&amp;quot;2016-02-19T07:55:26Z&amp;quot;}
 connector_id | google
 user_id      | 0ee2468c-5e74-426f-ba01-c555d7630a38
 register     | t
