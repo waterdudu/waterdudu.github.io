@@ -27,7 +27,7 @@
         <div class="container">
             <header>
                 <nav>
-                    <ul><li><a href="http://waterdudu.github.io/post/oidc/">oidc</a></li><li><a href="http://waterdudu.github.io/post/postgres/">postgres</a></li><li><a href="http://waterdudu.github.io/post/scrapy/">scapy</a></li></ul>
+                    <ul><li><a href="http://waterdudu.github.io/post/data-science/">data science</a></li><li><a href="http://waterdudu.github.io/post/golang-handler/">golang handler</a></li><li><a href="http://waterdudu.github.io/post/oidc/">oidc</a></li><li><a href="http://waterdudu.github.io/post/postgres/">postgres</a></li><li><a href="http://waterdudu.github.io/post/scrapy/">scapy</a></li></ul>
                 </nav>
                 
                     <h1 class="brand">waterdudu&#39;s blog</h1>
@@ -47,6 +47,24 @@
             </header>
 <section id="article-listing">
     
+    
+    <article>
+        <h1 class="article-title"><a href="http://waterdudu.github.io/post/golang-handler/">golang handler</a></h1>
+        <p class="article-info">
+            on <strong>Wed, Mar 16, 2016</strong> by <strong></strong> &middot; <strong>1 min reading time</strong>
+        </p>
+        <p class="article-summary">自定义 Handler 是实现 ServeHTTP 方法的 struct，可以在自定义的 handler 里存储不同业务需要的变量，在处理请求(ServeHTTP)时使用。 type timeHandler struct { format string } func (th *timeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) { tm := time.Now().Format(th.format) w.Write([]byte(&quot;The time is: &quot; + tm)) } func main() { mux := http.NewServeMux() th := &amp;timeHandler{format: time.RFC1123} mux.Handle(&quot;/time&quot;, th) log.Println(&quot;Listening...&quot;) http.ListenAndServe(&quot;:3000&quot;, mux) } 定义 custom struct 有时很繁琐，为了简化，我们可以用 func 来作为 handler。 带有func(http.ResponseWriter, *http.Request)签名的函数可以被转换成 handler（通过http.HandlerFunc） func timeHandler(w http.ResponseWriter, r *http.Request) { tm := time.Now().Format(time.RFC1123) w.Write([]byte(&quot;The time</p>
+        <a href="http://waterdudu.github.io/post/golang-handler/"><p class="article-read-more"><a href="http://waterdudu.github.io/post/golang-handler/">Read more &rarr;</a></p>
+    </article>
+    
+    <article>
+        <h1 class="article-title"><a href="http://waterdudu.github.io/post/data-science/">data science</a></h1>
+        <p class="article-info">
+            on <strong>Fri, Feb 26, 2016</strong> by <strong></strong> &middot; <strong>1 min reading time</strong>
+        </p>
+        <p class="article-summary">Level One: Basic analysis Level Two: Predictive analysis Level Three:</p>
+        
+    </article>
     
     <article>
         <h1 class="article-title"><a href="http://waterdudu.github.io/post/oidc/">oidc</a></h1>
@@ -118,24 +136,6 @@
         </p>
         <p class="article-summary">fanIn pattern c &lt;- &lt;-input1 含义，把 input1 的信息拿出丢给 c /* A -&gt; C -&gt; B -&gt; */ func fanIn(input1, input2 &lt;-chan string) &lt;-chan string { c := make(chan string) go func() { for { c &lt;- &lt;-input1 } }() go func() { for { c &lt;- &lt;-input2 } }() return c } func main() { c := fanIn(boring(&quot;Joe&quot;), boring(&quot;Ann&quot;)) for i := 0; i &lt; 10; i++ { fmt.Println(&lt;-c) } fmt.Println(&quot;You're both boring.</p>
         <a href="http://waterdudu.github.io/post/go-concurrency-patterns/"><p class="article-read-more"><a href="http://waterdudu.github.io/post/go-concurrency-patterns/">Read more &rarr;</a></p>
-    </article>
-    
-    <article>
-        <h1 class="article-title"><a href="http://waterdudu.github.io/post/go-tips/">go tips</a></h1>
-        <p class="article-info">
-            on <strong>Mon, Jan 18, 2016</strong> by <strong></strong> &middot; <strong>13 min reading time</strong>
-        </p>
-        <p class="article-summary">资源 github.com/golang/go/wiki go faq golang bootcamp go database-sql effective go 访问 map 的 key, value x := map[string]string{ &quot;name&quot;: &quot;dudu&quot;, &quot;love&quot;: &quot;many&quot;, } if _, ok := x[&quot;love&quot;]; !ok { fmt.Println(&quot;a person with no love&quot;) } 修改 string 时，转换成 slice x := &quot;strings are read-only&quot; xbytes := []byte(x) xbytes[0] = 'S' fmt.Println(string(xbytes)) 以下调用合法 调用 pointer receiver method，只要调用者是 pointer type，或者它能被取地址（&amp;） 调用 value recieiver method，只要调用者是 value type，或者它的 value 可以被取值（*） The rule about pointers vs.</p>
-        <a href="http://waterdudu.github.io/post/go-tips/"><p class="article-read-more"><a href="http://waterdudu.github.io/post/go-tips/">Read more &rarr;</a></p>
-    </article>
-    
-    <article>
-        <h1 class="article-title"><a href="http://waterdudu.github.io/post/photomosaic/">photomosaic</a></h1>
-        <p class="article-info">
-            on <strong>Sat, Nov 14, 2015</strong> by <strong></strong> &middot; <strong>1 min reading time</strong>
-        </p>
-        <p class="article-summary">Just another photo mosaic app Hallstatt Vatican Sanlitun</p>
-        
     </article>
     
     

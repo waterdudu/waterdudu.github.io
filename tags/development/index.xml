@@ -6,8 +6,127 @@
     <description>Recent content in Development on waterdudu&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 23 Feb 2016 13:46:31 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 16 Mar 2016 10:33:28 +0800</lastBuildDate>
     <atom:link href="http://waterdudu.github.io/tags/development/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>golang handler</title>
+      <link>http://waterdudu.github.io/post/golang-handler/</link>
+      <pubDate>Wed, 16 Mar 2016 10:33:28 +0800</pubDate>
+      
+      <guid>http://waterdudu.github.io/post/golang-handler/</guid>
+      <description>
+
+&lt;p&gt;自定义 Handler 是实现 ServeHTTP 方法的 struct，可以在自定义的 handler 里存储不同业务需要的变量，在处理请求(ServeHTTP)时使用。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type timeHandler struct {
+  format string
+}
+
+func (th *timeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+  tm := time.Now().Format(th.format)
+  w.Write([]byte(&amp;quot;The time is: &amp;quot; + tm))
+}
+
+func main() {
+  mux := http.NewServeMux()
+
+  th := &amp;amp;timeHandler{format: time.RFC1123}
+  mux.Handle(&amp;quot;/time&amp;quot;, th)
+
+  log.Println(&amp;quot;Listening...&amp;quot;)
+  http.ListenAndServe(&amp;quot;:3000&amp;quot;, mux)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;定义 custom struct 有时很繁琐，为了简化，我们可以用 func 来作为 handler。&lt;/p&gt;
+
+&lt;p&gt;带有&lt;code&gt;func(http.ResponseWriter, *http.Request)&lt;/code&gt;签名的函数可以被转换成 handler（通过&lt;code&gt;http.HandlerFunc&lt;/code&gt;）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func timeHandler(w http.ResponseWriter, r *http.Request) {
+  tm := time.Now().Format(time.RFC1123)
+  w.Write([]byte(&amp;quot;The time is: &amp;quot; + tm))
+}
+
+func main() {
+  mux := http.NewServeMux()
+
+  // Convert the timeHandler function to a HandlerFunc type
+  th := http.HandlerFunc(timeHandler)
+  // And add it to the ServeMux
+  mux.Handle(&amp;quot;/time&amp;quot;, th)
+
+  log.Println(&amp;quot;Listening...&amp;quot;)
+  http.ListenAndServe(&amp;quot;:3000&amp;quot;, mux)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Go 的 ServMux 提供了将函数转换成 handler 的方法：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func main() {
+  mux := http.NewServeMux()
+
+  mux.HandleFunc(&amp;quot;/time&amp;quot;, timeHandler)
+
+  log.Println(&amp;quot;Listening...&amp;quot;)
+  http.ListenAndServe(&amp;quot;:3000&amp;quot;, mux)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但是这样声明的函数是 hardcode 的，所以可以定一个返回函数的函数，传递变量实现参数化的 handler。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func timeHandler(format string) http.Handler {
+  fn := func(w http.ResponseWriter, r *http.Request) {
+    tm := time.Now().Format(format)
+    w.Write([]byte(&amp;quot;The time is: &amp;quot; + tm))
+  }
+  return http.HandlerFunc(fn)
+}
+
+func main() {
+  mux := http.NewServeMux()
+
+  th := timeHandler(time.RFC1123)
+  mux.Handle(&amp;quot;/time&amp;quot;, th)
+
+  log.Println(&amp;quot;Listening...&amp;quot;)
+  http.ListenAndServe(&amp;quot;:3000&amp;quot;, mux)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下面的声明方式更简洁：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func timeHandler(format string) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    tm := time.Now().Format(format)
+    w.Write([]byte(&amp;quot;The time is: &amp;quot; + tm))
+  })
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;reference:55684022fdd85621983eb92a8e0cab7b&#34;&gt;reference&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.alexedwards.net/blog/a-recap-of-request-handling&#34;&gt;http://www.alexedwards.net/blog/a-recap-of-request-handling&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>data science</title>
+      <link>http://waterdudu.github.io/post/data-science/</link>
+      <pubDate>Fri, 26 Feb 2016 21:06:42 +0800</pubDate>
+      
+      <guid>http://waterdudu.github.io/post/data-science/</guid>
+      <description>
+
+&lt;h1 id=&#34;level-one-basic-analysis:3cba299fa99ed66a6836f50e1204add3&#34;&gt;Level One: Basic analysis&lt;/h1&gt;
+
+&lt;h1 id=&#34;level-two-predictive-analysis:3cba299fa99ed66a6836f50e1204add3&#34;&gt;Level Two: Predictive analysis&lt;/h1&gt;
+
+&lt;h1 id=&#34;level-three:3cba299fa99ed66a6836f50e1204add3&#34;&gt;Level Three:&lt;/h1&gt;
+</description>
+    </item>
     
     <item>
       <title>oidc</title>

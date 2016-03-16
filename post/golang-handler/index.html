@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="golang handler &middot; waterdudu&#39;s blog ">
+        <meta property="og:site_name" content="waterdudu&#39;s blog"/>
+        <meta property="og:description" content="dudu&#39;s Site">
+        <meta property="og:url" content="http://waterdudu.github.io/post/golang-handler/" />
+        <meta property="og:locale" content="en-us">
+        <meta name="author" content="">
+        <meta name="description" content="dudu&#39;s Site">
+        <meta name="keywords" content="">
+        <meta name="generator" content="Hugo 0.15" />
+        <link rel="icon" href="http://waterdudu.github.io/assets/favicon.ico" type="image/x-icon"> 
+        <link rel="stylesheet" href="http://waterdudu.github.io/css/slender-base.css">
+        <link rel="stylesheet" href="http://waterdudu.github.io/css/slender-color-schemes.css">
+        <link rel="stylesheet" href="http://waterdudu.github.io/css/font-awesome-4.5.0.min.css">
+        <link rel="stylesheet" href="http://waterdudu.github.io/css/highlight-9.0.0-default.min.css">
+        <title>
+            
+                golang handler &middot; waterdudu&#39;s blog
+            
+        </title>
+    </head>
+    <body class="color-scheme-white">
+        <div class="container">
+            <header>
+                <nav>
+                    <ul><li><a href="http://waterdudu.github.io/post/data-science/">data science</a></li><li><a href="http://waterdudu.github.io/post/golang-handler/">golang handler</a></li><li><a href="http://waterdudu.github.io/post/oidc/">oidc</a></li><li><a href="http://waterdudu.github.io/post/postgres/">postgres</a></li><li><a href="http://waterdudu.github.io/post/scrapy/">scapy</a></li></ul>
+                </nav>
+                
+                    <h1 class="title">golang handler</h1>
+                    <aside>
+                        <p>on <strong>Wed, Mar 16, 2016</strong></p>
+                    </aside>
+                
+            </header>
+<article class="article-content">
+    
+
+<p>自定义 Handler 是实现 ServeHTTP 方法的 struct，可以在自定义的 handler 里存储不同业务需要的变量，在处理请求(ServeHTTP)时使用。</p>
+
+<pre><code>type timeHandler struct {
+  format string
+}
+
+func (th *timeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+  tm := time.Now().Format(th.format)
+  w.Write([]byte(&quot;The time is: &quot; + tm))
+}
+
+func main() {
+  mux := http.NewServeMux()
+
+  th := &amp;timeHandler{format: time.RFC1123}
+  mux.Handle(&quot;/time&quot;, th)
+
+  log.Println(&quot;Listening...&quot;)
+  http.ListenAndServe(&quot;:3000&quot;, mux)
+}
+</code></pre>
+
+<p>定义 custom struct 有时很繁琐，为了简化，我们可以用 func 来作为 handler。</p>
+
+<p>带有<code>func(http.ResponseWriter, *http.Request)</code>签名的函数可以被转换成 handler（通过<code>http.HandlerFunc</code>）</p>
+
+<pre><code>func timeHandler(w http.ResponseWriter, r *http.Request) {
+  tm := time.Now().Format(time.RFC1123)
+  w.Write([]byte(&quot;The time is: &quot; + tm))
+}
+
+func main() {
+  mux := http.NewServeMux()
+
+  // Convert the timeHandler function to a HandlerFunc type
+  th := http.HandlerFunc(timeHandler)
+  // And add it to the ServeMux
+  mux.Handle(&quot;/time&quot;, th)
+
+  log.Println(&quot;Listening...&quot;)
+  http.ListenAndServe(&quot;:3000&quot;, mux)
+}
+</code></pre>
+
+<p>Go 的 ServMux 提供了将函数转换成 handler 的方法：</p>
+
+<pre><code>func main() {
+  mux := http.NewServeMux()
+
+  mux.HandleFunc(&quot;/time&quot;, timeHandler)
+
+  log.Println(&quot;Listening...&quot;)
+  http.ListenAndServe(&quot;:3000&quot;, mux)
+}
+</code></pre>
+
+<p>但是这样声明的函数是 hardcode 的，所以可以定一个返回函数的函数，传递变量实现参数化的 handler。</p>
+
+<pre><code>func timeHandler(format string) http.Handler {
+  fn := func(w http.ResponseWriter, r *http.Request) {
+    tm := time.Now().Format(format)
+    w.Write([]byte(&quot;The time is: &quot; + tm))
+  }
+  return http.HandlerFunc(fn)
+}
+
+func main() {
+  mux := http.NewServeMux()
+
+  th := timeHandler(time.RFC1123)
+  mux.Handle(&quot;/time&quot;, th)
+
+  log.Println(&quot;Listening...&quot;)
+  http.ListenAndServe(&quot;:3000&quot;, mux)
+}
+</code></pre>
+
+<p>下面的声明方式更简洁：</p>
+
+<pre><code>func timeHandler(format string) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    tm := time.Now().Format(format)
+    w.Write([]byte(&quot;The time is: &quot; + tm))
+  })
+}
+</code></pre>
+
+<h3 id="reference:55684022fdd85621983eb92a8e0cab7b">reference</h3>
+
+<ul>
+<li><a href="http://www.alexedwards.net/blog/a-recap-of-request-handling">http://www.alexedwards.net/blog/a-recap-of-request-handling</a></li>
+</ul>
+
+</article>
+        </div>
+        <footer>
+            <p>Copyright 2015 &copy; waterdudu</p>
+        </footer>
+        <script src="http://waterdudu.github.io/js/highlight-9.0.0.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        
+    </body>
+</html>
