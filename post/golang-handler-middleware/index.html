@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta property="og:title" content="swiftwordpolicy &middot; waterdudu&#39;s blog ">
+        <meta property="og:title" content="golang handler middleware &middot; waterdudu&#39;s blog ">
         <meta property="og:site_name" content="waterdudu&#39;s blog"/>
         <meta property="og:description" content="dudu&#39;s Site">
-        <meta property="og:url" content="http://waterdudu.github.io/post/swiftwordpolicy/" />
+        <meta property="og:url" content="http://waterdudu.github.io/post/golang-handler-middleware/" />
         <meta property="og:locale" content="en-us">
         <meta name="author" content="">
         <meta name="description" content="dudu&#39;s Site">
@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="http://waterdudu.github.io/css/highlight-9.0.0-default.min.css">
         <title>
             
-                swiftwordpolicy &middot; waterdudu&#39;s blog
+                golang handler middleware &middot; waterdudu&#39;s blog
             
         </title>
     </head>
@@ -30,32 +30,46 @@
                     <ul><li><a href="http://waterdudu.github.io/post/data-science/">data science</a></li><li><a href="http://waterdudu.github.io/post/golang-handler/">golang handler</a></li><li><a href="http://waterdudu.github.io/post/golang-handler-middleware/">golang handler middleware</a></li><li><a href="http://waterdudu.github.io/post/oidc/">oidc</a></li><li><a href="http://waterdudu.github.io/post/postgres/">postgres</a></li><li><a href="http://waterdudu.github.io/post/scrapy/">scapy</a></li></ul>
                 </nav>
                 
-                    <h1 class="title">swiftwordpolicy</h1>
+                    <h1 class="title">golang handler middleware</h1>
                     <aside>
-                        <p>on <strong>Sat, Nov 07, 2015</strong></p>
+                        <p>on <strong>Wed, Mar 16, 2016</strong></p>
                     </aside>
                 
             </header>
 <article class="article-content">
-    <p>Privacy Policy (effective date October 4, 2015)
-Privacy Policy of SwiftWord</p>
+    
 
-<p>About This Policy</p>
+<p>我们知道 handler 可以这么写：</p>
 
-<p>This privacy policy describes the privacy practices of the website and apps published by SwiftWord Developer, which includes a link to this policy.</p>
+<pre><code>func messageHandler(message string) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    w.Write([]byte(message)
+  })
+}
+</code></pre>
 
-<p>Personal Information Collection: Apps published by SwiftWord Developer will not collect any personal information.</p>
+<p>我们可以通过传递一个 next handler 代替 message 来创建一个 handler 链，来实现 middleware 的功能。</p>
 
-<p>Personal Information Sharing: Apps published by SwiftWord Developer may not share personal information about consumers with third parties for their own marketing purposes unless the consumer agreed to that sharing.</p>
+<pre><code>func exampleMiddleware(next http.Handler) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    // Our middleware logic goes here...
+    next.ServeHTTP(w, r)
+  })
+}
+</code></pre>
 
-<p>Children’s Online Privacy Protection Act
-Our mobile applications comply with the Children’s Online Privacy Protection Act (“COPPA”). We don’t knowingly collect personal information from children under the age of 13 years old. If a user is identified as under 13 years old, we will not collect or use any information of this user and we will delete any information already received in a secure manner.</p>
+<p>middleware 有这样的签名<code>func(http.Handler) http.Handler</code></p>
 
-<p>Other Privacy Related Issues: Apps published by SwiftWord Developer may contain links to other sites or applications which are owned or run by 3rd parties. SwiftWord Developer will not be responsible for those linked sites or application.</p>
+<p>因为它返回 http.Handler，所以可以直接用在 <code>http.Handle</code>函数里。</p>
 
-<p>Changes on Privacy Policy</p>
+<pre><code>http.Handle(&quot;/&quot;, middlewareOne(middlewareTwo(finalHandler)))
+</code></pre>
 
-<p>If we change or update the privacy policy to allow SwiftWord Developer to use or share your previously collected personal information in a different way, we will update the Policy on this web page. We encourage you to periodically visit this page for the latest privacy practices.</p>
+<h3 id="reference:fab441a025c46c0b3584c6d73f0554e4">reference</h3>
+
+<ul>
+<li><a href="http://www.alexedwards.net/blog/making-and-using-middleware">http://www.alexedwards.net/blog/making-and-using-middleware</a></li>
+</ul>
 
 </article>
         </div>

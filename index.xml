@@ -6,8 +6,50 @@
     <description>Recent content on waterdudu&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 16 Mar 2016 10:33:28 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 16 Mar 2016 10:59:34 +0800</lastBuildDate>
     <atom:link href="http://waterdudu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>golang handler middleware</title>
+      <link>http://waterdudu.github.io/post/golang-handler-middleware/</link>
+      <pubDate>Wed, 16 Mar 2016 10:59:34 +0800</pubDate>
+      
+      <guid>http://waterdudu.github.io/post/golang-handler-middleware/</guid>
+      <description>
+
+&lt;p&gt;我们知道 handler 可以这么写：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func messageHandler(message string) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    w.Write([]byte(message)
+  })
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我们可以通过传递一个 next handler 代替 message 来创建一个 handler 链，来实现 middleware 的功能。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func exampleMiddleware(next http.Handler) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    // Our middleware logic goes here...
+    next.ServeHTTP(w, r)
+  })
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;middleware 有这样的签名&lt;code&gt;func(http.Handler) http.Handler&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;因为它返回 http.Handler，所以可以直接用在 &lt;code&gt;http.Handle&lt;/code&gt;函数里。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http.Handle(&amp;quot;/&amp;quot;, middlewareOne(middlewareTwo(finalHandler)))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;reference:fab441a025c46c0b3584c6d73f0554e4&#34;&gt;reference&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.alexedwards.net/blog/making-and-using-middleware&#34;&gt;http://www.alexedwards.net/blog/making-and-using-middleware&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>golang handler</title>
@@ -2314,17 +2356,6 @@ Our mobile applications comply with the Children’s Online Privacy Protection A
 &lt;p&gt;Changes on Privacy Policy&lt;/p&gt;
 
 &lt;p&gt;If we change or update the privacy policy to allow SwiftWord Developer to use or share your previously collected personal information in a different way, we will update the Policy on this web page. We encourage you to periodically visit this page for the latest privacy practices.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>first</title>
-      <link>http://waterdudu.github.io/post/first/</link>
-      <pubDate>Fri, 06 Nov 2015 22:45:04 +0800</pubDate>
-      
-      <guid>http://waterdudu.github.io/post/first/</guid>
-      <description>&lt;p&gt;hey first
-hey world&lt;/p&gt;
 </description>
     </item>
     

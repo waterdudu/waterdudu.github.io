@@ -27,7 +27,7 @@
         <div class="container">
             <header>
                 <nav>
-                    <ul><li><a href="http://waterdudu.github.io/post/data-science/">data science</a></li><li><a href="http://waterdudu.github.io/post/golang-handler/">golang handler</a></li><li><a href="http://waterdudu.github.io/post/oidc/">oidc</a></li><li><a href="http://waterdudu.github.io/post/postgres/">postgres</a></li><li><a href="http://waterdudu.github.io/post/scrapy/">scapy</a></li></ul>
+                    <ul><li><a href="http://waterdudu.github.io/post/data-science/">data science</a></li><li><a href="http://waterdudu.github.io/post/golang-handler/">golang handler</a></li><li><a href="http://waterdudu.github.io/post/golang-handler-middleware/">golang handler middleware</a></li><li><a href="http://waterdudu.github.io/post/oidc/">oidc</a></li><li><a href="http://waterdudu.github.io/post/postgres/">postgres</a></li><li><a href="http://waterdudu.github.io/post/scrapy/">scapy</a></li></ul>
                 </nav>
                 
                     <h1 class="brand">waterdudu&#39;s blog</h1>
@@ -47,6 +47,15 @@
             </header>
 <section id="article-listing">
     
+    
+    <article>
+        <h1 class="article-title"><a href="http://waterdudu.github.io/post/golang-handler-middleware/">golang handler middleware</a></h1>
+        <p class="article-info">
+            on <strong>Wed, Mar 16, 2016</strong> by <strong></strong> &middot; <strong>1 min reading time</strong>
+        </p>
+        <p class="article-summary">我们知道 handler 可以这么写： func messageHandler(message string) http.Handler { return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.Write([]byte(message) }) } 我们可以通过传递一个 next handler 代替 message 来创建一个 handler 链，来实现 middleware 的功能。 func exampleMiddleware(next http.Handler) http.Handler { return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { // Our middleware logic goes here... next.ServeHTTP(w, r) }) } middleware 有这样的签名func(http.Handler) http.Handler 因为它返回 http.Handler，所以可以直接用在 http.Handle函数里。 http.Handle(&quot;/&quot;, middlewareOne(middlewareTwo(finalHandler))) reference http://www.alexedwards.net/blog/making-and-using-middleware</p>
+        
+    </article>
     
     <article>
         <h1 class="article-title"><a href="http://waterdudu.github.io/post/golang-handler/">golang handler</a></h1>
@@ -127,15 +136,6 @@
         </p>
         <p class="article-summary">react do two things when model is updated. run diffing algorithm, which identifies what has changed reconciliation, update the DOM with the result of diff Webpack Gulp and Grunt handle files, while Webpack handles projects. npm init Just hit ENTER npm install --save react@0.14.3 npm install --save react-dom@0.14.3 npm install --save-dev babel-core@6.3.13 npm install --save-dev babel-loader@6.2.0 npm install --save-dev babel-preset-es2015@6.3.13 npm install --save-dev babel-preset-react@6.3.13 npm install webpack -g Next you need to create index.html file.</p>
         <a href="http://waterdudu.github.io/post/react/"><p class="article-read-more"><a href="http://waterdudu.github.io/post/react/">Read more &rarr;</a></p>
-    </article>
-    
-    <article>
-        <h1 class="article-title"><a href="http://waterdudu.github.io/post/go-concurrency-patterns/">go concurrency patterns</a></h1>
-        <p class="article-info">
-            on <strong>Wed, Jan 20, 2016</strong> by <strong></strong> &middot; <strong>4 min reading time</strong>
-        </p>
-        <p class="article-summary">fanIn pattern c &lt;- &lt;-input1 含义，把 input1 的信息拿出丢给 c /* A -&gt; C -&gt; B -&gt; */ func fanIn(input1, input2 &lt;-chan string) &lt;-chan string { c := make(chan string) go func() { for { c &lt;- &lt;-input1 } }() go func() { for { c &lt;- &lt;-input2 } }() return c } func main() { c := fanIn(boring(&quot;Joe&quot;), boring(&quot;Ann&quot;)) for i := 0; i &lt; 10; i++ { fmt.Println(&lt;-c) } fmt.Println(&quot;You're both boring.</p>
-        <a href="http://waterdudu.github.io/post/go-concurrency-patterns/"><p class="article-read-more"><a href="http://waterdudu.github.io/post/go-concurrency-patterns/">Read more &rarr;</a></p>
     </article>
     
     
